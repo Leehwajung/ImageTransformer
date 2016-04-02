@@ -21,7 +21,8 @@
 #define IDR_MAINFRAME				128
 #define IDR_MAINFRAME_256			129
 #define IDR_HistogramFileTYPE				130
-#define ID_WINDOW_MANAGER			131
+#define IDR_BMPFileTYPE				131
+#define ID_WINDOW_MANAGER			132
 #define IDR_THEME_MENU				200
 #define ID_SET_STYLE				201
 #define ID_VIEW_APPLOOK_WIN_2000	205

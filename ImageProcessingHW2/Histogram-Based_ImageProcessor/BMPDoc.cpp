@@ -1,15 +1,4 @@
-// 이 MFC 샘플 소스 코드는 MFC Microsoft Office Fluent 사용자 인터페이스("Fluent UI")를 
-// 사용하는 방법을 보여 주며, MFC C++ 라이브러리 소프트웨어에 포함된 
-// Microsoft Foundation Classes Reference 및 관련 전자 문서에 대해 
-// 추가적으로 제공되는 내용입니다.  
-// Fluent UI를 복사, 사용 또는 배포하는 데 대한 사용 약관은 별도로 제공됩니다.  
-// Fluent UI 라이선싱 프로그램에 대한 자세한 내용은 
-// http://go.microsoft.com/fwlink/?LinkId=238214.
-//
-// Copyright (C) Microsoft Corporation
-// All rights reserved.
-
-// HistogramDoc.cpp : CHistogramDoc 클래스의 구현
+// BMPDoc.cpp : CBMPDoc 클래스의 구현 파일입니다.
 //
 
 #include "stdafx.h"
@@ -19,7 +8,7 @@
 #include "ImageProcessor.h"
 #endif
 
-#include "HistogramDoc.h"
+#include "BMPDoc.h"
 
 #include <propkey.h>
 
@@ -28,41 +17,51 @@
 #endif
 
 
-// CHistogramDoc
+// CBMPDoc
 
-IMPLEMENT_DYNCREATE(CHistogramDoc, CDocument)
+IMPLEMENT_DYNCREATE(CBMPDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CHistogramDoc, CDocument)
+BEGIN_MESSAGE_MAP(CBMPDoc, CDocument)
 END_MESSAGE_MAP()
 
+BEGIN_DISPATCH_MAP(CBMPDoc, CDocument)
+END_DISPATCH_MAP()
 
-// CHistogramDoc 생성/소멸
+// 참고: IID_IBMPDoc에 대한 지원을 추가하여
+//  VBA에서 형식 안전 바인딩을 지원합니다. 
+//  이 IID는 .IDL 파일에 있는 dispinterface의 GUID와 일치해야 합니다.
 
-CHistogramDoc::CHistogramDoc()
+// {56F902D5-BA11-4E73-9A1D-C873816130E7}
+static const IID IID_IBMPDoc =
+{ 0x56F902D5, 0xBA11, 0x4E73,{ 0x9A, 0x1D, 0xC8, 0x73, 0x81, 0x61, 0x30, 0xE7 } };
+
+BEGIN_INTERFACE_MAP(CBMPDoc, CDocument)
+	INTERFACE_PART(CBMPDoc, IID_IBMPDoc, Dispatch)
+END_INTERFACE_MAP()
+
+
+// CBMPDoc 생성/소멸입니다.
+
+CBMPDoc::CBMPDoc()
 {
-	// TODO: 여기에 일회성 생성 코드를 추가합니다.
-
+	EnableAutomation();
 }
 
-CHistogramDoc::~CHistogramDoc()
+CBMPDoc::~CBMPDoc()
 {
 }
 
-BOOL CHistogramDoc::OnNewDocument()
+BOOL CBMPDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
-
-	// TODO: 여기에 재초기화 코드를 추가합니다.
-	// SDI 문서는 이 문서를 다시 사용합니다.
-
 	return TRUE;
 }
 
+#ifndef _WIN32_WCE
+// CBMPDoc serialization입니다.
 
-// CHistogramDoc serialization
-
-void CHistogramDoc::Serialize(CArchive& ar)
+void CBMPDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
@@ -73,11 +72,22 @@ void CHistogramDoc::Serialize(CArchive& ar)
 		// TODO: 여기에 로딩 코드를 추가합니다.
 	}
 }
+#endif
+
+void CBMPDoc::OnFinalRelease()
+{
+	// 자동화 개체에 대한 마지막 참조가 해제되면
+	// OnFinalRelease가 호출됩니다.  기본 클래스에서 자동으로 개체를 삭제합니다.
+	// 기본 클래스를 호출하기 전에 개체에 필요한 추가 정리 작업을
+	// 추가하십시오.
+
+	CDocument::OnFinalRelease();
+}
 
 #ifdef SHARED_HANDLERS
 
 // 축소판 그림을 지원합니다.
-void CHistogramDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
+void CBMPDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 {
 	// 문서의 데이터를 그리려면 이 코드를 수정하십시오.
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
@@ -85,7 +95,7 @@ void CHistogramDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	CString strText = _T("TODO: implement thumbnail drawing here");
 	LOGFONT lf;
 
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
 	pDefaultGUIFont->GetLogFont(&lf);
 	lf.lfHeight = 36;
 
@@ -98,7 +108,7 @@ void CHistogramDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 }
 
 // 검색 처리기를 지원합니다.
-void CHistogramDoc::InitializeSearchContent()
+void CBMPDoc::InitializeSearchContent()
 {
 	CString strSearchContent;
 	// 문서의 데이터에서 검색 콘텐츠를 설정합니다.
@@ -108,7 +118,7 @@ void CHistogramDoc::InitializeSearchContent()
 	SetSearchContent(strSearchContent);
 }
 
-void CHistogramDoc::SetSearchContent(const CString& value)
+void CBMPDoc::SetSearchContent(const CString& value)
 {
 	if (value.IsEmpty())
 	{
@@ -128,20 +138,23 @@ void CHistogramDoc::SetSearchContent(const CString& value)
 
 #endif // SHARED_HANDLERS
 
-
-// CHistogramDoc 진단
+// CBMPDoc 진단입니다.
 
 #ifdef _DEBUG
-void CHistogramDoc::AssertValid() const
+void CBMPDoc::AssertValid() const
 {
 	CDocument::AssertValid();
 }
 
-void CHistogramDoc::Dump(CDumpContext& dc) const
+#ifndef _WIN32_WCE
+void CBMPDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
+#endif
 #endif //_DEBUG
 
 
-// CHistogramDoc 명령
+// CBMPDoc 명령입니다.
+
+

@@ -17,7 +17,7 @@
 
 class CHistogramView : public CView
 {
-protected: // serialization에서만 만들어집니다.
+protected:	// serialization에서만 만들어집니다.
 	CHistogramView();
 	DECLARE_DYNCREATE(CHistogramView)
 
@@ -30,7 +30,7 @@ public:
 
 // 재정의입니다.
 public:
-	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
+	virtual void OnDraw(CDC* pDC);	// 이 뷰를 그리기 위해 재정의되었습니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
@@ -55,7 +55,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-#ifndef _DEBUG  // HistogramView.cpp의 디버그 버전
+#ifndef _DEBUG	// HistogramView.cpp의 디버그 버전
 inline CHistogramDoc* CHistogramView::GetDocument() const
    { return reinterpret_cast<CHistogramDoc*>(m_pDocument); }
 #endif

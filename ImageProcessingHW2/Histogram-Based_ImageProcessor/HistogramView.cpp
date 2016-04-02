@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CHistogramView, CView)
 	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
 
+
 // CHistogramView 积己/家戈
 
 CHistogramView::CHistogramView()
@@ -59,6 +60,7 @@ BOOL CHistogramView::PreCreateWindow(CREATESTRUCT& cs)
 
 	return CView::PreCreateWindow(cs);
 }
+
 
 // CHistogramView 弊府扁
 

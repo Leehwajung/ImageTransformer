@@ -12,13 +12,12 @@
 // HistogramDoc.h : CHistogramDoc 클래스의 인터페이스
 //
 
-
 #pragma once
 
 
 class CHistogramDoc : public CDocument
 {
-protected: // serialization에서만 만들어집니다.
+protected:	// serialization에서만 만들어집니다.
 	CHistogramDoc();
 	DECLARE_DYNCREATE(CHistogramDoc)
 
