@@ -5,7 +5,7 @@
 
 #include <atlhandler.h>
 #include <atlhandlerimpl.h>
-#include "..\Histogram-Based_ImageProcessor\ImageProcessorDoc.h"
+#include "..\Histogram-Based_ImageProcessor\HistogramDoc.h"
 #include "HistogramBased_ImageProcessorHandlers_i.h"
 
 using namespace ATL;
@@ -60,7 +60,7 @@ protected:
 		return S_OK;
 	}
 
-	DECLARE_DOCUMENT(CImageProcessorDoc)
+	DECLARE_DOCUMENT(CHistogramDoc)
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(Thumbnail), CThumbnailHandler)

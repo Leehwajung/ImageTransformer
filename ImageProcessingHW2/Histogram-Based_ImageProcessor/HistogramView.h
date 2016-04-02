@@ -9,21 +9,21 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ImageProcessorView.h : CImageProcessorView 클래스의 인터페이스
+// HistogramView.h : CHistogramView 클래스의 인터페이스
 //
 
 #pragma once
 
 
-class CImageProcessorView : public CView
+class CHistogramView : public CView
 {
 protected: // serialization에서만 만들어집니다.
-	CImageProcessorView();
-	DECLARE_DYNCREATE(CImageProcessorView)
+	CHistogramView();
+	DECLARE_DYNCREATE(CHistogramView)
 
 // 특성입니다.
 public:
-	CImageProcessorDoc* GetDocument() const;
+	CHistogramDoc* GetDocument() const;
 
 // 작업입니다.
 public:
@@ -39,7 +39,7 @@ protected:
 
 // 구현입니다.
 public:
-	virtual ~CImageProcessorView();
+	virtual ~CHistogramView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -55,8 +55,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-#ifndef _DEBUG  // ImageProcessorView.cpp의 디버그 버전
-inline CImageProcessorDoc* CImageProcessorView::GetDocument() const
-   { return reinterpret_cast<CImageProcessorDoc*>(m_pDocument); }
+#ifndef _DEBUG  // HistogramView.cpp의 디버그 버전
+inline CHistogramDoc* CHistogramView::GetDocument() const
+   { return reinterpret_cast<CHistogramDoc*>(m_pDocument); }
 #endif
 

@@ -9,18 +9,18 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ImageProcessorDoc.h : CImageProcessorDoc 클래스의 인터페이스
+// HistogramDoc.h : CHistogramDoc 클래스의 인터페이스
 //
 
 
 #pragma once
 
 
-class CImageProcessorDoc : public CDocument
+class CHistogramDoc : public CDocument
 {
 protected: // serialization에서만 만들어집니다.
-	CImageProcessorDoc();
-	DECLARE_DYNCREATE(CImageProcessorDoc)
+	CHistogramDoc();
+	DECLARE_DYNCREATE(CHistogramDoc)
 
 // 특성입니다.
 public:
@@ -39,7 +39,7 @@ public:
 
 // 구현입니다.
 public:
-	virtual ~CImageProcessorDoc();
+	virtual ~CHistogramDoc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

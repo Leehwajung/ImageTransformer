@@ -19,8 +19,8 @@
 #include "MainFrm.h"
 
 #include "ChildFrm.h"
-#include "ImageProcessorDoc.h"
-#include "ImageProcessorView.h"
+#include "HistogramDoc.h"
+#include "HistogramView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -100,9 +100,9 @@ BOOL CImageProcessorApp::InitInstance()
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CMultiDocTemplate* pDocTemplate;
 	pDocTemplate = new CMultiDocTemplate(IDR_HistogramTYPE,
-		RUNTIME_CLASS(CImageProcessorDoc),
+		RUNTIME_CLASS(CHistogramDoc),
 		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
-		RUNTIME_CLASS(CImageProcessorView));
+		RUNTIME_CLASS(CHistogramView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);

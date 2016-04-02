@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ImageProcessorDoc.cpp : CImageProcessorDoc 클래스의 구현
+// HistogramDoc.cpp : CHistogramDoc 클래스의 구현
 //
 
 #include "stdafx.h"
@@ -19,7 +19,7 @@
 #include "ImageProcessor.h"
 #endif
 
-#include "ImageProcessorDoc.h"
+#include "HistogramDoc.h"
 
 #include <propkey.h>
 
@@ -27,27 +27,27 @@
 #define new DEBUG_NEW
 #endif
 
-// CImageProcessorDoc
+// CHistogramDoc
 
-IMPLEMENT_DYNCREATE(CImageProcessorDoc, CDocument)
+IMPLEMENT_DYNCREATE(CHistogramDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CImageProcessorDoc, CDocument)
+BEGIN_MESSAGE_MAP(CHistogramDoc, CDocument)
 END_MESSAGE_MAP()
 
 
-// CImageProcessorDoc 생성/소멸
+// CHistogramDoc 생성/소멸
 
-CImageProcessorDoc::CImageProcessorDoc()
+CHistogramDoc::CHistogramDoc()
 {
 	// TODO: 여기에 일회성 생성 코드를 추가합니다.
 
 }
 
-CImageProcessorDoc::~CImageProcessorDoc()
+CHistogramDoc::~CHistogramDoc()
 {
 }
 
-BOOL CImageProcessorDoc::OnNewDocument()
+BOOL CHistogramDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
@@ -61,9 +61,9 @@ BOOL CImageProcessorDoc::OnNewDocument()
 
 
 
-// CImageProcessorDoc serialization
+// CHistogramDoc serialization
 
-void CImageProcessorDoc::Serialize(CArchive& ar)
+void CHistogramDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
@@ -78,7 +78,7 @@ void CImageProcessorDoc::Serialize(CArchive& ar)
 #ifdef SHARED_HANDLERS
 
 // 축소판 그림을 지원합니다.
-void CImageProcessorDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
+void CHistogramDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 {
 	// 문서의 데이터를 그리려면 이 코드를 수정하십시오.
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
@@ -99,7 +99,7 @@ void CImageProcessorDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 }
 
 // 검색 처리기를 지원합니다.
-void CImageProcessorDoc::InitializeSearchContent()
+void CHistogramDoc::InitializeSearchContent()
 {
 	CString strSearchContent;
 	// 문서의 데이터에서 검색 콘텐츠를 설정합니다.
@@ -109,7 +109,7 @@ void CImageProcessorDoc::InitializeSearchContent()
 	SetSearchContent(strSearchContent);
 }
 
-void CImageProcessorDoc::SetSearchContent(const CString& value)
+void CHistogramDoc::SetSearchContent(const CString& value)
 {
 	if (value.IsEmpty())
 	{
@@ -129,19 +129,19 @@ void CImageProcessorDoc::SetSearchContent(const CString& value)
 
 #endif // SHARED_HANDLERS
 
-// CImageProcessorDoc 진단
+// CHistogramDoc 진단
 
 #ifdef _DEBUG
-void CImageProcessorDoc::AssertValid() const
+void CHistogramDoc::AssertValid() const
 {
 	CDocument::AssertValid();
 }
 
-void CImageProcessorDoc::Dump(CDumpContext& dc) const
+void CHistogramDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
 
 
-// CImageProcessorDoc 명령
+// CHistogramDoc 명령

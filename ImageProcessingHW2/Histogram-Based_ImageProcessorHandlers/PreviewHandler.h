@@ -6,8 +6,8 @@
 #include <atlhandler.h>
 #include <atlhandlerimpl.h>
 #include <afxext.h>
-#include "..\Histogram-Based_ImageProcessor\ImageProcessorDoc.h"
-#include "..\Histogram-Based_ImageProcessor\ImageProcessorView.h"
+#include "..\Histogram-Based_ImageProcessor\HistogramDoc.h"
+#include "..\Histogram-Based_ImageProcessor\HistogramView.h"
 #include "HistogramBased_ImageProcessorHandlers_i.h"
 
 using namespace ATL;
@@ -72,7 +72,7 @@ public:
 		ASSERT_VALID(pCtrl);
 
 		CCreateContext ctx;
-		ctx.m_pNewViewClass = RUNTIME_CLASS(CImageProcessorView);
+		ctx.m_pNewViewClass = RUNTIME_CLASS(CHistogramView);
 
 		m_pDocument = CreateDocument();
 

@@ -57,7 +57,7 @@ ChildFrm.h, ChildFrm.cpp
 
 응용 프로그램 마법사에서 문서 형식과 뷰를 한 개씩 만듭니다.
 
-ImageProcessorDoc.h, ImageProcessorDoc.cpp - 문서
+HistogramDoc.h, HistogramDoc.cpp - 문서
     이 파일에는 CImageProcessorDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CImageProcessorDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
     문서에는 다음과 같은 문자열이 있습니다.
         파일 확장명:      htg
@@ -68,7 +68,7 @@ ImageProcessorDoc.h, ImageProcessorDoc.cpp - 문서
         파일의 새 약식 이름: Histogram
         파일 형식의 긴 이름: Histogram-Based_ImageProcessor.Document
 
-ImageProcessorView.h, ImageProcessorView.cpp - 문서 뷰
+HistogramView.h, HistogramView.cpp - 문서 뷰
     이 파일에는 CImageProcessorView 클래스가 포함됩니다.
     CImageProcessorView 개체는 CImageProcessorDoc 개체를 보는 데 사용됩니다.
 
