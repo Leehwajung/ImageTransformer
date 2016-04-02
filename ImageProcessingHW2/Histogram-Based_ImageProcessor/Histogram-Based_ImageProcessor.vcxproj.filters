@@ -30,22 +30,16 @@
     <ClInclude Include="ChildFrm.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageProcessor.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="HistogramDoc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="HistogramView.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="BMPView.h">
+    <ClInclude Include="Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="BMPDoc.h">
+    <ClInclude Include="ImageProcessor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,19 +53,13 @@
     <ClCompile Include="ChildFrm.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ImageProcessor.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="HistogramDoc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="HistogramView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BMPView.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BMPDoc.cpp">
+    <ClCompile Include="ImageProcessor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,9 +96,6 @@
     <Image Include="res\writesmall.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="res\Histogram-Based_ImageProcessorDoc.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
     <Image Include="res\Histogram-Based_ImageProcessor.ico">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -118,6 +103,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\Toolbar256.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\HistogramDoc.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

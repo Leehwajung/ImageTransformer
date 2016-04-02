@@ -21,8 +21,6 @@
 #include "ChildFrm.h"
 #include "HistogramDoc.h"
 #include "HistogramView.h"
-#include "BMPDoc.h"
-#include "BMPView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -45,6 +43,15 @@ END_MESSAGE_MAP()
 
 CImageProcessorApp::CImageProcessorApp()
 {
+	// 다시 시작 관리자 지원
+	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
+#ifdef _MANAGED
+	// 응용 프로그램을 공용 언어 런타임 지원을 사용하여 빌드한 경우(/clr):
+	//     1) 이 추가 설정은 다시 시작 관리자 지원이 제대로 작동하는 데 필요합니다.
+	//     2) 프로젝트에서 빌드하려면 System.Windows.Forms에 대한 참조를 추가해야 합니다.
+	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
+#endif
+
 	// TODO: 아래 응용 프로그램 ID 문자열을 고유 ID 문자열로 바꾸십시오(권장).
 	// 문자열에 대한 서식: CompanyName.ProductName.SubProduct.VersionInformation
 	SetAppID(_T("Histogram-Based_ImageProcessor.AppID.NoVersion"));
@@ -101,18 +108,10 @@ BOOL CImageProcessorApp::InitInstance()
 	// 응용 프로그램의 문서 템플릿을 등록합니다.  문서 템플릿은
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CMultiDocTemplate* pDocTemplate;
-	pDocTemplate = new CMultiDocTemplate(IDR_HistogramTYPE,
+	pDocTemplate = new CMultiDocTemplate(IDR_HistogramFileTYPE,
 		RUNTIME_CLASS(CHistogramDoc),
 		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
 		RUNTIME_CLASS(CHistogramView));
-	if (!pDocTemplate)
-		return FALSE;
-	AddDocTemplate(pDocTemplate);
-
-	pDocTemplate = new CMultiDocTemplate(IDR_BMPTYPE,
-		RUNTIME_CLASS(CBMPDoc),
-		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
-		RUNTIME_CLASS(CBMPView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);

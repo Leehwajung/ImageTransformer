@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{44592197-7DC9-4B60-B471-2BAB46225AD1}</ProjectGuid>
+    <ProjectGuid>{CA0B5B3D-E9AA-4636-89E8-2D058402DDA4}</ProjectGuid>
     <RootNamespace>HistogramBased_ImageProcessor</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <Keyword>MFCProj</Keyword>
@@ -189,8 +189,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BMPDoc.h" />
-    <ClInclude Include="BMPView.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ImageProcessor.h" />
     <ClInclude Include="HistogramDoc.h" />
@@ -201,8 +199,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BMPDoc.cpp" />
-    <ClCompile Include="BMPView.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="ImageProcessor.cpp" />
     <ClCompile Include="HistogramDoc.cpp" />
@@ -228,7 +224,7 @@
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />
     <Image Include="res\Histogram-Based_ImageProcessor.ico" />
-    <Image Include="res\Histogram-Based_ImageProcessorDoc.ico" />
+    <Image Include="res\HistogramDoc.ico" />
     <Image Include="res\main.bmp" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
@@ -238,9 +234,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties RESOURCE_FILE="Histogram-Based_ImageProcessor.rc" />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

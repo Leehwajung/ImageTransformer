@@ -58,22 +58,22 @@ ChildFrm.h, ChildFrm.cpp
 응용 프로그램 마법사에서 문서 형식과 뷰를 한 개씩 만듭니다.
 
 HistogramDoc.h, HistogramDoc.cpp - 문서
-    이 파일에는 CImageProcessorDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CImageProcessorDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
+    이 파일에는 CHistogramDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CHistogramDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
     문서에는 다음과 같은 문자열이 있습니다.
         파일 확장명:      htg
         파일 형식 ID:        HistogramBasedImageProcessor.Document
-        주 프레임 캡션:  Histogram-Based_ImageProcessor
+        주 프레임 캡션:  Histogram-Based Image Processor
         Doc 형식 이름:       Histogram
         필터 이름:         Histogram Files (*.htg)
         파일의 새 약식 이름: Histogram
         파일 형식의 긴 이름: Histogram-Based_ImageProcessor.Document
 
 HistogramView.h, HistogramView.cpp - 문서 뷰
-    이 파일에는 CImageProcessorView 클래스가 포함됩니다.
-    CImageProcessorView 개체는 CImageProcessorDoc 개체를 보는 데 사용됩니다.
+    이 파일에는 CHistogramView 클래스가 포함됩니다.
+    CHistogramView 개체는 CHistogramDoc 개체를 보는 데 사용됩니다.
 
-res\Histogram-Based_ImageProcessorDoc.ico
-    아이콘 파일이며, CImageProcessorDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 Histogram-Based_ImageProcessor.rc에 의해 포함됩니다.
+res\HistogramDoc.ico
+    아이콘 파일이며, CHistogramDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 Histogram-Based_ImageProcessor.rc에 의해 포함됩니다.
 
 
 

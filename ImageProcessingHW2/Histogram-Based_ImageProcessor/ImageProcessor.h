@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ImageProcessor.h : Histogram-Based_ImageProcessor 응용 프로그램에 대한 주 헤더 파일
+// ImageProcessor.h : ImageProcessor 응용 프로그램에 대한 주 헤더 파일
 //
 #pragma once
 
