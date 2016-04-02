@@ -378,6 +378,7 @@ STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "Histogram-Based Image Processor"
     IDR_HistogramTYPE       "\nHistogram\nHistogram\nHistogram Files (*.htg)\n.htg\nHistogramBasedImageProcessor.Document\nHistogram-Based_ImageProcessor.Document"
+    IDR_BMPTYPE             "\nBMP\nBMP\nBMP Files (*.bmp)\n.htg\ncom.microsoft.bmp\ncom.microsoft.bmp"
     ID_WINDOW_MANAGER       "â(&W)..."
 END
 

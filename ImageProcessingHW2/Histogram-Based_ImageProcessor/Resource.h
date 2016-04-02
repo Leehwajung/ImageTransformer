@@ -18,7 +18,8 @@
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
 #define IDR_HistogramTYPE               130
-#define ID_WINDOW_MANAGER               131
+#define IDR_BMPTYPE                     131
+#define ID_WINDOW_MANAGER               132
 #define IDR_PASTE_MENU                  151
 #define IDR_WINDOWS_MENU                152
 #define IDR_THEME_MENU                  200
