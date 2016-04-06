@@ -19,6 +19,9 @@
 
 #include "resource.h"       // 주 기호입니다.
 
+#include <gdiplus.h>
+
+using namespace Gdiplus;
 
 // CImageProcessorApp:
 // 이 클래스의 구현에 대해서는 ImageProcessor.cpp을 참조하십시오.
@@ -29,6 +32,9 @@ class CImageProcessorApp : public CWinAppEx
 public:
 	CImageProcessorApp();
 
+// 특성입니다.
+public:
+	ULONG_PTR gdiplusToken;
 
 // 재정의입니다.
 public:

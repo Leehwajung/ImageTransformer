@@ -15,9 +15,6 @@
 #define new DEBUG_NEW
 #endif
 
-#include <GdiPlus.h>
-using namespace Gdiplus;
-
 
 // CBMPView
 
@@ -71,12 +68,46 @@ void CBMPView::OnFinalRelease()
 
 void CBMPView::OnDraw(CDC* pDC)
 {
-	CDocument* pDoc = GetDocument();
+	CBMPDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
 	// TODO: 여기에 그리기 코드를 추가합니다.
+
+	/* 출력 대상 */
+	Graphics graphicsDC(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
+
+	/****************************** 더블 버퍼링 ******************************/
+	CRect rect;
+	GetClientRect(rect);
+	Bitmap bmpCanvas(rect.right, rect.bottom);		// 캔버스 비트맵 생성
+	Graphics graphicsCanvas(&bmpCanvas);			// 캔버스 그래픽스 생성
+	graphicsCanvas.Clear(Color::White);				// 캔버스 배경색 지정
+	/*************************************************************************/
+	//graphicsCanvas.SetSmoothingMode(SmoothingModeHighQuality);	// Antialising
+
+	// TODO: 여기에 그리기 코드를 추가합니다.
+	if (pDoc->m_bitmap) {
+		CRect rect(0,0, pDoc->m_bitmap->GetWidth(), pDoc->m_bitmap->GetHeight());
+		CRgn abv;
+		abv.CreateRectRgnIndirect(&rect);
+
+		//GetParentFrame()->MoveWindow(&rect);
+		//GetParentFrame()->SetWindowRgn(abv, true);
+		//SetWindowRgn(abv, true);
+		
+		//rect.left = 0;
+		//rect.top = 0;
+		//rect.right = pDoc->m_bitmap->GetWidth();
+		//rect.bottom = pDoc->m_bitmap->GetHeight();
+		graphicsCanvas.DrawImage(pDoc->m_bitmap, 0, 0);
+	}
+		
+
+	/**************************************** 더블 버퍼링 ****************************************/
+	graphicsDC.DrawImage(&bmpCanvas, rect.left, rect.top, rect.right, rect.bottom);	// 캔버스 그리기
+	/*********************************************************************************************/
 }
 
 

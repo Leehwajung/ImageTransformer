@@ -17,6 +17,8 @@
 #endif
 
 
+#include <gdiplus.h>
+
 // CBMPDoc
 
 IMPLEMENT_DYNCREATE(CBMPDoc, CDocument)
@@ -45,6 +47,7 @@ END_INTERFACE_MAP()
 CBMPDoc::CBMPDoc()
 {
 	EnableAutomation();
+	m_bitmap = NULL;
 }
 
 CBMPDoc::~CBMPDoc()
@@ -56,6 +59,33 @@ BOOL CBMPDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 	return TRUE;
+}
+
+BOOL CBMPDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
+
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+	//m_bitmap.LoadBitmapW(lpszPathName);
+	m_bitmap = Bitmap::FromFile(lpszPathName);
+
+	return TRUE;
+}
+
+BOOL CBMPDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	return CDocument::OnSaveDocument(lpszPathName);
+}
+
+void CBMPDoc::OnCloseDocument()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (m_bitmap) delete m_bitmap;
+
+	CDocument::OnCloseDocument();
 }
 
 #ifndef _WIN32_WCE
@@ -156,5 +186,4 @@ void CBMPDoc::Dump(CDumpContext& dc) const
 
 
 // CBMPDoc 명령입니다.
-
 

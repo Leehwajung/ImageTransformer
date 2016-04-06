@@ -3,6 +3,7 @@
 
 #pragma once
 
+using Gdiplus::Bitmap;
 
 // CBMPDoc 문서입니다.
 
@@ -14,6 +15,7 @@ protected:	// serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
+	Bitmap* m_bitmap;
 
 // 작업입니다.
 public:
@@ -21,6 +23,9 @@ public:
 // 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();
+	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+	virtual void OnCloseDocument();
 #ifndef _WIN32_WCE
 	virtual void Serialize(CArchive& ar);	// 문서 입/출력을 위해 재정의되었습니다.
 #endif

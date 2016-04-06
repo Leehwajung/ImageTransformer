@@ -21,6 +21,10 @@
 #define new DEBUG_NEW
 #endif
 
+#include "HistogramDoc.h"
+#include "BMPDoc.h"
+
+
 // CChildFrame
 
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)
@@ -49,6 +53,53 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서 Window 클래스 또는 스타일을 수정합니다.
 	if( !CMDIChildWndEx::PreCreateWindow(cs) )
 		return FALSE;
+
+	//CDocument* pDoc = GetActiveDocument();
+	//if (pDoc->IsKindOf(RUNTIME_CLASS(CHistogramDoc))) {
+	//	CHistogramDoc* pBMPDoc = (CHistogramDoc*)pDoc;
+	//	//cs.cx = ;
+	//	//cs.cy = ;
+	//}
+	//else if (pDoc->IsKindOf(RUNTIME_CLASS(CBMPDoc))) {
+	//	CBMPDoc* pBMPDoc = (CBMPDoc*)pDoc;
+	//	cs.cx = pBMPDoc->m_bitmap->GetWidth();
+	//	cs.cy = pBMPDoc->m_bitmap->GetHeight();
+	//}
+
+
+		//CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
+		//cs.cx = pBMPDoc->m_bitmap->GetWidth();
+		//cs.cy = pBMPDoc->m_bitmap->GetHeight();
+
+	//void CChildFrame::OnSize(UINT nType, int cx, int cy)
+	//{
+	//	CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
+	//	if (pBMPDoc) {
+	//		cx = pBMPDoc->m_bitmap->GetWidth();
+	//		cy = pBMPDoc->m_bitmap->GetHeight();
+	//	}
+
+	//	CMDIChildWndEx::OnSize(nType, cx, cy);
+
+	//	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	//}
+
+
+	//void CChildFrame::OnSizing(UINT fwSide, LPRECT pRect)
+	//{
+	//	CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
+	//	if (pBMPDoc) {
+	//		pRect->left = 0;
+	//		pRect->top = 0;
+	//		pRect->right = pBMPDoc->m_bitmap->GetWidth();
+	//		pRect->bottom = pBMPDoc->m_bitmap->GetHeight();
+	//	}
+
+	//	CMDIChildWndEx::OnSizing(fwSide, pRect);
+
+	//	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	//}
+
 
 	return TRUE;
 }

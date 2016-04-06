@@ -34,7 +34,7 @@
 BEGIN_MESSAGE_MAP(CImageProcessorApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CImageProcessorApp::OnAppAbout)
 	// 표준 파일을 기초로 하는 문서 명령입니다.
-	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
+	//ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
@@ -110,18 +110,18 @@ BOOL CImageProcessorApp::InitInstance()
 	// 응용 프로그램의 문서 템플릿을 등록합니다.  문서 템플릿은
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CMultiDocTemplate* pDocTemplate;
-	pDocTemplate = new CMultiDocTemplate(IDR_HistogramFileTYPE,
-		RUNTIME_CLASS(CHistogramDoc),
-		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
-		RUNTIME_CLASS(CHistogramView));
-	if (!pDocTemplate)
-		return FALSE;
-	AddDocTemplate(pDocTemplate);
-
 	pDocTemplate = new CMultiDocTemplate(IDR_BMPFileTYPE,
 		RUNTIME_CLASS(CBMPDoc),
 		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
 		RUNTIME_CLASS(CBMPView));
+	if (!pDocTemplate)
+		return FALSE;
+	AddDocTemplate(pDocTemplate);
+
+	pDocTemplate = new CMultiDocTemplate(IDR_HistogramFileTYPE,
+		RUNTIME_CLASS(CHistogramDoc),
+		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
+		RUNTIME_CLASS(CHistogramView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
@@ -143,6 +143,7 @@ BOOL CImageProcessorApp::InitInstance()
 	// 표준 셸 명령, DDE, 파일 열기에 대한 명령줄을 구문 분석합니다.
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
+	cmdInfo.m_nShellCommand = CCommandLineInfo::FileNothing;
 
 	// DDE Execute 열기를 활성화합니다.
 	EnableShellOpen();
@@ -157,6 +158,13 @@ BOOL CImageProcessorApp::InitInstance()
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
 
+	// GDI plus를 시작합니다.
+	GdiplusStartupInput gdiplusStartupInput;
+	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
+	// 파일 열기 다이얼로그를 활성화합니다.
+	CWinAppEx::OnFileOpen();
+
 	return TRUE;
 }
 
@@ -164,6 +172,7 @@ int CImageProcessorApp::ExitInstance()
 {
 	//TODO: 추가한 추가 리소스를 처리합니다.
 	AfxOleTerm(FALSE);
+	GdiplusShutdown(gdiplusToken);
 
 	return CWinAppEx::ExitInstance();
 }
