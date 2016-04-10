@@ -40,6 +40,11 @@ CMainFrame::CMainFrame()
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
 }
 
+CMFCRibbonBar* CMainFrame::GetRibbonBar()
+{
+	return &m_wndRibbonBar;
+}
+
 CMainFrame::~CMainFrame()
 {
 }

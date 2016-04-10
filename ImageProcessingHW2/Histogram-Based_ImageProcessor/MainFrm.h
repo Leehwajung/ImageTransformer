@@ -22,6 +22,7 @@ public:
 
 // 특성입니다.
 public:
+	CMFCRibbonBar* GetRibbonBar();
 
 // 작업입니다.
 public:

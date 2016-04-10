@@ -11,6 +11,7 @@
 #include "BMPDoc.h"
 #include "BMPView.h"
 
+#include "MainFrm.h"
 #include "ChildFrm.h"
 
 #ifdef _DEBUG
@@ -24,6 +25,9 @@
 IMPLEMENT_DYNCREATE(CBMPView, CView)
 
 BEGIN_MESSAGE_MAP(CBMPView, CView)
+	ON_WM_ACTIVATE()
+	ON_COMMAND(ID_IMAGEPROCESSING, &CBMPView::OnImageprocessing)
+	ON_UPDATE_COMMAND_UI(ID_IMAGEPROCESSING, &CBMPView::OnUpdateImageprocessing)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPView, CView)
@@ -61,22 +65,22 @@ void CBMPView::OnInitialUpdate()
 	CView::OnInitialUpdate();
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	
+	//CBMPDoc* pDoc = GetDocument();
+	//ASSERT_VALID(pDoc);
+	//if (!pDoc)
+	//	return;
 
-	CBMPDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
+	//CRect frameRect;
+	//CRect viewRect;
 
-	CRect frameRect;
-	CRect viewRect;
+	//GetFrame()->GetWindowRect(&frameRect);
 
-	GetFrame()->GetWindowRect(&frameRect);
+	//GetFrame()->GetClientRect(&viewRect);
 
-	GetFrame()->GetClientRect(&viewRect);
-
-	GetFrame()->MoveWindow(GetFrame()->posX, GetFrame()->posY, pDoc->m_bitmap->GetWidth() + frameRect.Width() - viewRect.Width(), pDoc->m_bitmap->GetHeight() + frameRect.Height() - viewRect.Height());
-	GetFrame()->posX += 26;
-	GetFrame()->posY += 26;
+	//GetFrame()->MoveWindow(GetFrame()->posX, GetFrame()->posY, pDoc->m_bitmap->GetWidth() + frameRect.Width() - viewRect.Width(), pDoc->m_bitmap->GetHeight() + frameRect.Height() - viewRect.Height());
+	//GetFrame()->posX += 26;
+	//GetFrame()->posY += 26;
 }
 
 void CBMPView::OnFinalRelease()
@@ -193,3 +197,36 @@ CChildFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지�
 
 
 
+
+
+void CBMPView::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
+{
+	CView::OnActivate(nState, pWndOther, bMinimized);
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+
+	//CMFCRibbonBar* rBar = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+
+	//	rBar->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
+
+
+	//// 이후 반드시 호출
+	//rBar->RecalcLayout();
+	//rBar->RedrawWindow();
+
+	//SendMessage(WM_NCPAINT, 0, 0);
+}
+
+
+void CBMPView::OnImageprocessing()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CBMPView::OnUpdateImageprocessing(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable();
+}

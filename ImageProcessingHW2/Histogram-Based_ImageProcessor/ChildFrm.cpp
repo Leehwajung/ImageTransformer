@@ -24,6 +24,7 @@
 #include "HistogramDoc.h"
 #include "BMPDoc.h"
 
+#include "MainFrm.h"
 
 // CChildFrame
 
@@ -142,4 +143,51 @@ void CChildFrame::OnFilePrintPreview()
 void CChildFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_dockManager.IsPrintPreviewValid());
+}
+
+
+void CChildFrame::ActivateFrame(int nCmdShow)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	CDocument* pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+
+	CRect winRect, cliRect;
+	GetWindowRect(&winRect);
+	GetClientRect(&cliRect);
+
+	CSize sizeImg;
+
+
+	if (pDoc->IsKindOf(RUNTIME_CLASS(CBMPDoc))) {
+		sizeImg.cx = ((CBMPDoc*)pDoc)->m_bitmap->GetWidth();
+		sizeImg.cy = ((CBMPDoc*)pDoc)->m_bitmap->GetHeight();
+		int cx = sizeImg.cx + winRect.Width() - cliRect.Width() + 4;
+		int cy = sizeImg.cy + winRect.Height() - cliRect.Height() + 4;
+
+
+		SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
+	}
+	
+
+	CMFCRibbonBar* rBar = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	//if (nCmdShow == -1) {
+		rBar->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
+		rBar->ActivateContextCategory(ID_IMAGEPROCESSING);
+	//}
+	//else {
+	//	rBar->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
+	//}
+
+	// 이후 반드시 호출
+	rBar->RecalcLayout();
+	rBar->RedrawWindow();
+
+	SendMessage(WM_NCPAINT, 0, 0);
+
+	CMDIChildWndEx::ActivateFrame(nCmdShow);
 }

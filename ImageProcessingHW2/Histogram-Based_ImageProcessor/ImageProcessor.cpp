@@ -163,7 +163,7 @@ BOOL CImageProcessorApp::InitInstance()
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 	// 파일 열기 다이얼로그를 활성화합니다.
-	CWinAppEx::OnFileOpen();
+	AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_FILE_OPEN);
 
 	return TRUE;
 }

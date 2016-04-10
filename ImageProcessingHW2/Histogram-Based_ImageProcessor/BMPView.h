@@ -43,6 +43,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
+public:
+	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
+	afx_msg void OnImageprocessing();
+	afx_msg void OnUpdateImageprocessing(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG	// BMPView.cpp의 디버그 버전
@@ -50,7 +54,5 @@ inline CBMPDoc* CBMPView::GetDocument() const
    { return reinterpret_cast<CBMPDoc*>(m_pDocument); }
 
 inline CChildFrame* CBMPView::GetFrame() const
-{
-	return reinterpret_cast<CChildFrame*>(CView::GetParentFrame());
-}
+   { return reinterpret_cast<CChildFrame*>(CView::GetParentFrame()); }
 #endif

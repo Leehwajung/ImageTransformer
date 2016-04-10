@@ -18,6 +18,7 @@
 
 
 #include <gdiplus.h>
+using namespace Gdiplus;
 
 // CBMPDoc
 
@@ -73,9 +74,43 @@ BOOL CBMPDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	return TRUE;
 }
 
+//int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+//{
+//	UINT  num = 0;          // number of image encoders
+//	UINT  size = 0;         // size of the image encoder array in bytes
+//
+//	ImageCodecInfo* pImageCodecInfo = NULL;
+//
+//	GetImageEncodersSize(&num, &size);
+//	if (size == 0)
+//		return -1;  // Failure
+//
+//	pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+//	if (pImageCodecInfo == NULL)
+//		return -1;  // Failure
+//
+//	GetImageEncoders(num, size, pImageCodecInfo);
+//
+//	for (UINT j = 0; j < num; ++j)
+//	{
+//		if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+//		{
+//			*pClsid = pImageCodecInfo[j].Clsid;
+//			free(pImageCodecInfo);
+//			return j;  // Success
+//		}
+//	}
+//
+//	free(pImageCodecInfo);
+//	return -1;  // Failure
+//}
+
 BOOL CBMPDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	//CLSID bmpClsid;
+	//GetEncoderClsid(L"image/png", &bmpClsid);
+	//m_bitmap->Save(lpszPathName, &bmpClsid, NULL);
 
 	return CDocument::OnSaveDocument(lpszPathName);
 }
