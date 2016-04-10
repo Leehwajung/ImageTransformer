@@ -36,6 +36,9 @@ BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CChildFrame::OnUpdateFilePrintPreview)
 END_MESSAGE_MAP()
 
+int CChildFrame::posX = 0;
+int CChildFrame::posY = 0;
+
 // CChildFrame »ý¼º/¼Ò¸ê
 
 CChildFrame::CChildFrame()

@@ -22,6 +22,8 @@ public:
 
 // 특성입니다.
 public:
+	static int posX;
+	static int posY;
 
 // 작업입니다.
 public:

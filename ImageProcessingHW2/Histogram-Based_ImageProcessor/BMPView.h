@@ -2,7 +2,7 @@
 //
 
 #pragma once
-
+#include "ChildFrm.h"
 
 // CBMPView 뷰입니다.
 
@@ -15,6 +15,7 @@ protected:	// serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CBMPDoc* GetDocument() const;
+	CChildFrame* GetFrame() const;
 
 // 작업입니다.
 public:
@@ -22,6 +23,7 @@ public:
 // 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);	// 이 뷰를 그리기 위해 재정의되었습니다.
+	virtual void OnInitialUpdate();
 	virtual void OnFinalRelease();
 
 // 구현입니다.
@@ -46,4 +48,9 @@ protected:
 #ifndef _DEBUG	// BMPView.cpp의 디버그 버전
 inline CBMPDoc* CBMPView::GetDocument() const
    { return reinterpret_cast<CBMPDoc*>(m_pDocument); }
+
+inline CChildFrame* CBMPView::GetFrame() const
+{
+	return reinterpret_cast<CChildFrame*>(CView::GetParentFrame());
+}
 #endif

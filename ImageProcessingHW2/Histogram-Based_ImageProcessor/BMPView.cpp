@@ -11,9 +11,12 @@
 #include "BMPDoc.h"
 #include "BMPView.h"
 
+#include "ChildFrm.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
 
 
 // CBMPView
@@ -53,6 +56,29 @@ CBMPView::~CBMPView()
 {
 }
 
+void CBMPView::OnInitialUpdate()
+{
+	CView::OnInitialUpdate();
+
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	CBMPDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	CRect frameRect;
+	CRect viewRect;
+
+	GetFrame()->GetWindowRect(&frameRect);
+
+	GetFrame()->GetClientRect(&viewRect);
+
+	GetFrame()->MoveWindow(GetFrame()->posX, GetFrame()->posY, pDoc->m_bitmap->GetWidth() + frameRect.Width() - viewRect.Width(), pDoc->m_bitmap->GetHeight() + frameRect.Height() - viewRect.Height());
+	GetFrame()->posX += 26;
+	GetFrame()->posY += 26;
+}
+
 void CBMPView::OnFinalRelease()
 {
 	// 자동화 개체에 대한 마지막 참조가 해제되면
@@ -83,15 +109,15 @@ void CBMPView::OnDraw(CDC* pDC)
 	GetClientRect(rect);
 	Bitmap bmpCanvas(rect.right, rect.bottom);		// 캔버스 비트맵 생성
 	Graphics graphicsCanvas(&bmpCanvas);			// 캔버스 그래픽스 생성
-	graphicsCanvas.Clear(Color::White);				// 캔버스 배경색 지정
+	graphicsCanvas.Clear(Color::Azure);				// 캔버스 배경색 지정
 	/*************************************************************************/
 	//graphicsCanvas.SetSmoothingMode(SmoothingModeHighQuality);	// Antialising
 
 	// TODO: 여기에 그리기 코드를 추가합니다.
 	if (pDoc->m_bitmap) {
 		CRect rect(0,0, pDoc->m_bitmap->GetWidth(), pDoc->m_bitmap->GetHeight());
-		CRgn abv;
-		abv.CreateRectRgnIndirect(&rect);
+		//CRgn abv;
+		//abv.CreateRectRgnIndirect(&rect);
 
 		//GetParentFrame()->MoveWindow(&rect);
 		//GetParentFrame()->SetWindowRgn(abv, true);
@@ -101,9 +127,32 @@ void CBMPView::OnDraw(CDC* pDC)
 		//rect.top = 0;
 		//rect.right = pDoc->m_bitmap->GetWidth();
 		//rect.bottom = pDoc->m_bitmap->GetHeight();
-		graphicsCanvas.DrawImage(pDoc->m_bitmap, 0, 0);
+		//CRect winRect;
+		//CRect cliRect;
+		//GetParentFrame()->GetWindowRect(&winRect);
+		//GetParentFrame()->GetClientRect(&cliRect);
+
+		//GetParentFrame()->MoveWindow(winRect.left, winRect.top, pDoc->m_bitmap->GetWidth() + winRect.Width() - cliRect.Width(), pDoc->m_bitmap->GetHeight() + winRect.Height() - cliRect.Height());
+
+		graphicsCanvas.DrawImage(pDoc->m_bitmap, 0, 0, pDoc->m_bitmap->GetWidth(), pDoc->m_bitmap->GetHeight());
 	}
 		
+	//CRect rect2;
+	//rect.top = 0;
+	//rect.left = 0;
+	//rect.bottom = pDoc->m_bitmap->GetHeight();
+	//rect.right = pDoc->m_bitmap->GetWidth();
+	//GetParentFrame()->MoveWindow(&rect2);
+	
+
+	//CRect rDialer;
+	//GetWindowRect(&rDialer); /* r comes out in screen coordinates */
+	//ScreenToClient(&rDialer); // MoveWindow needs coordinates in parent window 
+	//rDialer.right = rDialer.left + pDoc->m_bitmap->GetWidth();
+	//rDialer.bottom = rDialer.top + pDoc->m_bitmap->GetHeight();
+	////MoveWindow(&rDialer);
+
+	//AdjustWindowRect(&rDialer, WS_OVERLAPPEDWINDOW, false);
 
 	/**************************************** 더블 버퍼링 ****************************************/
 	graphicsDC.DrawImage(&bmpCanvas, rect.left, rect.top, rect.right, rect.bottom);	// 캔버스 그리기
@@ -126,12 +175,21 @@ void CBMPView::Dump(CDumpContext& dc) const
 }
 #endif
 
-CBMPDoc* CBMPView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지정됩니다.
+CBMPDoc* CBMPView::GetDocument() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CBMPDoc)));
 	return (CBMPDoc*)m_pDocument;
+}
+
+CChildFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
+{
+	ASSERT(CView::GetParentFrame()->IsKindOf(RUNTIME_CLASS(CChildFrame)));
+	return (CChildFrame*)CView::GetParentFrame();
 }
 #endif //_DEBUG
 
 
 // CBMPView 메시지 처리기입니다.
+
+
+
