@@ -9,16 +9,16 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ChildFrm.h : CChildFrame 클래스의 인터페이스
+// HistogramFrm.h : CHistogramFrame 클래스의 인터페이스
 //
 
 #pragma once
 
-class CChildFrame : public CMDIChildWndEx
+class CHistogramFrame : public CMDIChildWndEx
 {
-	DECLARE_DYNCREATE(CChildFrame)
+	DECLARE_DYNCREATE(CHistogramFrame)
 public:
-	CChildFrame();
+	CHistogramFrame();
 
 // 특성입니다.
 public:
@@ -33,7 +33,7 @@ public:
 
 // 구현입니다.
 public:
-	virtual ~CChildFrame();
+	virtual ~CHistogramFrame();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

@@ -50,8 +50,8 @@ res\Toolbar.bmp
 
 자식 프레임 창:
 
-ChildFrm.h, ChildFrm.cpp
-    이 파일은 MDI 응용 프로그램에서 자식 창을 지원하는 CChildFrame 클래스를 정의하고 구현합니다.
+HistogramFrm.h, HistogramFrm.cpp
+    이 파일은 MDI 응용 프로그램에서 자식 창을 지원하는 CHistogramFrame 클래스를 정의하고 구현합니다.
 
 /////////////////////////////////////////////////////////////////////////////
 

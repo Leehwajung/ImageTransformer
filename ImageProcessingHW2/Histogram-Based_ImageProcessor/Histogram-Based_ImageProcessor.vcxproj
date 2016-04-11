@@ -189,33 +189,33 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BMPDoc.h" />
-    <ClInclude Include="BMPFrm.h" />
-    <ClInclude Include="BMPView.h" />
-    <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="ImageProcessor.h" />
-    <ClInclude Include="HistogramDoc.h" />
-    <ClInclude Include="HistogramView.h" />
-    <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ImageProcessor.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="HistogramFrm.h" />
+    <ClInclude Include="HistogramView.h" />
+    <ClInclude Include="HistogramDoc.h" />
+    <ClInclude Include="BMPFrm.h" />
+    <ClInclude Include="BMPView.h" />
+    <ClInclude Include="BMPDoc.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BMPDoc.cpp" />
-    <ClCompile Include="BMPFrm.cpp" />
-    <ClCompile Include="BMPView.cpp" />
-    <ClCompile Include="ChildFrm.cpp" />
-    <ClCompile Include="ImageProcessor.cpp" />
-    <ClCompile Include="HistogramDoc.cpp" />
-    <ClCompile Include="HistogramView.cpp" />
-    <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ImageProcessor.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="HistogramFrm.cpp" />
+    <ClCompile Include="HistogramView.cpp" />
+    <ClCompile Include="HistogramDoc.cpp" />
+    <ClCompile Include="BMPFrm.cpp" />
+    <ClCompile Include="BMPView.cpp" />
+    <ClCompile Include="BMPDoc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Histogram-Based_ImageProcessor.reg" />

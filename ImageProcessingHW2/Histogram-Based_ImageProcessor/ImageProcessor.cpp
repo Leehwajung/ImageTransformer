@@ -18,7 +18,7 @@
 #include "ImageProcessor.h"
 #include "MainFrm.h"
 
-#include "ChildFrm.h"
+#include "HistogramFrm.h"
 #include "HistogramDoc.h"
 #include "HistogramView.h"
 #include "BMPFrm.h"
@@ -121,7 +121,7 @@ BOOL CImageProcessorApp::InitInstance()
 
 	pDocTemplate = new CMultiDocTemplate(IDR_HistogramFileTYPE,
 		RUNTIME_CLASS(CHistogramDoc),
-		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
+		RUNTIME_CLASS(CHistogramFrame), // 사용자 지정 MDI 자식 프레임입니다.
 		RUNTIME_CLASS(CHistogramView));
 	if (!pDocTemplate)
 		return FALSE;

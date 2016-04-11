@@ -24,22 +24,25 @@
     <ClInclude Include="targetver.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageProcessor.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="MainFrm.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ChildFrm.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="HistogramDoc.h">
+    <ClInclude Include="HistogramFrm.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="HistogramView.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
+    <ClInclude Include="HistogramDoc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ImageProcessor.h">
+    <ClInclude Include="BMPFrm.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="BMPView.h">
@@ -48,36 +51,33 @@
     <ClInclude Include="BMPDoc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="BMPFrm.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ImageProcessor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="MainFrm.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ChildFrm.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="HistogramDoc.cpp">
+    <ClCompile Include="HistogramFrm.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="HistogramView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ImageProcessor.cpp">
+    <ClCompile Include="HistogramDoc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BMPDoc.cpp">
+    <ClCompile Include="BMPFrm.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="BMPView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BMPFrm.cpp">
+    <ClCompile Include="BMPDoc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

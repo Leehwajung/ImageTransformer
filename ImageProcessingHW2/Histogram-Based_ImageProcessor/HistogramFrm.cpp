@@ -9,13 +9,13 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ChildFrm.cpp : CChildFrame 클래스의 구현
+// HistogramFrm.cpp : CHistogramFrame 클래스의 구현
 //
 
 #include "stdafx.h"
 #include "ImageProcessor.h"
 
-#include "ChildFrm.h"
+#include "HistogramFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -27,33 +27,33 @@
 #include "MainFrm.h"
 
 
-// CChildFrame
+// CHistogramFrame
 
-IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)
+IMPLEMENT_DYNCREATE(CHistogramFrame, CMDIChildWndEx)
 
-BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
-	ON_COMMAND(ID_FILE_PRINT, &CChildFrame::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CChildFrame::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CChildFrame::OnFilePrintPreview)
-	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CChildFrame::OnUpdateFilePrintPreview)
+BEGIN_MESSAGE_MAP(CHistogramFrame, CMDIChildWndEx)
+	ON_COMMAND(ID_FILE_PRINT, &CHistogramFrame::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CHistogramFrame::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CHistogramFrame::OnFilePrintPreview)
+	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CHistogramFrame::OnUpdateFilePrintPreview)
 END_MESSAGE_MAP()
 
-int CChildFrame::posX = 0;
-int CChildFrame::posY = 0;
+int CHistogramFrame::posX = 0;
+int CHistogramFrame::posY = 0;
 
-// CChildFrame 생성/소멸
+// CHistogramFrame 생성/소멸
 
-CChildFrame::CChildFrame()
+CHistogramFrame::CHistogramFrame()
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
 }
 
-CChildFrame::~CChildFrame()
+CHistogramFrame::~CHistogramFrame()
 {
 }
 
 
-BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CHistogramFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서 Window 클래스 또는 스타일을 수정합니다.
 	if( !CMDIChildWndEx::PreCreateWindow(cs) )
@@ -76,7 +76,7 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 		//cs.cx = pBMPDoc->m_bitmap->GetWidth();
 		//cs.cy = pBMPDoc->m_bitmap->GetHeight();
 
-	//void CChildFrame::OnSize(UINT nType, int cx, int cy)
+	//void CHistogramFrame::OnSize(UINT nType, int cx, int cy)
 	//{
 	//	CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
 	//	if (pBMPDoc) {
@@ -90,7 +90,7 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 	//}
 
 
-	//void CChildFrame::OnSizing(UINT fwSide, LPRECT pRect)
+	//void CHistogramFrame::OnSizing(UINT fwSide, LPRECT pRect)
 	//{
 	//	CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
 	//	if (pBMPDoc) {
@@ -109,23 +109,23 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-// CChildFrame 진단
+// CHistogramFrame 진단
 
 #ifdef _DEBUG
-void CChildFrame::AssertValid() const
+void CHistogramFrame::AssertValid() const
 {
 	CMDIChildWndEx::AssertValid();
 }
 
-void CChildFrame::Dump(CDumpContext& dc) const
+void CHistogramFrame::Dump(CDumpContext& dc) const
 {
 	CMDIChildWndEx::Dump(dc);
 }
 #endif //_DEBUG
 
-// CChildFrame 메시지 처리기
+// CHistogramFrame 메시지 처리기
 
-void CChildFrame::OnFilePrint()
+void CHistogramFrame::OnFilePrint()
 {
 	if (m_dockManager.IsPrintPreviewValid())
 	{
@@ -133,7 +133,7 @@ void CChildFrame::OnFilePrint()
 	}
 }
 
-void CChildFrame::OnFilePrintPreview()
+void CHistogramFrame::OnFilePrintPreview()
 {
 	if (m_dockManager.IsPrintPreviewValid())
 	{
@@ -141,13 +141,13 @@ void CChildFrame::OnFilePrintPreview()
 	}
 }
 
-void CChildFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
+void CHistogramFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_dockManager.IsPrintPreviewValid());
 }
 
 
-void CChildFrame::ActivateFrame(int nCmdShow)
+void CHistogramFrame::ActivateFrame(int nCmdShow)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
