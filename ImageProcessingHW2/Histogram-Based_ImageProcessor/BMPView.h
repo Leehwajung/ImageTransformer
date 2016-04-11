@@ -2,7 +2,7 @@
 //
 
 #pragma once
-#include "ChildFrm.h"
+#include "BMPFrm.h"
 
 // CBMPView 뷰입니다.
 
@@ -15,7 +15,7 @@ protected:	// serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CBMPDoc* GetDocument() const;
-	CChildFrame* GetFrame() const;
+	CBMPFrame* GetFrame() const;
 
 // 작업입니다.
 public:
@@ -53,6 +53,6 @@ public:
 inline CBMPDoc* CBMPView::GetDocument() const
    { return reinterpret_cast<CBMPDoc*>(m_pDocument); }
 
-inline CChildFrame* CBMPView::GetFrame() const
-   { return reinterpret_cast<CChildFrame*>(CView::GetParentFrame()); }
+inline CBMPFrame* CBMPView::GetFrame() const
+   { return reinterpret_cast<CBMPFrame*>(CView::GetParentFrame()); }
 #endif

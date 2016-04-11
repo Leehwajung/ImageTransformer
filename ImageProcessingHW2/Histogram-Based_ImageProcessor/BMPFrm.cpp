@@ -12,10 +12,12 @@
 
 #include "BMPDoc.h"
 
+#include "MainFrm.h"
+
 
 // CBMPFrame
 
-IMPLEMENT_DYNAMIC(CBMPFrame, CMDIChildWndEx)
+IMPLEMENT_DYNCREATE(CBMPFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
 END_MESSAGE_MAP()
@@ -36,7 +38,7 @@ BEGIN_INTERFACE_MAP(CBMPFrame, CMDIChildWndEx)
 END_INTERFACE_MAP()
 
 
-// CChildFrame 생성/소멸입니다.
+// CBMPFrame 생성/소멸입니다.
 
 CBMPFrame::CBMPFrame()
 {
@@ -46,6 +48,16 @@ CBMPFrame::CBMPFrame()
 
 CBMPFrame::~CBMPFrame()
 {
+}
+
+
+BOOL CBMPFrame::PreCreateWindow(CREATESTRUCT& cs)
+{
+	// TODO: CREATESTRUCT cs를 수정하여 여기에서 Window 클래스 또는 스타일을 수정합니다.
+	if (!CMDIChildWndEx::PreCreateWindow(cs))
+		return FALSE;
+
+	return TRUE;
 }
 
 void CBMPFrame::OnFinalRelease()
@@ -76,4 +88,42 @@ void CBMPFrame::Dump(CDumpContext& dc) const
 
 // CBMPFrame 메시지 처리기입니다.
 
+void CBMPFrame::ActivateFrame(int nCmdShow)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
+	CDocument* pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+
+	CRect winRect, cliRect;
+	GetWindowRect(&winRect);
+	GetClientRect(&cliRect);
+
+	CSize sizeImg;
+
+
+	if (pDoc->IsKindOf(RUNTIME_CLASS(CBMPDoc))) {
+		sizeImg.cx = ((CBMPDoc*)pDoc)->m_bitmap->GetWidth();
+		sizeImg.cy = ((CBMPDoc*)pDoc)->m_bitmap->GetHeight();
+		int cx = sizeImg.cx + winRect.Width() - cliRect.Width() + 4;
+		int cy = sizeImg.cy + winRect.Height() - cliRect.Height() + 4;
+
+
+		SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
+	}
+
+	CMFCRibbonBar* rBar = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	rBar->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
+	rBar->ActivateContextCategory(ID_IMAGEPROCESSING);
+
+	// 이후 반드시 호출
+	rBar->RecalcLayout();
+	rBar->RedrawWindow();
+
+	SendMessage(WM_NCPAINT, 0, 0);
+
+	CMDIChildWndEx::ActivateFrame(nCmdShow);
+}

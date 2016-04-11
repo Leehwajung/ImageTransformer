@@ -3,12 +3,11 @@
 
 #pragma once
 
-
 // CBMPFrame
 
 class CBMPFrame : public CMDIChildWndEx
 {
-	DECLARE_DYNAMIC(CBMPFrame)
+	DECLARE_DYNCREATE(CBMPFrame)
 public:
 	CBMPFrame();
 
@@ -19,6 +18,7 @@ public:
 public:
 
 // 재정의입니다.
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnFinalRelease();
 
 // 구현입니다.
@@ -34,4 +34,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
+public:
+	virtual void ActivateFrame(int nCmdShow = -1);
 };

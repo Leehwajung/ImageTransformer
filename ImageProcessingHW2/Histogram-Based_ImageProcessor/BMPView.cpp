@@ -12,7 +12,7 @@
 #include "BMPView.h"
 
 #include "MainFrm.h"
-#include "ChildFrm.h"
+#include "BMPFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -184,10 +184,10 @@ CBMPDoc* CBMPView::GetDocument() const	// 디버그되지 않은 버전은 인라인으로 지정
 	return (CBMPDoc*)m_pDocument;
 }
 
-CChildFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
+CBMPFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
 {
-	ASSERT(CView::GetParentFrame()->IsKindOf(RUNTIME_CLASS(CChildFrame)));
-	return (CChildFrame*)CView::GetParentFrame();
+	ASSERT(CView::GetParentFrame()->IsKindOf(RUNTIME_CLASS(CBMPFrame)));
+	return (CBMPFrame*)CView::GetParentFrame();
 }
 #endif //_DEBUG
 

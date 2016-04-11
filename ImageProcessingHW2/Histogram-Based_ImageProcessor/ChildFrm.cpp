@@ -155,34 +155,10 @@ void CChildFrame::ActivateFrame(int nCmdShow)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
-
-	CRect winRect, cliRect;
-	GetWindowRect(&winRect);
-	GetClientRect(&cliRect);
-
-	CSize sizeImg;
-
-
-	if (pDoc->IsKindOf(RUNTIME_CLASS(CBMPDoc))) {
-		sizeImg.cx = ((CBMPDoc*)pDoc)->m_bitmap->GetWidth();
-		sizeImg.cy = ((CBMPDoc*)pDoc)->m_bitmap->GetHeight();
-		int cx = sizeImg.cx + winRect.Width() - cliRect.Width() + 4;
-		int cy = sizeImg.cy + winRect.Height() - cliRect.Height() + 4;
-
-
-		SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
-	}
 	
 
 	CMFCRibbonBar* rBar = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
-	//if (nCmdShow == -1) {
-		rBar->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
-		rBar->ActivateContextCategory(ID_IMAGEPROCESSING);
-	//}
-	//else {
-	//	rBar->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
-	//}
+	rBar->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
 
 	// 이후 반드시 호출
 	rBar->RecalcLayout();
