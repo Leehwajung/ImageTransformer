@@ -26,6 +26,7 @@
 
 #include "MainFrm.h"
 
+
 // CChildFrame
 
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)

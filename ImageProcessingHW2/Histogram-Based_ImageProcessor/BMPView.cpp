@@ -19,7 +19,6 @@
 #endif
 
 
-
 // CBMPView
 
 IMPLEMENT_DYNCREATE(CBMPView, CView)
@@ -194,9 +193,6 @@ CChildFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지�
 
 
 // CBMPView 메시지 처리기입니다.
-
-
-
 
 
 void CBMPView::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)

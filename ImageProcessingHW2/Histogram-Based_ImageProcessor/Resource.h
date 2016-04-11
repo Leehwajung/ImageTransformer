@@ -40,9 +40,8 @@
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_IMAGEPROCESSING              32771
 #define ID_HTG_NEW                      32773
-#define ID_IP_EQU                       32774
+#define ID_IP_HE                        32774
 #define ID_IP_BCS                       32776
-#define ID_BUTTON7                      32777
 #define ID_IP_ECS                       32777
 
 // Next default values for new objects

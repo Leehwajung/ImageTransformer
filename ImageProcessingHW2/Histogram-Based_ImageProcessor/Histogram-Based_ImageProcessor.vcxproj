@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BMPDoc.h" />
+    <ClInclude Include="BMPFrm.h" />
     <ClInclude Include="BMPView.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ImageProcessor.h" />
@@ -202,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BMPDoc.cpp" />
+    <ClCompile Include="BMPFrm.cpp" />
     <ClCompile Include="BMPView.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="ImageProcessor.cpp" />
