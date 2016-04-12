@@ -256,6 +256,7 @@ void CBMPDoc::clearData(BitmapData* bitmapData)
 	m_bitmap->UnlockBits(bitmapData);
 }
 
+// Histogram Equalization
 void CBMPDoc::HistogramEqualization()
 {
 	// 영상의 histogram을 계산
@@ -272,22 +273,51 @@ void CBMPDoc::HistogramEqualization()
 	UINT accruedSum = 0;
 	DOUBLE normalizedSum[HTGSIZE];
 	FLOAT scaleFactor = HTGMAX / (float)pixelDataSize;
-	for (int i = 0; i < HTGSIZE; i++) {
+	for (UINT i = 0; i < HTGSIZE; i++) {
 		accruedSum += histogramData[i];
 		normalizedSum[i] = accruedSum * scaleFactor;
 	}
 
 	// Histogram Equalization (평활화): normalizedSum을 LUT로 사용
-	for (int i = 0; i < pixelDataSize; i++) {
+	for (UINT i = 0; i < pixelDataSize; i++) {
 		pixelData[i] = (BYTE)(normalizedSum[pixelData[i]] + 0.5);
 	}
 
 	clearData(&bitmapData);
 }
 
+// Basic Contrast Stretching
 void CBMPDoc::BasicContrastStretching()
 {
+	// 영상의 histogram을 계산
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+	UINT histogramData[HTGSIZE];
+	CImageProcessorUtil::generateHistogram(
+		pixelData,
+		pixelDataSize,
+		histogramData);
 
+	// 가장 작거나 큰 밝기값을 구함
+	UINT min = HTGMAX;
+	UINT max = HTGMIN;
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		if (pixelData[i] < min) {
+			min = pixelData[i];
+		}
+		else if (pixelData[i] > max) {
+			max = pixelData[i];
+		}
+	}
+
+	// Basic Contrast Stretching
+	FLOAT scaleFactor = HTGMAX / (FLOAT)(max - min);
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		pixelData[i] = (BYTE)((pixelData[i] - min) * scaleFactor);
+	}
+
+	clearData(&bitmapData);
 }
 
 

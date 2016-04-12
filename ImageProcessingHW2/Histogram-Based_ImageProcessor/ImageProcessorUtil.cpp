@@ -12,11 +12,11 @@
 // 픽셀 데이터에 대한 histogram 생성
 void CImageProcessorUtil::generateHistogram(IN const BYTE pixelData[], IN const UINT pixelDataSize, OUT UINT histogramData[HTGSIZE])
 {
-	for (int i = 0; i < HTGSIZE; i++) {
+	for (UINT i = 0; i < HTGSIZE; i++) {
 		histogramData[i] = 0;					// histogram 배열 초기화
 	}
 
-	for (int i = 0; i < pixelDataSize; i++) {
+	for (UINT i = 0; i < pixelDataSize; i++) {
 		if (pixelData[i] >= 0 && pixelData[i] < HTGSIZE) {
 			histogramData[pixelData[i]]++;	// 밝기값 빈도 수집
 		}

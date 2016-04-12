@@ -195,4 +195,31 @@ void CBMPFrame::OnIpBasicContrastStretching()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 BMP 문서 (CBMPDoc) 생성
+	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
+	pTml->OpenDocumentFile(NULL);
+
+	// 기존 CBMPDoc으로부터 복제
+	CBMPFrame *pDstFrm = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
+	CBMPView *pDstView = (CBMPView*)pDstFrm->GetActiveView();
+	CBMPDoc *pDstDoc = pDstView->GetDocument();
+	pDstDoc->copyFrom(pSrcDoc);
+
+	// Basic Contrast Stretching
+	pDstDoc->BasicContrastStretching();
+
+	// 제목 변경
+	CString newTitle("stretched_");
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
 }

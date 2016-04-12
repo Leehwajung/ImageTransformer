@@ -158,7 +158,7 @@ void CHistogramDoc::plotHistogram(const BYTE pixelData[], const UINT pixelDataSi
 	int vmin = 1000000;
 	int vmax = 0;
 
-	for (int i = 0; i < HTGSIZE; i++) {
+	for (UINT i = 0; i < HTGSIZE; i++) {
 		if (m_HistogramData[i] <= vmin) {
 			vmin = m_HistogramData[i];
 		}
@@ -172,15 +172,15 @@ void CHistogramDoc::plotHistogram(const BYTE pixelData[], const UINT pixelDataSi
 	}
 
 	// histogram 화면 출력 배열 구성
-	for (int i = 0; i < HTGSIZE; i++) {
+	for (UINT i = 0; i < HTGSIZE; i++) {
 		for (int j = 0; j < HTGSIZE; j++) {
 			m_HistogramImage[i][j] = HTG_BKGR_COLOR;	// histogram 이미지 초기화
 		}
 	}
 
 	float vd = (float) (vmax - vmin);
-	for (int j = 0; j < HTGSIZE; j++) {
-		for (int i = 0; i < (int)((m_HistogramData[j] - vmin) * 255 / vd); i++) {
+	for (UINT j = 0; j < HTGSIZE; j++) {
+		for (UINT i = 0; i < (int)((m_HistogramData[j] - vmin) * 255 / vd); i++) {
 			m_HistogramImage[i][j] = HTG_DATA_COLOR;
 		}
 	}
