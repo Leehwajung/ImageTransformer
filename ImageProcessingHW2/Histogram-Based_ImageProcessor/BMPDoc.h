@@ -61,6 +61,13 @@ public:
 	void copyFrom(const CBMPDoc* bmpDoc);
 	BYTE* getData(BitmapData* bitmapData, const PixelFormat pixelFormat);
 	void clearData(BitmapData* bitmapData);
+
+	// Histogram Equalization
 	void HistogramEqualization();
+
+	// Basic Contrast Stretching
 	void BasicContrastStretching();
+
+	// Ends-in Contrast Stretching
+	void EndsinContrastStretching(const BYTE low, const BYTE high);
 };

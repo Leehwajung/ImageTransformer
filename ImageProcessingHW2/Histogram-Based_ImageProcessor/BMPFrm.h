@@ -18,6 +18,8 @@ public:
 public:
 //	virtual CBMPView* GetActiveView();
 	virtual CBMPDoc* GetActiveDocument();
+	BYTE bEcsHighEnd;
+	BYTE bEcsLowEnd;
 
 // 작업입니다.
 public:
@@ -45,4 +47,7 @@ public:
 	afx_msg BOOL OnNcActivate(BOOL bActive);
 	afx_msg void OnIpHistogramEqualization();
 	afx_msg void OnIpBasicContrastStretching();
+	afx_msg void OnIpEndsinContrastStretching();
+	afx_msg void OnIpEcsHighEnd();
+	afx_msg void OnIpEcsLowEnd();
 };

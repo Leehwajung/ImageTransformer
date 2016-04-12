@@ -293,35 +293,49 @@ void CBMPDoc::BasicContrastStretching()
 	BitmapData bitmapData;
 	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
-	UINT histogramData[HTGSIZE];
-	CImageProcessorUtil::generateHistogram(
-		pixelData,
-		pixelDataSize,
-		histogramData);
 
 	// 가장 작거나 큰 밝기값을 구함
-	UINT min = HTGMAX;
-	UINT max = HTGMIN;
+	UINT low = HTGMAX;
+	UINT high = HTGMIN;
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		if (pixelData[i] < min) {
-			min = pixelData[i];
+		if (pixelData[i] < low) {
+			low = pixelData[i];
 		}
-		else if (pixelData[i] > max) {
-			max = pixelData[i];
+		else if (pixelData[i] > high) {
+			high = pixelData[i];
 		}
 	}
 
 	// Basic Contrast Stretching
-	FLOAT scaleFactor = HTGMAX / (FLOAT)(max - min);
+	FLOAT scaleFactor = HTGMAX / (FLOAT)(high - low);
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = (BYTE)((pixelData[i] - min) * scaleFactor);
+		pixelData[i] = (BYTE)((pixelData[i] - low) * scaleFactor);
 	}
 
 	clearData(&bitmapData);
 }
 
+// Ends-in Contrast Stretching
+void CBMPDoc::EndsinContrastStretching(const BYTE low, const BYTE high)
+{
+	// 영상의 histogram을 계산
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
+	// Ends-in Contrast Stretching
+	float scaleFactor = HTGMAX / (FLOAT)(high - low);
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		if (pixelData[i] <= low) {
+			pixelData[i] = HTGMIN;
+		}
+		else if (pixelData[i] > high) {
+			pixelData[i] = HTGMAX;
+		}
+		else {
+			pixelData[i] = (BYTE)((pixelData[i] - low) * scaleFactor);
+		}
+	}
 
-
-
-
+	clearData(&bitmapData);
+}

@@ -510,6 +510,12 @@ BEGIN
     IDS_EDIT_MENU           "편집"
 END
 
+STRINGTABLE
+BEGIN
+    ID_IP_ECSHIGH           "엔드인 대비 스트레칭의 최고값을 설정합니다."
+    ID_IP_ECSLOW            "엔드인 대비 스트레칭의 최저값을 설정합니다."
+END
+
 #endif    // 한국어(대한민국) resources
 /////////////////////////////////////////////////////////////////////////////
 

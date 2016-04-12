@@ -25,6 +25,9 @@ BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
 	ON_WM_NCACTIVATE()
 	ON_COMMAND(ID_IP_HE, &CBMPFrame::OnIpHistogramEqualization)
 	ON_COMMAND(ID_IP_BCS, &CBMPFrame::OnIpBasicContrastStretching)
+	ON_COMMAND(ID_IP_ECS, &CBMPFrame::OnIpEndsinContrastStretching)
+	ON_COMMAND(ID_IP_ECSHIGH, &CBMPFrame::OnIpEcsHighEnd)
+	ON_COMMAND(ID_IP_ECSLOW, &CBMPFrame::OnIpEcsLowEnd)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
@@ -47,7 +50,6 @@ END_INTERFACE_MAP()
 
 CBMPFrame::CBMPFrame()
 {
-
 	EnableAutomation();
 }
 
@@ -127,6 +129,9 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 		SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
 	}
 
+	OnIpEcsHighEnd();
+	OnIpEcsLowEnd();
+
 	CMDIChildWndEx::ActivateFrame(nCmdShow);
 }
 
@@ -157,6 +162,7 @@ BOOL CBMPFrame::OnNcActivate(BOOL bActive)
 	return CMDIChildWndEx::OnNcActivate(bActive);
 }
 
+// Histogram Equalization
 void CBMPFrame::OnIpHistogramEqualization()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -190,7 +196,7 @@ void CBMPFrame::OnIpHistogramEqualization()
 	pDstView->Invalidate();
 }
 
-
+// Basic Contrast Stretching
 void CBMPFrame::OnIpBasicContrastStretching()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -222,4 +228,56 @@ void CBMPFrame::OnIpBasicContrastStretching()
 	// 영상에 맞게 다시 그리기
 	pDstFrm->ActivateFrame();
 	pDstView->Invalidate();
+}
+
+// Ends-in Contrast Stretching
+void CBMPFrame::OnIpEndsinContrastStretching()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 BMP 문서 (CBMPDoc) 생성
+	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
+	pTml->OpenDocumentFile(NULL);
+
+	// 기존 CBMPDoc으로부터 복제
+	CBMPFrame *pDstFrm = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
+	CBMPView *pDstView = (CBMPView*)pDstFrm->GetActiveView();
+	CBMPDoc *pDstDoc = pDstView->GetDocument();
+	pDstDoc->copyFrom(pSrcDoc);
+
+	// Basic Contrast Stretching
+	pDstDoc->EndsinContrastStretching(bEcsLowEnd, bEcsHighEnd);
+
+	// 제목 변경
+	CString newTitle("stretched_");
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
+}
+
+// Ends-in Contrast Stretching의 최고값 설정
+void CBMPFrame::OnIpEcsHighEnd()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, 
+		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSHIGH));
+	bEcsHighEnd = (BYTE)_wtof(pSpin->GetEditText());
+}
+
+// Ends-in Contrast Stretching의 최저값 설정
+void CBMPFrame::OnIpEcsLowEnd()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
+		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSLOW));
+	bEcsLowEnd = (BYTE)_wtof(pSpin->GetEditText());
 }
