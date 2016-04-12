@@ -264,19 +264,11 @@ void CImageProcessorApp::OnHtgPlot()
 	CHistogramView *pHtgView = (CHistogramView*)(pHtgFrm->GetActiveView());	// Histogram View
 	CHistogramDoc *pHtgDoc = pHtgView->GetDocument();						// Histogram Document
 
-	// Source의 픽셀 데이터를 가져옴
-	Bitmap* pBitmap = pBMPDoc->m_bitmap;
-	Rect imageArea(0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
-	BitmapData bitmapData;
-	pBitmap->LockBits(
-		&imageArea,
-		ImageLockModeRead,
-		PixelFormat8bppIndexed,	// 8-bits image
-		&bitmapData);
-
 	// Source의 픽셀 데이터를 기반으로하여 Destination에 histogram 생성
-	pHtgDoc->plotHistogram((BYTE*)bitmapData.Scan0, imageArea.Width * imageArea.Height);
-	pBitmap->UnlockBits(&bitmapData);
+	BitmapData bitmapData;
+	BYTE* pixelData = pBMPDoc->getData(&bitmapData, ImageLockModeRead);
+	pHtgDoc->plotHistogram(pixelData, bitmapData.Width * bitmapData.Height);
+	pBMPDoc->clearData(&bitmapData);
 
 	// 제목 변경
 	CString newTitle("histogram_of_");

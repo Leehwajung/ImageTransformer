@@ -239,20 +239,29 @@ void CBMPDoc::copyFrom(const CBMPDoc* bmpDoc)
 	this->SetTitle(newTitle);
 }
 
-void CBMPDoc::HistogramEqualization()
+BYTE* CBMPDoc::getData(BitmapData* bitmapData, const PixelFormat pixelFormat)
 {
-	// 영상의 픽셀 데이터를 가져옴
 	Rect imageArea(0, 0, m_bitmap->GetWidth(), m_bitmap->GetHeight());
-	BitmapData bitmapData;
 	m_bitmap->LockBits(
 		&imageArea,
-		ImageLockModeRead | ImageLockModeWrite,
+		pixelFormat,
 		PixelFormat8bppIndexed,
-		&bitmapData);
+		bitmapData);
 
+	return (BYTE*)bitmapData->Scan0;
+}
+
+void CBMPDoc::clearData(BitmapData* bitmapData)
+{
+	m_bitmap->UnlockBits(bitmapData);
+}
+
+void CBMPDoc::HistogramEqualization()
+{
 	// 영상의 histogram을 계산
-	BYTE *pixelData = (BYTE*)bitmapData.Scan0;
-	UINT pixelDataSize = imageArea.Width * imageArea.Height;
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 	UINT histogramData[HTGSIZE];
 	CImageProcessorUtil::generateHistogram(
 		pixelData,
@@ -273,8 +282,16 @@ void CBMPDoc::HistogramEqualization()
 		pixelData[i] = (BYTE)(normalizedSum[pixelData[i]] + 0.5);
 	}
 
-	m_bitmap->UnlockBits(&bitmapData);
+	clearData(&bitmapData);
 }
+
+void CBMPDoc::BasicContrastStretching()
+{
+
+}
+
+
+
 
 
 

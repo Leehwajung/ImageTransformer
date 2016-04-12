@@ -24,6 +24,7 @@ BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
 	ON_WM_CHILDACTIVATE()
 	ON_WM_NCACTIVATE()
 	ON_COMMAND(ID_IP_HE, &CBMPFrame::OnIpHistogramEqualization)
+	ON_COMMAND(ID_IP_BCS, &CBMPFrame::OnIpBasicContrastStretching)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
@@ -156,7 +157,6 @@ BOOL CBMPFrame::OnNcActivate(BOOL bActive)
 	return CMDIChildWndEx::OnNcActivate(bActive);
 }
 
-
 void CBMPFrame::OnIpHistogramEqualization()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -188,4 +188,11 @@ void CBMPFrame::OnIpHistogramEqualization()
 	// 영상에 맞게 다시 그리기
 	pDstFrm->ActivateFrame();
 	pDstView->Invalidate();
+}
+
+
+void CBMPFrame::OnIpBasicContrastStretching()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
 }

@@ -24,9 +24,6 @@
 IMPLEMENT_DYNCREATE(CBMPView, CView)
 
 BEGIN_MESSAGE_MAP(CBMPView, CView)
-	ON_WM_ACTIVATE()
-	ON_COMMAND(ID_IMAGEPROCESSING, &CBMPView::OnImageprocessing)
-	ON_UPDATE_COMMAND_UI(ID_IMAGEPROCESSING, &CBMPView::OnUpdateImageprocessing)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPView, CView)
@@ -245,35 +242,3 @@ CBMPDoc* CBMPView::GetDocument() const	// 디버그되지 않은 버전은 인라인으로 지정
 
 // CBMPView 메시지 처리기입니다.
 
-
-void CBMPView::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
-{
-	CView::OnActivate(nState, pWndOther, bMinimized);
-
-	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-
-	//CMFCRibbonBar* rBar = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
-
-	//	rBar->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
-
-
-	//// 이후 반드시 호출
-	//rBar->RecalcLayout();
-	//rBar->RedrawWindow();
-
-	//SendMessage(WM_NCPAINT, 0, 0);
-}
-
-
-void CBMPView::OnImageprocessing()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-
-void CBMPView::OnUpdateImageprocessing(CCmdUI *pCmdUI)
-{
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-
-	pCmdUI->Enable();
-}

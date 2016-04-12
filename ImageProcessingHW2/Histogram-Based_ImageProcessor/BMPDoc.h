@@ -59,5 +59,8 @@ protected:
 #endif // SHARED_HANDLERS
 public:
 	void copyFrom(const CBMPDoc* bmpDoc);
+	BYTE* getData(BitmapData* bitmapData, const PixelFormat pixelFormat);
+	void clearData(BitmapData* bitmapData);
 	void HistogramEqualization();
+	void BasicContrastStretching();
 };

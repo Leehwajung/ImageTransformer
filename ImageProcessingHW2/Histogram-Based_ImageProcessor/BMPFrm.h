@@ -44,4 +44,5 @@ public:
 	afx_msg void OnChildActivate();
 	afx_msg BOOL OnNcActivate(BOOL bActive);
 	afx_msg void OnIpHistogramEqualization();
+	afx_msg void OnIpBasicContrastStretching();
 };
