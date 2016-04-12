@@ -14,6 +14,9 @@
 
 #pragma once
 
+#include "HistogramView.h"
+#include "HistogramDoc.h"
+
 class CHistogramFrame : public CMDIChildWndEx
 {
 	DECLARE_DYNCREATE(CHistogramFrame)
@@ -22,7 +25,8 @@ public:
 
 // 특성입니다.
 public:
-	virtual CBMPDoc* GetActiveDocument();
+	virtual CHistogramView* GetActiveView();
+	virtual CHistogramDoc* GetActiveDocument();
 
 // 작업입니다.
 public:

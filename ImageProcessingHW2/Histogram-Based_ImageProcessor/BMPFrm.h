@@ -5,6 +5,9 @@
 
 // CBMPFrame
 
+#include "BMPView.h"
+#include "BMPDoc.h"
+
 class CBMPFrame : public CMDIChildWndEx
 {
 	DECLARE_DYNCREATE(CBMPFrame)
@@ -13,6 +16,7 @@ public:
 
 // 특성입니다.
 public:
+	virtual CBMPView* GetActiveView();
 	virtual CBMPDoc* GetActiveDocument();
 
 // 작업입니다.

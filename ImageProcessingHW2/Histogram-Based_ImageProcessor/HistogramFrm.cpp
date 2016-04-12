@@ -112,9 +112,14 @@ BOOL CHistogramFrame::PreCreateWindow(CREATESTRUCT& cs)
 }
 
 
-CBMPDoc* CHistogramFrame::GetActiveDocument()
+CHistogramView* CHistogramFrame::GetActiveView()
 {
-	return (CBMPDoc*)CFrameWnd::GetActiveDocument();
+	return (CHistogramView*)CFrameWnd::GetActiveView();
+}
+
+CHistogramDoc* CHistogramFrame::GetActiveDocument()
+{
+	return (CHistogramDoc*)CFrameWnd::GetActiveDocument();
 }
 
 

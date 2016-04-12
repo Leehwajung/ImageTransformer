@@ -71,6 +71,11 @@ void CBMPFrame::OnFinalRelease()
 }
 
 
+CBMPView* CBMPFrame::GetActiveView()
+{
+	return (CBMPView*)CFrameWnd::GetActiveView();
+}
+
 CBMPDoc* CBMPFrame::GetActiveDocument()
 {
 	return (CBMPDoc*)CFrameWnd::GetActiveDocument();
