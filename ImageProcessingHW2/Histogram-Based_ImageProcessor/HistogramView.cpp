@@ -66,7 +66,7 @@ BOOL CHistogramView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CHistogramView::OnDraw(CDC* pDC)
 {
-	CHistogramDoc* pDoc = GetDocument();
+	CHistogramDoc *pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;

@@ -3,20 +3,20 @@
 
 #pragma once
 
-// CBMPFrame
-
 #include "BMPView.h"
 #include "BMPDoc.h"
 
+// CBMPFrame
+
 class CBMPFrame : public CMDIChildWndEx
 {
-	DECLARE_DYNCREATE(CBMPFrame)
 public:
 	CBMPFrame();
+	DECLARE_DYNCREATE(CBMPFrame)
 
 // 특성입니다.
 public:
-	virtual CBMPView* GetActiveView();
+//	virtual CBMPView* GetActiveView();
 	virtual CBMPDoc* GetActiveDocument();
 
 // 작업입니다.
@@ -41,4 +41,7 @@ protected:
 	DECLARE_INTERFACE_MAP()
 public:
 	virtual void ActivateFrame(int nCmdShow = -1);
+	afx_msg void OnChildActivate();
+	afx_msg BOOL OnNcActivate(BOOL bActive);
+	afx_msg void OnIpHistogramEqualization();
 };

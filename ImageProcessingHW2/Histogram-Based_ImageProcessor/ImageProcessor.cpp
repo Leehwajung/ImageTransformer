@@ -39,7 +39,7 @@ BEGIN_MESSAGE_MAP(CImageProcessorApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
-	ON_COMMAND(ID_HTG_NEW, &CImageProcessorApp::OnHtgNew)
+	ON_COMMAND(ID_HTG_PLOT, &CImageProcessorApp::OnHtgPlot)
 END_MESSAGE_MAP()
 
 
@@ -243,36 +243,47 @@ void CImageProcessorApp::SaveCustomState()
 
 // CImageProcessorApp 메시지 처리기
 
-void CImageProcessorApp::OnHtgNew()
+void CImageProcessorApp::OnHtgPlot()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// Source(image)를 가져옴
 	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());		// Main Frame
 	CBMPDoc *pBMPDoc = ((CBMPFrame*)pMainFrm->MDIGetActive())->GetActiveDocument();
 
+	// 신규 Historam 문서 (CHistogramDoc) 생성
 	POSITION pos = GetFirstDocTemplatePosition();
-	CDocTemplate *pT;
+	CDocTemplate *pTml;
 	for (int i = 0; i < 2; i++) {
-		pT = GetNextDocTemplate(pos);
+		pTml = GetNextDocTemplate(pos);
 	}
-	pT->OpenDocumentFile(NULL);
+	pTml->OpenDocumentFile(NULL);
 
+	// Destination(histogram)을 가져옴
 	CHistogramFrame *pHtgFrm = (CHistogramFrame*)pMainFrm->MDIGetActive();	// Histogram Frame
 	CHistogramView *pHtgView = (CHistogramView*)(pHtgFrm->GetActiveView());	// Histogram View
 	CHistogramDoc *pHtgDoc = pHtgView->GetDocument();						// Histogram Document
 
+	// Source의 픽셀 데이터를 가져옴
 	Bitmap* pBitmap = pBMPDoc->m_bitmap;
+	Rect imageArea(0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
 	BitmapData bitmapData;
-	Rect rect(0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
-
 	pBitmap->LockBits(
-		&rect,
+		&imageArea,
 		ImageLockModeRead,
-		PixelFormat8bppIndexed,
+		PixelFormat8bppIndexed,	// 8-bits image
 		&bitmapData);
 
-	pHtgDoc->generateHistogram((BYTE*)bitmapData.Scan0, rect.Width * rect.Height);
+	// Source의 픽셀 데이터를 기반으로하여 Destination에 histogram 생성
+	pHtgDoc->plotHistogram((BYTE*)bitmapData.Scan0, imageArea.Width * imageArea.Height);
+	pBitmap->UnlockBits(&bitmapData);
+
+	// 제목 변경
+	CString newTitle("histogram_of_");
+	newTitle.Append(pBMPDoc->GetTitle());
+	pHtgDoc->SetTitle(newTitle);
+
+	// Histogram에 맞게 다시 그리기
 	pHtgFrm->ActivateFrame();
 	pHtgView->Invalidate();
-
-	pBitmap->UnlockBits(&bitmapData);
 }

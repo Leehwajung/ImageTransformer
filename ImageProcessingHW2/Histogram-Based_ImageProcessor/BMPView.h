@@ -2,7 +2,9 @@
 //
 
 #pragma once
+
 #include "BMPFrm.h"
+#include "BMPDoc.h"
 
 // CBMPView 뷰입니다.
 
@@ -14,8 +16,8 @@ protected:	// serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
+//	CBMPFrame* GetFrame() const;
 	CBMPDoc* GetDocument() const;
-	CBMPFrame* GetFrame() const;
 
 // 작업입니다.
 public:
@@ -50,9 +52,9 @@ public:
 };
 
 #ifndef _DEBUG	// BMPView.cpp의 디버그 버전
-inline CBMPDoc* CBMPView::GetDocument() const
-   { return reinterpret_cast<CBMPDoc*>(m_pDocument); }
-
 inline CBMPFrame* CBMPView::GetFrame() const
    { return reinterpret_cast<CBMPFrame*>(CView::GetParentFrame()); }
+
+inline CBMPDoc* CBMPView::GetDocument() const
+   { return reinterpret_cast<CBMPDoc*>(m_pDocument); }
 #endif

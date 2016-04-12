@@ -19,9 +19,9 @@
 
 class CHistogramFrame : public CMDIChildWndEx
 {
-	DECLARE_DYNCREATE(CHistogramFrame)
 public:
 	CHistogramFrame();
+	DECLARE_DYNCREATE(CHistogramFrame)
 
 // 특성입니다.
 public:
@@ -48,6 +48,4 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
-public:
-	virtual void ActivateFrame(int nCmdShow = -1);
 };

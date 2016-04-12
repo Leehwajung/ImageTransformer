@@ -8,6 +8,8 @@
 #include "ImageProcessor.h"
 #endif
 
+#include "ImageProcessorUtil.h"
+
 #include "BMPDoc.h"
 
 #include <propkey.h>
@@ -53,6 +55,9 @@ CBMPDoc::CBMPDoc()
 
 CBMPDoc::~CBMPDoc()
 {
+	//if (m_bitmap) {
+	//	delete m_bitmap;
+	//}
 }
 
 BOOL CBMPDoc::OnNewDocument()
@@ -223,4 +228,53 @@ void CBMPDoc::Dump(CDumpContext& dc) const
 
 
 // CBMPDoc 명령입니다.
+
+void CBMPDoc::copyFrom(const CBMPDoc* bmpDoc)
+{
+	Bitmap *src = bmpDoc->m_bitmap;
+	this->m_bitmap = src->Clone(0, 0, src->GetWidth(), src->GetHeight(), PixelFormat8bppIndexed);
+
+	CString newTitle("copied_");
+	newTitle.Append(bmpDoc->GetTitle());
+	this->SetTitle(newTitle);
+}
+
+void CBMPDoc::HistogramEqualization()
+{
+	// 영상의 픽셀 데이터를 가져옴
+	Rect imageArea(0, 0, m_bitmap->GetWidth(), m_bitmap->GetHeight());
+	BitmapData bitmapData;
+	m_bitmap->LockBits(
+		&imageArea,
+		ImageLockModeRead | ImageLockModeWrite,
+		PixelFormat8bppIndexed,
+		&bitmapData);
+
+	// 영상의 histogram을 계산
+	BYTE *pixelData = (BYTE*)bitmapData.Scan0;
+	UINT pixelDataSize = imageArea.Width * imageArea.Height;
+	UINT histogramData[HTGSIZE];
+	CImageProcessorUtil::generateHistogram(
+		pixelData,
+		pixelDataSize,
+		histogramData);
+
+	// Histogram의 누적합 및 정규화된 합 계산
+	UINT accruedSum = 0;
+	DOUBLE normalizedSum[HTGSIZE];
+	FLOAT scaleFactor = HTGMAX / (float)pixelDataSize;
+	for (int i = 0; i < HTGSIZE; i++) {
+		accruedSum += histogramData[i];
+		normalizedSum[i] = accruedSum * scaleFactor;
+	}
+
+	// Histogram Equalization (평활화): normalizedSum을 LUT로 사용
+	for (int i = 0; i < pixelDataSize; i++) {
+		pixelData[i] = (BYTE)(normalizedSum[pixelData[i]] + 0.5);
+	}
+
+	m_bitmap->UnlockBits(&bitmapData);
+}
+
+
 

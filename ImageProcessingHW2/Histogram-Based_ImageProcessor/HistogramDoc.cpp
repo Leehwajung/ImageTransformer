@@ -19,6 +19,8 @@
 #include "ImageProcessor.h"
 #endif
 
+#include "ImageProcessorUtil.h"
+
 #include "HistogramDoc.h"
 
 #include <propkey.h>
@@ -146,23 +148,13 @@ void CHistogramDoc::Dump(CDumpContext& dc) const
 
 // CHistogramDoc 명령
 
-// 픽셀 데이터에 대한 히스토그램 생성
-void CHistogramDoc::generateHistogram(BYTE pixelData[], const UINT pixelDataSize)
+// 픽셀 데이터에 대한 histogram(1차원 값 데이터 및 2차원 영상 데이터) 생성
+void CHistogramDoc::plotHistogram(const BYTE pixelData[], const UINT pixelDataSize)
 {
-	for (int i = 0; i < HTGSIZE; i++) {
-		m_HistogramData[i] = 0;					// 히스토그램 배열 초기화
-	}
-
-	for (int i = 0; i < pixelDataSize; i++) {
-		if (pixelData[i] >= 0 && pixelData[i] < HTGSIZE) {
-			m_HistogramData[pixelData[i]]++;	// 밝기값 빈도 수집
-		}
-		else {	// 잘못된 픽셀 데이터이면 종료
-			return;
-		}
-	}
+	// 픽셀 데이터를 기반으로한 histogram 생성
+	CImageProcessorUtil::generateHistogram(pixelData, pixelDataSize, m_HistogramData);
 	
-	// 화면 출력을 위한 히스토그램 크기 정규화
+	// 화면 출력을 위한 histogram 크기 정규화
 	int vmin = 1000000;
 	int vmax = 0;
 
@@ -179,10 +171,10 @@ void CHistogramDoc::generateHistogram(BYTE pixelData[], const UINT pixelDataSize
 		return;
 	}
 
-	// 히스토그램 화면 출력 배열 구성
+	// histogram 화면 출력 배열 구성
 	for (int i = 0; i < HTGSIZE; i++) {
 		for (int j = 0; j < HTGSIZE; j++) {
-			m_HistogramImage[i][j] = HTG_BKGR_COLOR;	// 히스토그램 이미지 초기화
+			m_HistogramImage[i][j] = HTG_BKGR_COLOR;	// histogram 이미지 초기화
 		}
 	}
 
@@ -193,5 +185,3 @@ void CHistogramDoc::generateHistogram(BYTE pixelData[], const UINT pixelDataSize
 		}
 	}
 }
-
-

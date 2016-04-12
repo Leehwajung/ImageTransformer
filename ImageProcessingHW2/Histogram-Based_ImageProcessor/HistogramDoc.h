@@ -14,9 +14,10 @@
 
 #pragma once
 
-#define HTGSIZE	256			// 히스토그램 데이터 너비
-#define HTG_BKGR_COLOR	255	// 히스토그램 배경 색
-#define HTG_DATA_COLOR	0	// 히스토그램 막대 색
+#include "ImageProcessorUtil.h"
+
+#define HTG_BKGR_COLOR	255	// histogram 배경 색
+#define HTG_DATA_COLOR	0	// histogram 막대 색
 
 class CHistogramDoc : public CDocument
 {
@@ -26,8 +27,8 @@ protected:	// serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
-	UINT m_HistogramData[HTGSIZE];				// 히스토그램 데이터 배열
-	BYTE m_HistogramImage[HTGSIZE][HTGSIZE];	// 히스토그램 출력 배열
+	UINT m_HistogramData[HTGSIZE];				// histogram 데이터 배열
+	BYTE m_HistogramImage[HTGSIZE][HTGSIZE];	// histogram 출력 배열
 
 // 작업입니다.
 public:
@@ -60,6 +61,7 @@ protected:
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
 public:
-	// 픽셀 데이터에 대한 히스토그램 생성
-	void generateHistogram(BYTE pixelData[], const UINT pixelDataSize);
+	// 픽셀 데이터에 대한 histogram 생성
+	void plotHistogram(const BYTE pixelData[], const UINT pixelDataSize);
+	
 };

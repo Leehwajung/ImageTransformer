@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "HistogramDoc.h"
 
 class CHistogramView : public CView
 {

@@ -49,7 +49,7 @@ public:
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnHtgNew();
+	afx_msg void OnHtgPlot();
 };
 
 extern CImageProcessorApp theApp;

@@ -10,6 +10,7 @@
 #define new DEBUG_NEW
 #endif
 
+#include "BMPView.h"
 #include "BMPDoc.h"
 
 #include "MainFrm.h"
@@ -20,6 +21,9 @@
 IMPLEMENT_DYNCREATE(CBMPFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
+	ON_WM_CHILDACTIVATE()
+	ON_WM_NCACTIVATE()
+	ON_COMMAND(ID_IP_HE, &CBMPFrame::OnIpHistogramEqualization)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
@@ -57,6 +61,9 @@ BOOL CBMPFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if (!CMDIChildWndEx::PreCreateWindow(cs))
 		return FALSE;
 
+	cs.cx = 512;
+	cs.cy = 512;
+
 	return TRUE;
 }
 
@@ -71,10 +78,10 @@ void CBMPFrame::OnFinalRelease()
 }
 
 
-CBMPView* CBMPFrame::GetActiveView()
-{
-	return (CBMPView*)CFrameWnd::GetActiveView();
-}
+//CBMPView* CBMPFrame::GetActiveView()
+//{
+//	return (CBMPView*)CFrameWnd::GetActiveView();
+//}
 
 CBMPDoc* CBMPFrame::GetActiveDocument()
 {
@@ -103,38 +110,82 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
-	CDocument* pDoc = GetActiveDocument();
+	CBMPDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
 
 	CRect winRect, cliRect;
 	GetWindowRect(&winRect);
 	GetClientRect(&cliRect);
 
-	CSize sizeImg;
-
-
-	if (pDoc->IsKindOf(RUNTIME_CLASS(CBMPDoc))) {
-		sizeImg.cx = ((CBMPDoc*)pDoc)->m_bitmap->GetWidth();
-		sizeImg.cy = ((CBMPDoc*)pDoc)->m_bitmap->GetHeight();
-		int cx = sizeImg.cx + winRect.Width() - cliRect.Width() + 4;
-		int cy = sizeImg.cy + winRect.Height() - cliRect.Height() + 4;
-
-
+	Bitmap *pBitmap = pDoc->m_bitmap;
+	if (pBitmap) {
+		int cx = pDoc->m_bitmap->GetWidth() + winRect.Width() - cliRect.Width() + 4;
+		int cy = pDoc->m_bitmap->GetHeight() + winRect.Height() - cliRect.Height() + 4;
 		SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
 	}
 
-	CMFCRibbonBar* rBar = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
-	rBar->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
-	rBar->ActivateContextCategory(ID_IMAGEPROCESSING);
-
-	// 이후 반드시 호출
-	rBar->RecalcLayout();
-	rBar->RedrawWindow();
-
-	SendMessage(WM_NCPAINT, 0, 0);
-
 	CMDIChildWndEx::ActivateFrame(nCmdShow);
+}
+
+void CBMPFrame::OnChildActivate()
+{
+	CMDIChildWndEx::OnChildActivate();
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	// Activate ribbon context category: 영상처리
+	CMFCRibbonBar *pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
+	pRibbon->ActivateContextCategory(ID_IMAGEPROCESSING);
+
+	pRibbon->RecalcLayout();
+	pRibbon->RedrawWindow();
+}
+
+BOOL CBMPFrame::OnNcActivate(BOOL bActive)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	// Inactivate ribbon context category: 영상처리
+	CMFCRibbonBar *pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
+	pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
+
+	pRibbon->RecalcLayout();
+	pRibbon->RedrawWindow();
+
+	return CMDIChildWndEx::OnNcActivate(bActive);
+}
+
+
+void CBMPFrame::OnIpHistogramEqualization()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 BMP 문서 (CBMPDoc) 생성
+	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
+	pTml->OpenDocumentFile(NULL);
+
+	// 기존 CBMPDoc으로부터 복제
+	CBMPFrame *pDstFrm = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
+	CBMPView *pDstView = (CBMPView*)pDstFrm->GetActiveView();
+	CBMPDoc *pDstDoc = pDstView->GetDocument();
+	pDstDoc->copyFrom(pSrcDoc);
+
+	// Histogram Equalization
+	pDstDoc->HistogramEqualization();
+
+	// 제목 변경
+	CString newTitle("equalized_");
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
 }

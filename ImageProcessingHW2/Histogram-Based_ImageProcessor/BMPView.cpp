@@ -65,7 +65,7 @@ void CBMPView::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	
-	//CBMPDoc* pDoc = GetDocument();
+	//CBMPDoc *pDoc = GetDocument();
 	//ASSERT_VALID(pDoc);
 	//if (!pDoc)
 	//	return;
@@ -97,7 +97,7 @@ void CBMPView::OnFinalRelease()
 
 void CBMPView::OnDraw(CDC* pDC)
 {
-	CBMPDoc* pDoc = GetDocument();
+	CBMPDoc *pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -229,16 +229,16 @@ void CBMPView::Dump(CDumpContext& dc) const
 }
 #endif
 
+//CBMPFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
+//{
+//	ASSERT(CView::GetParentFrame()->IsKindOf(RUNTIME_CLASS(CBMPFrame)));
+//	return (CBMPFrame*)CView::GetParentFrame();
+//}
+
 CBMPDoc* CBMPView::GetDocument() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CBMPDoc)));
 	return (CBMPDoc*)m_pDocument;
-}
-
-CBMPFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
-{
-	ASSERT(CView::GetParentFrame()->IsKindOf(RUNTIME_CLASS(CBMPFrame)));
-	return (CBMPFrame*)CView::GetParentFrame();
 }
 #endif //_DEBUG
 
