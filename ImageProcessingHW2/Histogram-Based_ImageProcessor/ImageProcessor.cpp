@@ -39,6 +39,7 @@ BEGIN_MESSAGE_MAP(CImageProcessorApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+	ON_COMMAND(ID_HTG_NEW, &CImageProcessorApp::OnHtgNew)
 END_MESSAGE_MAP()
 
 
@@ -239,7 +240,39 @@ void CImageProcessorApp::SaveCustomState()
 {
 }
 
+
 // CImageProcessorApp 메시지 처리기
 
+void CImageProcessorApp::OnHtgNew()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());		// Main Frame
+	CBMPDoc *pBMPDoc = ((CBMPFrame*)pMainFrm->MDIGetActive())->GetActiveDocument();
 
+	POSITION pos = GetFirstDocTemplatePosition();
+	CDocTemplate *pT;
+	for (int i = 0; i < 2; i++) {
+		pT = GetNextDocTemplate(pos);
+	}
+	pT->OpenDocumentFile(NULL);
 
+	CHistogramFrame *pHtgFrm = (CHistogramFrame*)pMainFrm->MDIGetActive();	// Histogram Frame
+	CHistogramView *pHtgView = (CHistogramView*)(pHtgFrm->GetActiveView());	// Histogram View
+	CHistogramDoc *pHtgDoc = pHtgView->GetDocument();						// Histogram Document
+
+	Bitmap* pBitmap = pBMPDoc->m_bitmap;
+	BitmapData bitmapData;
+	Rect rect(0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
+
+	pBitmap->LockBits(
+		&rect,
+		ImageLockModeRead,
+		PixelFormat8bppIndexed,
+		&bitmapData);
+
+	pHtgDoc->generateHistogram((BYTE*)bitmapData.Scan0, rect.Width * rect.Height);
+	pHtgFrm->ActivateFrame();
+	pHtgView->Invalidate();
+
+	pBitmap->UnlockBits(&bitmapData);
+}

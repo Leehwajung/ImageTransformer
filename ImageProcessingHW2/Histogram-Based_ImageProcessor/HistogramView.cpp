@@ -64,7 +64,7 @@ BOOL CHistogramView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CHistogramView 그리기
 
-void CHistogramView::OnDraw(CDC* /*pDC*/)
+void CHistogramView::OnDraw(CDC* pDC)
 {
 	CHistogramDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -72,6 +72,32 @@ void CHistogramView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+	int height = 256;
+	int width = 256;
+
+	int rwsize = (((width)+31) / 32 * 4); // 영상 폭은 항상 4바이트의 배수여야 함
+
+	BITMAPINFO* BmInfo = (BITMAPINFO*)malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
+
+	BmInfo->bmiHeader.biBitCount = 8;
+	BmInfo->bmiHeader.biClrImportant = 256;
+	BmInfo->bmiHeader.biClrUsed = 256;
+	BmInfo->bmiHeader.biCompression = 0;
+	BmInfo->bmiHeader.biHeight = height;
+	BmInfo->bmiHeader.biPlanes = 1;
+	BmInfo->bmiHeader.biSize = 40;
+	BmInfo->bmiHeader.biSizeImage = rwsize*height;
+	BmInfo->bmiHeader.biWidth = width;
+	BmInfo->bmiHeader.biXPelsPerMeter = 0;
+	BmInfo->bmiHeader.biYPelsPerMeter = 0;
+
+	for (int i = 0; i<256; i++) { // Palette number is 256
+		BmInfo->bmiColors[i].rgbRed = BmInfo->bmiColors[i].rgbGreen = BmInfo->bmiColors[i].rgbBlue = i;
+		BmInfo->bmiColors[i].rgbReserved = 0;
+	}
+	SetDIBitsToDevice(pDC->GetSafeHdc(), 1, 0, 256, 256, 0, 0, 0, 256, pDoc->m_HistogramImage, BmInfo, DIB_RGB_COLORS);
+
+	delete BmInfo;
 }
 
 

@@ -13,6 +13,7 @@ public:
 
 // 특성입니다.
 public:
+	virtual CBMPDoc* GetActiveDocument();
 
 // 작업입니다.
 public:

@@ -38,8 +38,6 @@ BEGIN_MESSAGE_MAP(CHistogramFrame, CMDIChildWndEx)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CHistogramFrame::OnUpdateFilePrintPreview)
 END_MESSAGE_MAP()
 
-int CHistogramFrame::posX = 0;
-int CHistogramFrame::posY = 0;
 
 // CHistogramFrame 생성/소멸
 
@@ -58,6 +56,10 @@ BOOL CHistogramFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서 Window 클래스 또는 스타일을 수정합니다.
 	if( !CMDIChildWndEx::PreCreateWindow(cs) )
 		return FALSE;
+
+	cs.style &= ~WS_MAXIMIZEBOX;
+	cs.cx = 256;
+	cs.cy = 512;
 
 	//CDocument* pDoc = GetActiveDocument();
 	//if (pDoc->IsKindOf(RUNTIME_CLASS(CHistogramDoc))) {
@@ -108,6 +110,13 @@ BOOL CHistogramFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 	return TRUE;
 }
+
+
+CBMPDoc* CHistogramFrame::GetActiveDocument()
+{
+	return (CBMPDoc*)CFrameWnd::GetActiveDocument();
+}
+
 
 // CHistogramFrame 진단
 

@@ -71,6 +71,12 @@ void CBMPFrame::OnFinalRelease()
 }
 
 
+CBMPDoc* CBMPFrame::GetActiveDocument()
+{
+	return (CBMPDoc*)CFrameWnd::GetActiveDocument();
+}
+
+
 // CBMPFrame 진단입니다.
 
 #ifdef _DEBUG

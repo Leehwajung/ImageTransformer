@@ -137,6 +137,57 @@ void CBMPView::OnDraw(CDC* pDC)
 
 		//GetParentFrame()->MoveWindow(winRect.left, winRect.top, pDoc->m_bitmap->GetWidth() + winRect.Width() - cliRect.Width(), pDoc->m_bitmap->GetHeight() + winRect.Height() - cliRect.Height());
 
+		//////////////////////------------여기부터 지우기----------------------------
+		//int height = 512;
+		//int width = 512;
+
+		//int rwsize = (((width)+31) / 32 * 4); // 영상 폭은 항상 4바이트의 배수여야 함
+
+		//BITMAPINFO* BmInfo = (BITMAPINFO*)malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
+
+		//BmInfo->bmiHeader.biBitCount = 8;
+		//BmInfo->bmiHeader.biClrImportant = 256;
+		//BmInfo->bmiHeader.biClrUsed = 256;
+		//BmInfo->bmiHeader.biCompression = 0;
+		//BmInfo->bmiHeader.biHeight = height;
+		//BmInfo->bmiHeader.biPlanes = 1;
+		//BmInfo->bmiHeader.biSize = 40;
+		//BmInfo->bmiHeader.biSizeImage = rwsize*height;
+		//BmInfo->bmiHeader.biWidth = width;
+		//BmInfo->bmiHeader.biXPelsPerMeter = 0;
+		//BmInfo->bmiHeader.biYPelsPerMeter = 0;
+
+		//for (int i = 0; i<256; i++) { // Palette number is 256
+		//	BmInfo->bmiColors[i].rgbRed = BmInfo->bmiColors[i].rgbGreen = BmInfo->bmiColors[i].rgbBlue = i;
+		//	BmInfo->bmiColors[i].rgbReserved = 0;
+		//}
+
+
+		//Bitmap* bitmap = pDoc->m_bitmap;
+		//BitmapData* bitmapData = new BitmapData;
+		//Rect rect2(0, 0, bitmap->GetWidth(), bitmap->GetHeight());
+		//bitmapData->Height = bitmap->GetHeight();
+		//bitmapData->Width = bitmap->GetWidth();
+		//bitmapData->Stride = 1;
+		////bitmapData->Scan0 = new BYTE[bitmap->GetWidth()* bitmap->GetHeight()];
+
+		//// Lock a 5x3 rectangular portion of the bitmap for reading.
+		//bitmap->LockBits(
+		//	&rect2,
+		//	ImageLockModeRead,
+		//	PixelFormat8bppIndexed,
+		//	bitmapData);
+
+		//BYTE* pixels = (BYTE*)bitmapData->Scan0;
+
+		//SetDIBitsToDevice(pDC->GetSafeHdc(), 1, 0, bitmapData->Width, bitmapData->Height, 0, 0, 0, bitmapData->Width, pixels, BmInfo, DIB_RGB_COLORS);
+
+		//delete BmInfo;
+		//bitmap->UnlockBits(bitmapData);
+		//delete bitmapData;
+		//////////////////////------------여기까지 지우기----------------------------
+
+
 		graphicsCanvas.DrawImage(pDoc->m_bitmap, 0, 0, pDoc->m_bitmap->GetWidth(), pDoc->m_bitmap->GetHeight());
 	}
 		
