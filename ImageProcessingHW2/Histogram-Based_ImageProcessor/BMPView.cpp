@@ -24,6 +24,7 @@
 IMPLEMENT_DYNCREATE(CBMPView, CView)
 
 BEGIN_MESSAGE_MAP(CBMPView, CView)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_HTG_SIZE, &CBMPView::OnUpdateViewHtgSize)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPView, CView)
@@ -151,3 +152,12 @@ CBMPDoc* CBMPView::GetDocument() const	// 디버그되지 않은 버전은 인라인으로 지정
 
 // CBMPView 메시지 처리기입니다.
 
+
+
+// CBMPView 명령입니다.
+
+void CBMPView::OnUpdateViewHtgSize(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(FALSE);
+}

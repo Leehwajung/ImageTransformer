@@ -27,8 +27,8 @@ public:
 public:
 	virtual CHistogramView* GetActiveView();
 	virtual CHistogramDoc* GetActiveDocument();
-	UINT m_InitW;
-	UINT m_InitH;
+	UINT m_InitW = 276;
+	UINT m_InitH = 299;
 
 // 작업입니다.
 public:

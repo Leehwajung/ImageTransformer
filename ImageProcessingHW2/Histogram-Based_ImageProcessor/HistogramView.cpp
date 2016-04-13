@@ -19,6 +19,8 @@
 #include "ImageProcessor.h"
 #endif
 
+#include "MainFrm.h"
+
 #include "HistogramDoc.h"
 #include "HistogramView.h"
 
@@ -38,6 +40,8 @@ BEGIN_MESSAGE_MAP(CHistogramView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CHistogramView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_COMMAND(ID_VIEW_HTG_SIZE, &CHistogramView::OnViewHtgSize)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_HTG_SIZE, &CHistogramView::OnUpdateViewHtgSize)
 END_MESSAGE_MAP()
 
 
@@ -50,6 +54,7 @@ CHistogramView::CHistogramView()
 	m_Width = HTGSIZE;
 	m_Height = 0;
 	m_Stride = ((UINT)(m_Width / 4 + 0.5)) * 4;
+	resetHeightRate();
 }
 
 CHistogramView::~CHistogramView()
@@ -85,7 +90,12 @@ void CHistogramView::OnDraw(CDC* pDC)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
-	Bitmap image(m_Width, m_Height, m_Stride, PixelFormat8bppIndexed, m_Image);
+	//AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_VIEW_HTG_SIZE);
+	UINT newHeight = m_Height * m_HeightRate;
+	if (!newHeight) {
+		newHeight = m_Height * 0.01;
+	}
+	Bitmap image(m_Width, newHeight, m_Stride, PixelFormat8bppIndexed, &m_Image[(m_Height - newHeight) * m_Width]);
 	graphicsCanvas.DrawImage(&image, 0, 0, clientRect.Width(), clientRect.Height());
 	
 	graphicsDC.DrawImage(&bmpCanvas, clientRect.left, clientRect.top, clientRect.right, clientRect.bottom);	// 캔버스 그리기
@@ -188,8 +198,34 @@ void CHistogramView::plotHistogramImage()
 	}
 }
 
+void CHistogramView::resetHeightRate()
+{
+	m_HeightRate = 1.0f;
+}
+
 
 // CHistogramView 메시지 처리기
 
 
+
+// CHistogramView 명령
+
+void CHistogramView::OnViewHtgSize()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMFCRibbonSlider *pSlider = DYNAMIC_DOWNCAST(CMFCRibbonSlider, 
+		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_VIEW_HTG_SIZE));
+
+	// 현재 위치 가져오기
+	m_HeightRate = 1.0f - (DOUBLE)pSlider->GetPos() / (DOUBLE)pSlider->GetRangeMax();
+
+	Invalidate();
+}
+
+
+void CHistogramView::OnUpdateViewHtgSize(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(TRUE);
+}
 

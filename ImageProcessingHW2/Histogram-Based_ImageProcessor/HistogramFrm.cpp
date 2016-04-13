@@ -59,8 +59,8 @@ BOOL CHistogramFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if( !CMDIChildWndEx::PreCreateWindow(cs) )
 		return FALSE;
 
-	cs.cx = 276;
-	cs.cy = 299;
+	cs.cx = m_InitW;
+	cs.cy = m_InitH;
 
 	return TRUE;
 }
@@ -146,5 +146,7 @@ void CHistogramFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 void CHistogramFrame::OnViewOriginSize()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CHistogramView* pView = (CHistogramView*)GetActiveView();
+	pView->resetHeightRate();
 	ActivateFrame();
 }

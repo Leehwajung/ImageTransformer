@@ -8,6 +8,8 @@
 
 // CBMPFrame
 
+class CBMPView;
+
 class CBMPFrame : public CMDIChildWndEx
 {
 public:
@@ -20,8 +22,8 @@ public:
 	virtual CBMPDoc* GetActiveDocument();
 	BYTE m_bEcsHighEnd;
 	BYTE m_bEcsLowEnd;
-	UINT m_InitW;
-	UINT m_InitH;
+	UINT m_InitW = 552;
+	UINT m_InitH = 555;
 
 // 작업입니다.
 public:

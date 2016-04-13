@@ -66,7 +66,7 @@ BOOL CBMPFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 
 	cs.cx = 20;
-	cs.cy = 43;
+	cs.cy = 44;
 
 	return TRUE;
 }
@@ -147,8 +147,8 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 
 	Bitmap *pBitmap = pDoc->m_bitmap;
 	if (pBitmap) {
-		m_InitW = pDoc->m_bitmap->GetWidth() + winRect.Width() - cliRect.Width() + 4;
-		m_InitH = pDoc->m_bitmap->GetHeight() + winRect.Height() - cliRect.Height() + 4;
+		m_InitW = pBitmap->GetWidth() + winRect.Width() - cliRect.Width() + 4;
+		m_InitH = pBitmap->GetHeight() + winRect.Height() - cliRect.Height() + 4;
 		SetWindowPos(NULL, 0, 0, m_InitW, m_InitH, SWP_NOMOVE | SWP_SHOWWINDOW);
 	}
 
@@ -187,7 +187,6 @@ void CBMPFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 
 	CMDIChildWndEx::OnGetMinMaxInfo(lpMMI);
 }
-
 
 
 // CBMPFrame 명령입니다.
@@ -286,7 +285,7 @@ void CBMPFrame::OnIpEndsinContrastStretching()
 void CBMPFrame::OnIpEcsHighEnd()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, 
+	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, 
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSHIGH));
 	m_bEcsHighEnd = (BYTE)_wtof(pSpin->GetEditText());
 }
@@ -295,7 +294,7 @@ void CBMPFrame::OnIpEcsHighEnd()
 void CBMPFrame::OnIpEcsLowEnd()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
+	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSLOW));
 	m_bEcsLowEnd = (BYTE)_wtof(pSpin->GetEditText());
 }

@@ -25,16 +25,18 @@ protected:	// serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CHistogramDoc* GetDocument() const;
-private:
-	BYTE* m_Image;	// histogram 출력 배열
-	UINT m_Width;	// histogram 출력 배열의 width
-	UINT m_Height;	// histogram 출력 배열의 height
+//private:
+	BYTE* m_Image;			// histogram 출력 배열
+	UINT m_Width;			// histogram 출력 배열의 width
+	UINT m_Height;			// histogram 출력 배열의 height
 	UINT m_Stride;
+	FLOAT m_HeightRate;	// histogram 출력 배열에서 실제 출력할 height
 
 // 작업입니다.
 public:
 	// histogram의 2차원 이미지 생성
 	void plotHistogramImage();
+	void resetHeightRate();
 
 // 재정의입니다.
 public:
@@ -61,6 +63,9 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnViewHtgSize();
+	afx_msg void OnUpdateViewHtgSize(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG	// HistogramView.cpp의 디버그 버전
