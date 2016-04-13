@@ -21,13 +21,13 @@
 IMPLEMENT_DYNCREATE(CBMPFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
-	ON_WM_CHILDACTIVATE()
 	ON_WM_NCACTIVATE()
 	ON_COMMAND(ID_IP_HE, &CBMPFrame::OnIpHistogramEqualization)
 	ON_COMMAND(ID_IP_BCS, &CBMPFrame::OnIpBasicContrastStretching)
 	ON_COMMAND(ID_IP_ECS, &CBMPFrame::OnIpEndsinContrastStretching)
 	ON_COMMAND(ID_IP_ECSHIGH, &CBMPFrame::OnIpEcsHighEnd)
 	ON_COMMAND(ID_IP_ECSLOW, &CBMPFrame::OnIpEcsLowEnd)
+	ON_COMMAND(ID_VIEW_ORIGIN_SIZE, &CBMPFrame::OnViewOriginSize)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
@@ -64,8 +64,8 @@ BOOL CBMPFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if (!CMDIChildWndEx::PreCreateWindow(cs))
 		return FALSE;
 
-	cs.cx = 512;
-	cs.cy = 512;
+	cs.cx = 0;
+	cs.cy = 0;
 
 	return TRUE;
 }
@@ -135,32 +135,26 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 	CMDIChildWndEx::ActivateFrame(nCmdShow);
 }
 
-void CBMPFrame::OnChildActivate()
-{
-	CMDIChildWndEx::OnChildActivate();
-
-	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	// Activate ribbon context category: 영상처리
-	CMFCRibbonBar *pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
-	pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
-	pRibbon->ActivateContextCategory(ID_IMAGEPROCESSING);
-
-	pRibbon->RecalcLayout();
-	pRibbon->RedrawWindow();
-}
-
 BOOL CBMPFrame::OnNcActivate(BOOL bActive)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	// Inactivate ribbon context category: 영상처리
+	// Activate/Inactivate ribbon context category: 영상처리
 	CMFCRibbonBar *pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
-	pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
-
+	if (bActive) {
+		pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
+		pRibbon->ActivateContextCategory(ID_IMAGEPROCESSING);
+	}
+	else {
+		pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
+	}
 	pRibbon->RecalcLayout();
 	pRibbon->RedrawWindow();
 
 	return CMDIChildWndEx::OnNcActivate(bActive);
 }
+
+
+// CBMPFrame 명령입니다.
 
 // Histogram Equalization
 void CBMPFrame::OnIpHistogramEqualization()
@@ -280,4 +274,10 @@ void CBMPFrame::OnIpEcsLowEnd()
 	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSLOW));
 	bEcsLowEnd = (BYTE)_wtof(pSpin->GetEditText());
+}
+
+void CBMPFrame::OnViewOriginSize()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	ActivateFrame();
 }

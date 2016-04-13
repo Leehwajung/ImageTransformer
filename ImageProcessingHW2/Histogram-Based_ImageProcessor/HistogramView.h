@@ -25,9 +25,16 @@ protected:	// serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CHistogramDoc* GetDocument() const;
+private:
+	BYTE* m_Image;	// histogram 출력 배열
+	UINT m_Width;	// histogram 출력 배열의 width
+	UINT m_Height;	// histogram 출력 배열의 height
+	UINT m_Stride;
 
 // 작업입니다.
 public:
+	// histogram의 2차원 이미지 생성
+	void plotHistogramImage();
 
 // 재정의입니다.
 public:

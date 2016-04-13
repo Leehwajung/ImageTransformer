@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CHistogramFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CHistogramFrame::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CHistogramFrame::OnFilePrintPreview)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CHistogramFrame::OnUpdateFilePrintPreview)
+	ON_COMMAND(ID_VIEW_ORIGIN_SIZE, &CHistogramFrame::OnViewOriginSize)
 END_MESSAGE_MAP()
 
 
@@ -57,56 +58,8 @@ BOOL CHistogramFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if( !CMDIChildWndEx::PreCreateWindow(cs) )
 		return FALSE;
 
-	cs.style &= ~WS_MAXIMIZEBOX;
-	cs.cx = 256;
-	cs.cy = 512;
-
-	//CDocument* pDoc = GetActiveDocument();
-	//if (pDoc->IsKindOf(RUNTIME_CLASS(CHistogramDoc))) {
-	//	CHistogramDoc* pBMPDoc = (CHistogramDoc*)pDoc;
-	//	//cs.cx = ;
-	//	//cs.cy = ;
-	//}
-	//else if (pDoc->IsKindOf(RUNTIME_CLASS(CBMPDoc))) {
-	//	CBMPDoc* pBMPDoc = (CBMPDoc*)pDoc;
-	//	cs.cx = pBMPDoc->m_bitmap->GetWidth();
-	//	cs.cy = pBMPDoc->m_bitmap->GetHeight();
-	//}
-
-
-		//CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
-		//cs.cx = pBMPDoc->m_bitmap->GetWidth();
-		//cs.cy = pBMPDoc->m_bitmap->GetHeight();
-
-	//void CHistogramFrame::OnSize(UINT nType, int cx, int cy)
-	//{
-	//	CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
-	//	if (pBMPDoc) {
-	//		cx = pBMPDoc->m_bitmap->GetWidth();
-	//		cy = pBMPDoc->m_bitmap->GetHeight();
-	//	}
-
-	//	CMDIChildWndEx::OnSize(nType, cx, cy);
-
-	//	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	//}
-
-
-	//void CHistogramFrame::OnSizing(UINT fwSide, LPRECT pRect)
-	//{
-	//	CBMPDoc* pBMPDoc = (CBMPDoc*)GetActiveDocument();
-	//	if (pBMPDoc) {
-	//		pRect->left = 0;
-	//		pRect->top = 0;
-	//		pRect->right = pBMPDoc->m_bitmap->GetWidth();
-	//		pRect->bottom = pBMPDoc->m_bitmap->GetHeight();
-	//	}
-
-	//	CMDIChildWndEx::OnSizing(fwSide, pRect);
-
-	//	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	//}
-
+	cs.cx = 276;
+	cs.cy = 299;
 
 	return TRUE;
 }
@@ -160,3 +113,24 @@ void CHistogramFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_dockManager.IsPrintPreviewValid());
 }
 
+void CHistogramFrame::ActivateFrame(int nCmdShow)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	CRect winRect, cliRect;
+	GetWindowRect(&winRect);
+	GetClientRect(&cliRect);
+
+	int cx = 256 + winRect.Width() - cliRect.Width() + 4;
+	int cy = 256 + winRect.Height() - cliRect.Height() + 4;
+	SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
+
+	CMDIChildWndEx::ActivateFrame(nCmdShow);
+}
+
+
+void CHistogramFrame::OnViewOriginSize()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	ActivateFrame();
+}

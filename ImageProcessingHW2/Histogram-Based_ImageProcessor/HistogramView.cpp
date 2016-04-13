@@ -46,7 +46,10 @@ END_MESSAGE_MAP()
 CHistogramView::CHistogramView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
+	m_Image = NULL;
+	m_Width = HTGSIZE;
+	m_Height = 0;
+	m_Stride = ((UINT)(m_Width / 4 + 0.5)) * 4;
 }
 
 CHistogramView::~CHistogramView()
@@ -66,38 +69,23 @@ BOOL CHistogramView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CHistogramView::OnDraw(CDC* pDC)
 {
+	Graphics graphicsDC(*pDC);					// gdi+ 그리기를 위한 객체
+	CRect clientRect;
+	GetClientRect(clientRect);
+	Bitmap bmpCanvas(clientRect.right, clientRect.bottom);	// 캔버스 비트맵 생성
+	Graphics graphicsCanvas(&bmpCanvas);		// 캔버스 그래픽스 생성
+	graphicsCanvas.Clear(Color::Azure);			// 캔버스 배경색 지정
+
 	CHistogramDoc *pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
-	int height = 256;
-	int width = 256;
-
-	int rwsize = (((width)+31) / 32 * 4); // 영상 폭은 항상 4바이트의 배수여야 함
-
-	BITMAPINFO* BmInfo = (BITMAPINFO*)malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
-
-	BmInfo->bmiHeader.biBitCount = 8;
-	BmInfo->bmiHeader.biClrImportant = 256;
-	BmInfo->bmiHeader.biClrUsed = 256;
-	BmInfo->bmiHeader.biCompression = 0;
-	BmInfo->bmiHeader.biHeight = height;
-	BmInfo->bmiHeader.biPlanes = 1;
-	BmInfo->bmiHeader.biSize = 40;
-	BmInfo->bmiHeader.biSizeImage = rwsize*height;
-	BmInfo->bmiHeader.biWidth = width;
-	BmInfo->bmiHeader.biXPelsPerMeter = 0;
-	BmInfo->bmiHeader.biYPelsPerMeter = 0;
-
-	for (int i = 0; i<256; i++) { // Palette number is 256
-		BmInfo->bmiColors[i].rgbRed = BmInfo->bmiColors[i].rgbGreen = BmInfo->bmiColors[i].rgbBlue = i;
-		BmInfo->bmiColors[i].rgbReserved = 0;
-	}
-	SetDIBitsToDevice(pDC->GetSafeHdc(), 1, 0, 256, 256, 0, 0, 0, 256, pDoc->m_HistogramImage, BmInfo, DIB_RGB_COLORS);
-
-	delete BmInfo;
+	Bitmap image(m_Width, m_Height, m_Stride, PixelFormat8bppIndexed, m_Image);
+	graphicsCanvas.DrawImage(&image, 0, 0, clientRect.Width(), clientRect.Height());
+	
+	graphicsDC.DrawImage(&bmpCanvas, clientRect.left, clientRect.top, clientRect.right, clientRect.bottom);	// 캔버스 그리기
 }
 
 
@@ -162,4 +150,43 @@ CHistogramDoc* CHistogramView::GetDocument() const // 디버그되지 않은 버전은 인�
 #endif //_DEBUG
 
 
+// CHistogramView 작업
+
+// histogram의 2차원 이미지 생성
+void CHistogramView::plotHistogramImage()
+{
+	CHistogramDoc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	if (m_Image) {
+		delete[] m_Image;
+	}
+
+	m_Height = 0;
+	for (UINT i = 0; i < m_Width; i++) {
+		if (pDoc->m_HistogramData[i] > m_Height) {
+			m_Height = pDoc->m_HistogramData[i];
+		}
+	}
+
+	m_Image = new BYTE[m_Height * m_Width];	// hight: m_Height, width: HTGSIZE
+
+	// histogram 화면 출력 배열 구성
+	for (UINT i = 0; i < m_Height * m_Width; i++) {
+		m_Image[i] = HTG_DATA_COLOR;	// histogram 이미지 초기화
+	}
+
+	for (UINT j = 0; j < m_Width; j++) {
+		for (UINT i = 0; i < m_Height - pDoc->m_HistogramData[j]; i++) {
+			m_Image[i * m_Width + j] = HTG_BKGR_COLOR;
+		}
+	}
+}
+
+
 // CHistogramView 메시지 처리기
+
+
+

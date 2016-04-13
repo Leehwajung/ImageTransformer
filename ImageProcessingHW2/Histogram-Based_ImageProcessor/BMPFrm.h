@@ -27,6 +27,7 @@ public:
 // 재정의입니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnFinalRelease();
+	virtual void ActivateFrame(int nCmdShow = -1);
 
 // 구현입니다.
 public:
@@ -42,12 +43,11 @@ protected:
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 public:
-	virtual void ActivateFrame(int nCmdShow = -1);
-	afx_msg void OnChildActivate();
 	afx_msg BOOL OnNcActivate(BOOL bActive);
 	afx_msg void OnIpHistogramEqualization();
 	afx_msg void OnIpBasicContrastStretching();
 	afx_msg void OnIpEndsinContrastStretching();
 	afx_msg void OnIpEcsHighEnd();
 	afx_msg void OnIpEcsLowEnd();
+	afx_msg void OnViewOriginSize();
 };

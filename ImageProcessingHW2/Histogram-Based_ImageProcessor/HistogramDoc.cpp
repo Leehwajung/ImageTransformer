@@ -148,40 +148,68 @@ void CHistogramDoc::Dump(CDumpContext& dc) const
 
 // CHistogramDoc 명령
 
-// 픽셀 데이터에 대한 histogram(1차원 값 데이터 및 2차원 영상 데이터) 생성
+// 픽셀 데이터에 대한 histogram(1차원 값 데이터) 생성
 void CHistogramDoc::plotHistogram(const BYTE pixelData[], const UINT pixelDataSize)
 {
 	// 픽셀 데이터를 기반으로한 histogram 생성
 	CImageProcessorUtil::generateHistogram(pixelData, pixelDataSize, m_HistogramData);
 	
+
+
 	// 화면 출력을 위한 histogram 크기 정규화
-	int vmin = 1000000;
-	int vmax = 0;
+	//if (m_Image) {
+	//	delete[] m_Image;
+	//}
 
-	for (UINT i = 0; i < HTGSIZE; i++) {
-		if (m_HistogramData[i] <= vmin) {
-			vmin = m_HistogramData[i];
-		}
-		if (m_HistogramData[i] >= vmax) {
-			vmax = m_HistogramData[i];
-		}
-	}
+	//max = 0;
+	//for (UINT i = 0; i < HTGSIZE; i++) {
+	//	if (m_HistogramData[i] > max) {
+	//		max = m_HistogramData[i];
+	//	}
+	//}
 
-	if (vmax == vmin) {
-		return;
-	}
+	//m_Image = new BYTE[max * HTGSIZE];	// hight: max, width: HTGSIZE
 
-	// histogram 화면 출력 배열 구성
-	for (UINT i = 0; i < HTGSIZE; i++) {
-		for (int j = 0; j < HTGSIZE; j++) {
-			m_HistogramImage[i][j] = HTG_BKGR_COLOR;	// histogram 이미지 초기화
-		}
-	}
+	//// histogram 화면 출력 배열 구성
+	//for (UINT i = 0; i < max * HTGSIZE; i++) {
+	//	m_Image[i] = HTG_BKGR_COLOR;	// histogram 이미지 초기화
+	//}
 
-	float vd = (float) (vmax - vmin);
-	for (UINT j = 0; j < HTGSIZE; j++) {
-		for (UINT i = 0; i < (int)((m_HistogramData[j] - vmin) * 255 / vd); i++) {
-			m_HistogramImage[i][j] = HTG_DATA_COLOR;
-		}
-	}
+	//for (UINT j = 0; j < HTGSIZE; j++) {
+	//	for (UINT i = 0; i < m_HistogramData[j]; i++) {
+	//		m_Image[i * HTGSIZE + j] = HTG_DATA_COLOR;
+	//	}
+	//}
+
+	////---------------
+	
+	//int vmin = 1000000;
+	//int vmax = 0;
+
+	//for (UINT i = 0; i < HTGSIZE; i++) {
+	//	if (m_HistogramData[i] <= vmin) {
+	//		vmin = m_HistogramData[i];
+	//	}
+	//	if (m_HistogramData[i] >= vmax) {
+	//		vmax = m_HistogramData[i];
+	//	}
+	//}
+
+	//if (vmax == vmin) {
+	//	return;
+	//}
+
+	//// histogram 화면 출력 배열 구성
+	//for (UINT i = 0; i < HTGSIZE; i++) {
+	//	for (int j = 0; j < HTGSIZE; j++) {
+	//		m_Image[i][j] = HTG_BKGR_COLOR;	// histogram 이미지 초기화
+	//	}
+	//}
+
+	//float vd = (float) (vmax - vmin);
+	//for (UINT j = 0; j < HTGSIZE; j++) {
+	//	for (UINT i = 0; i < (int)((m_HistogramData[j] - vmin) * 255 / vd); i++) {
+	//		m_Image[i][j] = HTG_DATA_COLOR;
+	//	}
+	//}
 }

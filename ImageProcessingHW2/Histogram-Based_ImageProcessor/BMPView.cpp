@@ -94,120 +94,29 @@ void CBMPView::OnFinalRelease()
 
 void CBMPView::OnDraw(CDC* pDC)
 {
+	Graphics graphicsDC(*pDC);					// gdi+ 그리기를 위한 객체
+	CRect clientRect;
+	GetClientRect(clientRect);
+	Bitmap bmpCanvas(clientRect.right, clientRect.bottom);	// 캔버스 비트맵 생성
+	Graphics graphicsCanvas(&bmpCanvas);		// 캔버스 그래픽스 생성
+	graphicsCanvas.Clear(Color::Azure);			// 캔버스 배경색 지정
+
 	CBMPDoc *pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
 	// TODO: 여기에 그리기 코드를 추가합니다.
+	Bitmap* pBitmap = pDoc->m_bitmap;
+	UINT gapW = abs(clientRect.Width() - (int)pBitmap->GetWidth());
+	UINT gapH = abs(clientRect.Height() - (int)pBitmap->GetHeight());
+	UINT gap = gapW > gapH ? gapW : gapH;
 
-	/* 출력 대상 */
-	Graphics graphicsDC(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
-
-	/****************************** 더블 버퍼링 ******************************/
-	CRect rect;
-	GetClientRect(rect);
-	Bitmap bmpCanvas(rect.right, rect.bottom);		// 캔버스 비트맵 생성
-	Graphics graphicsCanvas(&bmpCanvas);			// 캔버스 그래픽스 생성
-	graphicsCanvas.Clear(Color::Azure);				// 캔버스 배경색 지정
-	/*************************************************************************/
-	//graphicsCanvas.SetSmoothingMode(SmoothingModeHighQuality);	// Antialising
-
-	// TODO: 여기에 그리기 코드를 추가합니다.
-	if (pDoc->m_bitmap) {
-		CRect rect(0,0, pDoc->m_bitmap->GetWidth(), pDoc->m_bitmap->GetHeight());
-		//CRgn abv;
-		//abv.CreateRectRgnIndirect(&rect);
-
-		//GetParentFrame()->MoveWindow(&rect);
-		//GetParentFrame()->SetWindowRgn(abv, true);
-		//SetWindowRgn(abv, true);
-		
-		//rect.left = 0;
-		//rect.top = 0;
-		//rect.right = pDoc->m_bitmap->GetWidth();
-		//rect.bottom = pDoc->m_bitmap->GetHeight();
-		//CRect winRect;
-		//CRect cliRect;
-		//GetParentFrame()->GetWindowRect(&winRect);
-		//GetParentFrame()->GetClientRect(&cliRect);
-
-		//GetParentFrame()->MoveWindow(winRect.left, winRect.top, pDoc->m_bitmap->GetWidth() + winRect.Width() - cliRect.Width(), pDoc->m_bitmap->GetHeight() + winRect.Height() - cliRect.Height());
-
-		//////////////////////------------여기부터 지우기----------------------------
-		//int height = 512;
-		//int width = 512;
-
-		//int rwsize = (((width)+31) / 32 * 4); // 영상 폭은 항상 4바이트의 배수여야 함
-
-		//BITMAPINFO* BmInfo = (BITMAPINFO*)malloc(sizeof(BITMAPINFO) + 256 * sizeof(RGBQUAD));
-
-		//BmInfo->bmiHeader.biBitCount = 8;
-		//BmInfo->bmiHeader.biClrImportant = 256;
-		//BmInfo->bmiHeader.biClrUsed = 256;
-		//BmInfo->bmiHeader.biCompression = 0;
-		//BmInfo->bmiHeader.biHeight = height;
-		//BmInfo->bmiHeader.biPlanes = 1;
-		//BmInfo->bmiHeader.biSize = 40;
-		//BmInfo->bmiHeader.biSizeImage = rwsize*height;
-		//BmInfo->bmiHeader.biWidth = width;
-		//BmInfo->bmiHeader.biXPelsPerMeter = 0;
-		//BmInfo->bmiHeader.biYPelsPerMeter = 0;
-
-		//for (int i = 0; i<256; i++) { // Palette number is 256
-		//	BmInfo->bmiColors[i].rgbRed = BmInfo->bmiColors[i].rgbGreen = BmInfo->bmiColors[i].rgbBlue = i;
-		//	BmInfo->bmiColors[i].rgbReserved = 0;
-		//}
-
-
-		//Bitmap* bitmap = pDoc->m_bitmap;
-		//BitmapData* bitmapData = new BitmapData;
-		//Rect rect2(0, 0, bitmap->GetWidth(), bitmap->GetHeight());
-		//bitmapData->Height = bitmap->GetHeight();
-		//bitmapData->Width = bitmap->GetWidth();
-		//bitmapData->Stride = 1;
-		////bitmapData->Scan0 = new BYTE[bitmap->GetWidth()* bitmap->GetHeight()];
-
-		//// Lock a 5x3 rectangular portion of the bitmap for reading.
-		//bitmap->LockBits(
-		//	&rect2,
-		//	ImageLockModeRead,
-		//	PixelFormat8bppIndexed,
-		//	bitmapData);
-
-		//BYTE* pixels = (BYTE*)bitmapData->Scan0;
-
-		//SetDIBitsToDevice(pDC->GetSafeHdc(), 1, 0, bitmapData->Width, bitmapData->Height, 0, 0, 0, bitmapData->Width, pixels, BmInfo, DIB_RGB_COLORS);
-
-		//delete BmInfo;
-		//bitmap->UnlockBits(bitmapData);
-		//delete bitmapData;
-		//////////////////////------------여기까지 지우기----------------------------
-
-
-		graphicsCanvas.DrawImage(pDoc->m_bitmap, 0, 0, pDoc->m_bitmap->GetWidth(), pDoc->m_bitmap->GetHeight());
+	if (pBitmap) {
+		graphicsCanvas.DrawImage(pBitmap, 0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
 	}
-		
-	//CRect rect2;
-	//rect.top = 0;
-	//rect.left = 0;
-	//rect.bottom = pDoc->m_bitmap->GetHeight();
-	//rect.right = pDoc->m_bitmap->GetWidth();
-	//GetParentFrame()->MoveWindow(&rect2);
-	
 
-	//CRect rDialer;
-	//GetWindowRect(&rDialer); /* r comes out in screen coordinates */
-	//ScreenToClient(&rDialer); // MoveWindow needs coordinates in parent window 
-	//rDialer.right = rDialer.left + pDoc->m_bitmap->GetWidth();
-	//rDialer.bottom = rDialer.top + pDoc->m_bitmap->GetHeight();
-	////MoveWindow(&rDialer);
-
-	//AdjustWindowRect(&rDialer, WS_OVERLAPPEDWINDOW, false);
-
-	/**************************************** 더블 버퍼링 ****************************************/
-	graphicsDC.DrawImage(&bmpCanvas, rect.left, rect.top, rect.right, rect.bottom);	// 캔버스 그리기
-	/*********************************************************************************************/
+	graphicsDC.DrawImage(&bmpCanvas, clientRect.left, clientRect.top, clientRect.right, clientRect.bottom);	// 캔버스 그리기
 }
 
 

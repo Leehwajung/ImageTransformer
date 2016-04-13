@@ -268,6 +268,7 @@ void CImageProcessorApp::OnHtgPlot()
 	BitmapData bitmapData;
 	BYTE* pixelData = pBMPDoc->getData(&bitmapData, ImageLockModeRead);
 	pHtgDoc->plotHistogram(pixelData, bitmapData.Width * bitmapData.Height);
+	pHtgView->plotHistogramImage();
 	pBMPDoc->clearData(&bitmapData);
 
 	// 제목 변경
