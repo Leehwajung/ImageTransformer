@@ -45,7 +45,6 @@
 #define ID_IP_ECS                       32777
 #define ID_IP_ECSHIGH                   32781
 #define ID_IP_ECSLOW                    32782
-#define ID_BUTTON2                      32783
 #define ID_VIEW_ORIGIN_SIZE             32783
 
 // Next default values for new objects

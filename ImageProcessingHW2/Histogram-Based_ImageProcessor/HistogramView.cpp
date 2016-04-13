@@ -54,6 +54,9 @@ CHistogramView::CHistogramView()
 
 CHistogramView::~CHistogramView()
 {
+	if (m_Image) {
+		delete[] m_Image;
+	}
 }
 
 BOOL CHistogramView::PreCreateWindow(CREATESTRUCT& cs)

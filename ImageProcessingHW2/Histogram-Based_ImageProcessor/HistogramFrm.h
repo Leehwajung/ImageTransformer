@@ -27,6 +27,8 @@ public:
 public:
 	virtual CHistogramView* GetActiveView();
 	virtual CHistogramDoc* GetActiveDocument();
+	UINT m_InitW;
+	UINT m_InitH;
 
 // 작업입니다.
 public:
@@ -49,6 +51,6 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
-public:
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnViewOriginSize();
 };

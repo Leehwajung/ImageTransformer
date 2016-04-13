@@ -18,11 +18,14 @@ public:
 public:
 //	virtual CBMPView* GetActiveView();
 	virtual CBMPDoc* GetActiveDocument();
-	BYTE bEcsHighEnd;
-	BYTE bEcsLowEnd;
+	BYTE m_bEcsHighEnd;
+	BYTE m_bEcsLowEnd;
+	UINT m_InitW;
+	UINT m_InitH;
 
 // 작업입니다.
 public:
+	void Duplicate(OUT CBMPFrame** frame, OUT CBMPView** view, OUT CBMPDoc** document);
 
 // 재정의입니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -44,6 +47,7 @@ protected:
 	DECLARE_INTERFACE_MAP()
 public:
 	afx_msg BOOL OnNcActivate(BOOL bActive);
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 	afx_msg void OnIpHistogramEqualization();
 	afx_msg void OnIpBasicContrastStretching();
 	afx_msg void OnIpEndsinContrastStretching();

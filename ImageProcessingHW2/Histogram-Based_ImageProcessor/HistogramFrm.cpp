@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CHistogramFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CHistogramFrame::OnFilePrintPreview)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CHistogramFrame::OnUpdateFilePrintPreview)
 	ON_COMMAND(ID_VIEW_ORIGIN_SIZE, &CHistogramFrame::OnViewOriginSize)
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 
@@ -62,6 +63,21 @@ BOOL CHistogramFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.cy = 299;
 
 	return TRUE;
+}
+
+void CHistogramFrame::ActivateFrame(int nCmdShow)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	CRect winRect, cliRect;
+	GetWindowRect(&winRect);
+	GetClientRect(&cliRect);
+
+	m_InitW = HTGSIZE + winRect.Width() - cliRect.Width() + 4;
+	m_InitH = HTGSIZE + winRect.Height() - cliRect.Height() + 4;
+	SetWindowPos(NULL, 0, 0, m_InitW, m_InitH, SWP_NOMOVE | SWP_SHOWWINDOW);
+
+	CMDIChildWndEx::ActivateFrame(nCmdShow);
 }
 
 
@@ -90,6 +106,7 @@ void CHistogramFrame::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
+
 // CHistogramFrame 메시지 처리기
 
 void CHistogramFrame::OnFilePrint()
@@ -113,21 +130,18 @@ void CHistogramFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_dockManager.IsPrintPreviewValid());
 }
 
-void CHistogramFrame::ActivateFrame(int nCmdShow)
+void CHistogramFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	CRect winRect, cliRect;
-	GetWindowRect(&winRect);
-	GetClientRect(&cliRect);
+	lpMMI->ptMinTrackSize.x = m_InitW;
+	lpMMI->ptMinTrackSize.y = m_InitH;
 
-	int cx = 256 + winRect.Width() - cliRect.Width() + 4;
-	int cy = 256 + winRect.Height() - cliRect.Height() + 4;
-	SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
-
-	CMDIChildWndEx::ActivateFrame(nCmdShow);
+	CMDIChildWndEx::OnGetMinMaxInfo(lpMMI);
 }
 
+
+// CHistogramFrame 명령
 
 void CHistogramFrame::OnViewOriginSize()
 {

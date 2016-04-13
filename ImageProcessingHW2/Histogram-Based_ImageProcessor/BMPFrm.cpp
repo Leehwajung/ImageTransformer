@@ -28,6 +28,7 @@ BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_IP_ECSHIGH, &CBMPFrame::OnIpEcsHighEnd)
 	ON_COMMAND(ID_IP_ECSLOW, &CBMPFrame::OnIpEcsLowEnd)
 	ON_COMMAND(ID_VIEW_ORIGIN_SIZE, &CBMPFrame::OnViewOriginSize)
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
@@ -64,8 +65,8 @@ BOOL CBMPFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if (!CMDIChildWndEx::PreCreateWindow(cs))
 		return FALSE;
 
-	cs.cx = 0;
-	cs.cy = 0;
+	cs.cx = 20;
+	cs.cy = 43;
 
 	return TRUE;
 }
@@ -107,6 +108,28 @@ void CBMPFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
+// CBMPFrame 작업입니다.
+
+void CBMPFrame::Duplicate(OUT CBMPFrame** frame, OUT CBMPView** view, OUT CBMPDoc** document)
+{
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+	
+	// 신규 BMP 문서 (CBMPDoc) 생성
+	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
+	pTml->OpenDocumentFile(NULL);
+
+	// 기존 CBMPDoc으로부터 복제
+	*frame = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
+	*view = (CBMPView*)(*frame)->GetActiveView();
+	*document = (*view)->GetDocument();
+	(*document)->copyFrom(pSrcDoc);
+}
+
+
 // CBMPFrame 메시지 처리기입니다.
 
 void CBMPFrame::ActivateFrame(int nCmdShow)
@@ -124,9 +147,9 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 
 	Bitmap *pBitmap = pDoc->m_bitmap;
 	if (pBitmap) {
-		int cx = pDoc->m_bitmap->GetWidth() + winRect.Width() - cliRect.Width() + 4;
-		int cy = pDoc->m_bitmap->GetHeight() + winRect.Height() - cliRect.Height() + 4;
-		SetWindowPos(NULL, 0, 0, cx, cy, SWP_NOMOVE | SWP_SHOWWINDOW);
+		m_InitW = pDoc->m_bitmap->GetWidth() + winRect.Width() - cliRect.Width() + 4;
+		m_InitH = pDoc->m_bitmap->GetHeight() + winRect.Height() - cliRect.Height() + 4;
+		SetWindowPos(NULL, 0, 0, m_InitW, m_InitH, SWP_NOMOVE | SWP_SHOWWINDOW);
 	}
 
 	OnIpEcsHighEnd();
@@ -153,6 +176,19 @@ BOOL CBMPFrame::OnNcActivate(BOOL bActive)
 	return CMDIChildWndEx::OnNcActivate(bActive);
 }
 
+void CBMPFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	lpMMI->ptMinTrackSize.x = m_InitW;
+	lpMMI->ptMinTrackSize.y = m_InitH;
+	lpMMI->ptMaxTrackSize.x = m_InitW;
+	lpMMI->ptMaxTrackSize.y = m_InitH;
+
+	CMDIChildWndEx::OnGetMinMaxInfo(lpMMI);
+}
+
+
 
 // CBMPFrame 명령입니다.
 
@@ -167,16 +203,12 @@ void CBMPFrame::OnIpHistogramEqualization()
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성
-	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
-	pTml->OpenDocumentFile(NULL);
-
-	// 기존 CBMPDoc으로부터 복제
-	CBMPFrame *pDstFrm = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
-	CBMPView *pDstView = (CBMPView*)pDstFrm->GetActiveView();
-	CBMPDoc *pDstDoc = pDstView->GetDocument();
-	pDstDoc->copyFrom(pSrcDoc);
-
+	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
+	CBMPFrame* pDstFrm;
+	CBMPView* pDstView;
+	CBMPDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+	
 	// Histogram Equalization
 	pDstDoc->HistogramEqualization();
 
@@ -201,15 +233,11 @@ void CBMPFrame::OnIpBasicContrastStretching()
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성
-	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
-	pTml->OpenDocumentFile(NULL);
-
-	// 기존 CBMPDoc으로부터 복제
-	CBMPFrame *pDstFrm = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
-	CBMPView *pDstView = (CBMPView*)pDstFrm->GetActiveView();
-	CBMPDoc *pDstDoc = pDstView->GetDocument();
-	pDstDoc->copyFrom(pSrcDoc);
+	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
+	CBMPFrame* pDstFrm;
+	CBMPView* pDstView;
+	CBMPDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Basic Contrast Stretching
 	pDstDoc->BasicContrastStretching();
@@ -235,18 +263,14 @@ void CBMPFrame::OnIpEndsinContrastStretching()
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성
-	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
-	pTml->OpenDocumentFile(NULL);
-
-	// 기존 CBMPDoc으로부터 복제
-	CBMPFrame *pDstFrm = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
-	CBMPView *pDstView = (CBMPView*)pDstFrm->GetActiveView();
-	CBMPDoc *pDstDoc = pDstView->GetDocument();
-	pDstDoc->copyFrom(pSrcDoc);
+	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
+	CBMPFrame* pDstFrm;
+	CBMPView* pDstView;
+	CBMPDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Basic Contrast Stretching
-	pDstDoc->EndsinContrastStretching(bEcsLowEnd, bEcsHighEnd);
+	pDstDoc->EndsinContrastStretching(m_bEcsLowEnd, m_bEcsHighEnd);
 
 	// 제목 변경
 	CString newTitle("stretched_");
@@ -264,7 +288,7 @@ void CBMPFrame::OnIpEcsHighEnd()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, 
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSHIGH));
-	bEcsHighEnd = (BYTE)_wtof(pSpin->GetEditText());
+	m_bEcsHighEnd = (BYTE)_wtof(pSpin->GetEditText());
 }
 
 // Ends-in Contrast Stretching의 최저값 설정
@@ -273,7 +297,7 @@ void CBMPFrame::OnIpEcsLowEnd()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSLOW));
-	bEcsLowEnd = (BYTE)_wtof(pSpin->GetEditText());
+	m_bEcsLowEnd = (BYTE)_wtof(pSpin->GetEditText());
 }
 
 void CBMPFrame::OnViewOriginSize()
@@ -281,3 +305,5 @@ void CBMPFrame::OnViewOriginSize()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	ActivateFrame();
 }
+
+
