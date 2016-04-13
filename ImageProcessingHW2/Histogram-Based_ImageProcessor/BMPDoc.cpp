@@ -289,7 +289,7 @@ void CBMPDoc::HistogramEqualization()
 // Basic Contrast Stretching
 void CBMPDoc::BasicContrastStretching()
 {
-	// 영상의 histogram을 계산
+	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
 	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
@@ -318,7 +318,7 @@ void CBMPDoc::BasicContrastStretching()
 // Ends-in Contrast Stretching
 void CBMPDoc::EndsinContrastStretching(const BYTE low, const BYTE high)
 {
-	// 영상의 histogram을 계산
+	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
 	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
