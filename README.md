@@ -1,4 +1,4 @@
-#Histogram-Based Image Processor
+#Image Point Processor
 Image Processing Course - HW2
 
 Language:	C++<br/>
