@@ -23,6 +23,7 @@
     <RootNamespace>HistogramBased_ImageProcessor</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <Keyword>MFCProj</Keyword>
+    <ProjectName>ImagePointProcessor</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -193,7 +194,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ImageProcessor.h" />
+    <ClInclude Include="ImagePointProcessor.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="HistogramFrm.h" />
     <ClInclude Include="HistogramView.h" />
@@ -210,7 +211,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ImageProcessor.cpp" />
+    <ClCompile Include="ImagePointProcessor.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="HistogramFrm.cpp" />
     <ClCompile Include="HistogramView.cpp" />
@@ -220,19 +221,19 @@
     <ClCompile Include="BMPDoc.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Histogram-Based_ImageProcessor.reg" />
-    <None Include="res\HistogramBased_ImageProcessor.rc2" />
+    <None Include="ImagePointProcessor.reg" />
+    <None Include="res\ImagePointProcessor.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Histogram-Based_ImageProcessor.rc" />
+    <ResourceCompile Include="ImagePointProcessor.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BMPDoc.ico" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />
-    <Image Include="res\Histogram-Based_ImageProcessor.ico" />
+    <Image Include="res\ImagePointProcessor.ico" />
     <Image Include="res\HistogramDoc.ico" />
     <Image Include="res\main.bmp" />
     <Image Include="res\Toolbar.bmp" />

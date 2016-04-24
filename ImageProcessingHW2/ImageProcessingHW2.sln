@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Histogram-Based_ImageProcessor", "Histogram-Based_ImageProcessor\Histogram-Based_ImageProcessor.vcxproj", "{CA0B5B3D-E9AA-4636-89E8-2D058402DDA4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImagePointProcessor", "ImagePointProcessor\ImagePointProcessor.vcxproj", "{CA0B5B3D-E9AA-4636-89E8-2D058402DDA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

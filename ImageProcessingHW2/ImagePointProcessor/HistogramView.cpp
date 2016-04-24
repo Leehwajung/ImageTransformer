@@ -16,7 +16,7 @@
 // SHARED_HANDLERS는 미리 보기, 축소판 그림 및 검색 필터 처리기를 구현하는 ATL 프로젝트에서 정의할 수 있으며
 // 해당 프로젝트와 문서 코드를 공유하도록 해 줍니다.
 #ifndef SHARED_HANDLERS
-#include "ImageProcessor.h"
+#include "ImagePointProcessor.h"
 #endif
 
 #include "MainFrm.h"
@@ -91,9 +91,9 @@ void CHistogramView::OnDraw(CDC* pDC)
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 	//AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_VIEW_HTG_SIZE);
-	UINT newHeight = m_Height * m_HeightRate;
+	UINT newHeight = (UINT)(m_Height * m_HeightRate);
 	if (!newHeight) {
-		newHeight = m_Height * 0.01;
+		newHeight = (UINT)(m_Height * 0.001);
 	}
 	Bitmap image(m_Width, newHeight, m_Stride, PixelFormat8bppIndexed, &m_Image[(m_Height - newHeight) * m_Width]);
 	graphicsCanvas.DrawImage(&image, 0, 0, clientRect.Width(), clientRect.Height());
@@ -217,11 +217,10 @@ void CHistogramView::OnViewHtgSize()
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_VIEW_HTG_SIZE));
 
 	// 현재 위치 가져오기
-	m_HeightRate = 1.0f - (DOUBLE)pSlider->GetPos() / (DOUBLE)pSlider->GetRangeMax();
+	m_HeightRate = (FLOAT)(1.0f - (DOUBLE)pSlider->GetPos() / (DOUBLE)pSlider->GetRangeMax());
 
 	Invalidate();
 }
-
 
 void CHistogramView::OnUpdateViewHtgSize(CCmdUI *pCmdUI)
 {

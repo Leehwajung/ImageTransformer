@@ -13,7 +13,7 @@
 //
 
 #include "stdafx.h"
-#include "ImageProcessor.h"
+#include "ImagePointProcessor.h"
 
 #include "MainFrm.h"
 

@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ImageProcessor.h : ImageProcessor 응용 프로그램에 대한 주 헤더 파일
+// ImagePointProcessor.h : ImagePointProcessor 응용 프로그램에 대한 주 헤더 파일
 //
 #pragma once
 
@@ -23,14 +23,14 @@
 
 using namespace Gdiplus;
 
-// CImageProcessorApp:
-// 이 클래스의 구현에 대해서는 ImageProcessor.cpp을 참조하십시오.
+// CImagePointProcessorApp:
+// 이 클래스의 구현에 대해서는 ImagePointProcessor.cpp을 참조하십시오.
 //
 
-class CImageProcessorApp : public CWinAppEx
+class CImagePointProcessorApp : public CWinAppEx
 {
 public:
-	CImageProcessorApp();
+	CImagePointProcessorApp();
 
 // 특성입니다.
 public:
@@ -52,4 +52,4 @@ public:
 	afx_msg void OnHtgPlot();
 };
 
-extern CImageProcessorApp theApp;
+extern CImagePointProcessorApp theApp;

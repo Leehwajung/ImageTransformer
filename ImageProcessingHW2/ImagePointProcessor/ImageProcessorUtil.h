@@ -9,10 +9,8 @@
 
 // CImageProcessorUtil 명령 대상입니다.
 
-static class CImageProcessorUtil : public CObject
+class CImageProcessorUtil : public CObject
 {
 public:
 	static void generateHistogram(IN const BYTE pixelData[], IN const UINT pixelDataSize, OUT UINT histogramData[HTGSIZE]);
 };
-
-

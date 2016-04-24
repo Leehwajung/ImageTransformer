@@ -5,7 +5,7 @@
 // SHARED_HANDLERS는 미리 보기, 축소판 그림 및 검색 필터 처리기를 구현하는 ATL 프로젝트에서 정의할 수 있으며
 // 해당 프로젝트와 문서 코드를 공유하도록 해 줍니다.
 #ifndef SHARED_HANDLERS
-#include "ImageProcessor.h"
+#include "ImagePointProcessor.h"
 #endif
 
 #include "ImageProcessorUtil.h"
@@ -295,8 +295,8 @@ void CBMPDoc::BasicContrastStretching()
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
 	// 가장 작거나 큰 밝기값을 구함
-	UINT low = HTGMAX;
-	UINT high = HTGMIN;
+	UINT low = (UINT)HTGMAX;
+	UINT high = (UINT)HTGMIN;
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		if (pixelData[i] < low) {
 			low = pixelData[i];
@@ -327,10 +327,10 @@ void CBMPDoc::EndsinContrastStretching(const BYTE low, const BYTE high)
 	float scaleFactor = HTGMAX / (FLOAT)(high - low);
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		if (pixelData[i] <= low) {
-			pixelData[i] = HTGMIN;
+			pixelData[i] = (BYTE)HTGMIN;
 		}
 		else if (pixelData[i] > high) {
-			pixelData[i] = HTGMAX;
+			pixelData[i] = (BYTE)HTGMAX;
 		}
 		else {
 			pixelData[i] = (BYTE)((pixelData[i] - low) * scaleFactor);
