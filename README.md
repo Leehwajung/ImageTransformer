@@ -1,5 +1,5 @@
-#Image Point Processor
-Image Processing Course - HW2
+#Image Area Processor
+Image Processing Course - HW3
 
 Language:	C++<br/>
 Target:		Win32 Application (MFC)<br/>
