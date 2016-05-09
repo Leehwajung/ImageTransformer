@@ -10,6 +10,8 @@
 
 // CImageProcessorUtil 명령 대상입니다.
 
+class Mask;
+
 class CImageProcessorUtil : public CObject
 {
 public:
@@ -25,4 +27,49 @@ public:
 	static void addGaussianNoise(OUT BYTE pixelData[], IN const UINT pixelDataSize, IN const double sigma);
 	// get gaussian
 	static double gaussian(IN const double sd);
+	// mask
+	static void mask(OUT BYTE pixelData[], IN const UINT pixelDataWidth,IN const UINT pixelDataHeight, IN Mask& mask);
+};
+
+class Mask
+{
+public:
+	enum Type {
+		Roberts,
+		Sobel,
+		Prewitt,
+		StochasticGradient
+	};
+
+	Mask();
+	Mask(Type type);
+	const int getLength();
+	double* getMaskX();
+	double* getMaskY();
+
+private:
+	int m_Length;
+	double *m_MaskX;
+	double *m_MaskY;
+
+private:
+	// Roberts Mask
+	static const int RobertsLength = 3;
+	static const double RobertsX[RobertsLength][RobertsLength];
+	static const double RobertsY[RobertsLength][RobertsLength];
+
+	// Sobel Mask
+	static const int SobelLength = 3;
+	static const double SobelX[SobelLength][SobelLength];
+	static const double SobelY[SobelLength][SobelLength];
+
+	// Prewitt Mask
+	static const int PrewittLength = 3;
+	static const double PrewittX[PrewittLength][PrewittLength];
+	static const double PrewittY[PrewittLength][PrewittLength];
+
+	// 5*5 Stochastic Gradient Mask
+	static const int StochasticGradientLength = 5;
+	static const double StochasticGradientX[StochasticGradientLength][StochasticGradientLength];
+	static const double StochasticGradientY[StochasticGradientLength][StochasticGradientLength];
 };

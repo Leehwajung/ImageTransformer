@@ -18,7 +18,7 @@
 #define PFX_EQUALIZATION	L"equalized_"
 #define PFX_STRETCHING		L"stretched_"
 #define PFX_NOISE			L"noisy_"
-#define PFX_EDGE			L"edge_detected_"
+#define PFX_EDGE			L"edged_"
 
 
 // CBMPFrame

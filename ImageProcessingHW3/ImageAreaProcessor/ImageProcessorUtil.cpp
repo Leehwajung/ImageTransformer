@@ -93,3 +93,162 @@ double CImageProcessorUtil::gaussian(IN const double sd)
 
 	return (gaus * sd);
 }
+
+// mask
+void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN Mask& mask) {
+	
+	UINT pixelDataSize = pixelDataWidth * pixelDataHeight;
+
+	// Magnitude Gradient
+	double *g = new double[pixelDataSize];
+
+	// Get Magnitude Gradient
+	for (UINT i = 0; i < pixelDataHeight; i++) {
+		for (UINT j = 0; j < pixelDataWidth; j++) {
+			double newValX = 0;
+			double newValY = 0;
+			int length = mask.getLength();
+			for (int r = 0; r < length; r++) {
+				for (int c = 0; c < length; c++) {
+					int mi = i + r - length / 2;
+					int mj = j + c - length / 2;
+					mi = mi >= (int)pixelDataWidth ? (int)pixelDataWidth - 1 : mi < 0 ? 0 : mi;
+					mj = mj >= (int)pixelDataHeight ? (int)pixelDataHeight - 1 : mj < 0 ? 0 : mj;
+
+					UINT where = mi * pixelDataWidth + mj;
+					newValX += mask.getMaskX()[r * length + c] * (double)pixelData[where];
+					newValY += mask.getMaskY()[r * length + c] * (double)pixelData[where];
+				}
+			}
+
+			g[i * pixelDataWidth + j] = sqrt(pow(newValX, 2.0) + pow(newValY, 2.0));
+		}
+	}
+
+	// 정규화를 위해 가장 작거나 큰 값을 구함
+	double min = INT_MAX;
+	double max = INT_MIN;
+	for (UINT i = 1; i < pixelDataSize; i++) {
+		if (g[i] < min) {
+			min = g[i];
+		}
+		else if (g[i] > max) {
+			max = g[i];
+		}
+	}
+
+	// [min, max] 구간을 [0, 255]값으로 변환
+	double scaleFactor = (double)INTENSITYMAX / (max - min);
+	double translator = -(double)INTENSITYMAX * min / (max - min);
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		pixelData[i] = (BYTE)(scaleFactor * g[i] + translator + 0.5);
+	}
+
+	// 동적 할당 메모리 해제
+	delete[] g;
+}
+
+
+Mask::Mask()
+{
+	Mask(Roberts);
+}
+
+Mask::Mask(Type type)
+{
+	switch (type)
+	{
+	case Mask::Roberts:
+		m_Length = RobertsLength;
+		m_MaskX = (double*)RobertsX;
+		m_MaskY = (double*)RobertsY;
+		break;
+	case Mask::Sobel:
+		m_Length = SobelLength;
+		m_MaskX = (double*)SobelX;
+		m_MaskY = (double*)SobelY;
+		break;
+	case Mask::Prewitt:
+		m_Length = PrewittLength;
+		m_MaskX = (double*)PrewittX;
+		m_MaskY = (double*)PrewittY;
+		break;
+	case Mask::StochasticGradient:
+		m_Length = StochasticGradientLength;
+		m_MaskX = (double*)StochasticGradientX;
+		m_MaskY = (double*)StochasticGradientY;
+		break;
+	}
+}
+
+const int Mask::getLength()
+{
+	return m_Length;
+}
+
+double* Mask::getMaskX()
+{
+	return m_MaskX;
+}
+
+double* Mask::getMaskY()
+{
+	return m_MaskY;
+}
+
+
+// Roberts Mask
+const double Mask::RobertsX[RobertsLength][RobertsLength] = {
+	{  0,  0, -1 },
+	{  0,  1,  0 },
+	{  0,  0,  0 }
+};
+
+const double Mask::RobertsY[RobertsLength][RobertsLength] = {
+	{ -1,  0,  0 },
+	{  0,  1,  0 },
+	{  0,  0,  0 }
+};
+
+// Sobel Mask
+const double Mask::SobelX[SobelLength][SobelLength] = {
+	{  1,  0, -1 },
+	{  2,  0, -2 },
+	{  1,  0, -1 }
+};
+
+const double Mask::SobelY[SobelLength][SobelLength] = {
+	{ -1, -2, -1 },
+	{  0,  0,  0 },
+	{  1,  2,  1 }
+};
+
+// Prewitt Mask
+const double Mask::PrewittX[PrewittLength][PrewittLength] = {
+	{  1,  0, -1 },
+	{  1,  0, -1 },
+	{  1,  0, -1 }
+};
+
+const double Mask::PrewittY[PrewittLength][PrewittLength] = {
+	{ -1, -1, -1 },
+	{  0,  0,  0 },
+	{  1,  1,  1 }
+};
+
+// 5*5 Stochastic Gradient Mask
+const double Mask::StochasticGradientX[StochasticGradientLength][StochasticGradientLength] = {
+	{  0.267,  0.364,  0.000, -0.364, -0.267 },
+	{  0.373,  0.562,  0.000, -0.562, -0.373 },
+	{  0.463,  1.000,  0.000, -1.000, -0.463 },
+	{  0.373,  0.562,  0.000, -0.562, -0.373 },
+	{  0.267,  0.364,  0.000, -0.364, -0.267 }
+};
+
+const double Mask::StochasticGradientY[StochasticGradientLength][StochasticGradientLength] = {
+	{  0.267,  0.373,  0.463,  0.373,  0.267 },
+	{  0.364,  0.562,  1.000,  0.562,  0.364 },
+	{  0.000,  0.000,  0.000,  0.000,  0.000 },
+	{ -0.267, -0.373, -0.463, -0.373, -0.267 },
+	{ -0.364, -0.562, -1.000, -0.562, -0.364 }
+};
