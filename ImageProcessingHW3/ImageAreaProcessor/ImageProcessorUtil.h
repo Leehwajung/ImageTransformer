@@ -7,7 +7,6 @@
 #define INTENSITYMAX	255	// intensity 최댓값
 #define INTENSITYMIN	0	// intensity 최솟값
 
-
 // CImageProcessorUtil 명령 대상입니다.
 
 class Mask;

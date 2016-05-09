@@ -35,6 +35,8 @@
 #define ID_VIEW_APPLOOK_OFF_2007_SILVER 217
 #define ID_VIEW_APPLOOK_OFF_2007_AQUA   218
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
+#define ID_VIEW_ORIGIN_SIZE             220
+#define ID_VIEW_HTG_SIZE                221
 #define IDS_EDIT_MENU                   306
 #define IDR_RIBBON                      307
 #define ID_WRITE_PASTEASHYPERLINK       32770
@@ -43,18 +45,16 @@
 #define ID_PP_HE                        32774
 #define ID_PP_BCS                       32776
 #define ID_PP_ECS                       32777
-#define ID_PP_ECSHIGH                   32781
-#define ID_PP_ECSLOW                    32782
-#define ID_VIEW_ORIGIN_SIZE             32783
-#define ID_VIEW_HTG_SIZE                32785
+#define ID_PP_ECSHIGH                   32778
+#define ID_PP_ECSLOW                    32779
+#define ID_NS_GSN                       32780
+#define ID_NS_SNR                       32781
+#define ID_AP_RBT                       32782
+#define ID_AP_SB                        32783
+#define ID_AP_PWT                       32784
+#define ID_AP_SG                        32785
 #define ID_AP_LP                        32786
-#define ID_AP_RBT                       32787
 #define ID_AP_MD                        32787
-#define ID_NS_SNR                       32788
-#define ID_AP_SB                        32788
-#define ID_AP_PWT                       32789
-#define ID_AP_SG                        32790
-#define ID_NS_GSN                       32791
 
 // Next default values for new objects
 // 

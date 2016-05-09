@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "ImageProcessorUtil.h"
+
 using Gdiplus::Bitmap;
 
 // CBMPDoc 문서입니다.
@@ -74,17 +76,8 @@ public:
 	// Gaussian Noise
 	void CBMPDoc::GaussianNoise(const DOUBLE snr);
 
-	// Roberts Masking
-	void CBMPDoc::RobertsMasking();
-
-	// Sobel Masking
-	void CBMPDoc::SobelMasking();
-
-	// Prewitt Masking
-	void CBMPDoc::PrewittMasking();
-
-	// Stochastic Gradient Masking
-	void CBMPDoc::StochasticGradientMasking();
+	// Edge Detection
+	void CBMPDoc::detectEdge(Mask::Type maskType);
 
 	// Low-pass Filtering
 	void CBMPDoc::LowPassFiltering();

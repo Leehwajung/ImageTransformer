@@ -6,6 +6,8 @@
 #include "BMPView.h"
 #include "BMPDoc.h"
 
+#include "ImageProcessorUtil.h"
+
 // CBMPFrame
 
 class CBMPView;
@@ -29,6 +31,7 @@ public:
 // 작업입니다.
 public:
 	void Duplicate(OUT CBMPFrame** frame, OUT CBMPView** view, OUT CBMPDoc** document);
+	void runEdgeDetection(Mask::Type maskType);
 
 // 재정의입니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

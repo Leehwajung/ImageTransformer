@@ -8,8 +8,6 @@
 #include "ImageAreaProcessor.h"
 #endif
 
-#include "ImageProcessorUtil.h"
-
 #include "BMPDoc.h"
 
 #include <propkey.h>
@@ -340,37 +338,19 @@ void CBMPDoc::GaussianNoise(const DOUBLE snr)
 	clearData(&bitmapData);
 }
 
-// Roberts Masking
-void CBMPDoc::RobertsMasking()
+// Edge Detection
+void CBMPDoc::detectEdge(Mask::Type maskType)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
 	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
-	// Roberts Masking
-	Mask robertsMask(Mask::Type::Roberts);
-	CImageProcessorUtil::mask(pixelData, bitmapData.Width, bitmapData.Height, robertsMask);
+	// Masking and Edge Detection
+	Mask mask(maskType);
+	CImageProcessorUtil::mask(pixelData, bitmapData.Width, bitmapData.Height, mask);
 
 	clearData(&bitmapData);
-}
-
-// Sobel Masking
-void CBMPDoc::SobelMasking()
-{
-
-}
-
-// Prewitt Masking
-void CBMPDoc::PrewittMasking()
-{
-
-}
-
-// Stochastic Gradient Masking
-void CBMPDoc::StochasticGradientMasking()
-{
-
 }
 
 // Low-pass Filtering

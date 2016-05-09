@@ -142,6 +142,34 @@ void CBMPFrame::Duplicate(OUT CBMPFrame** frame, OUT CBMPView** view, OUT CBMPDo
 	(*document)->copyFrom(pSrcDoc);
 }
 
+// Masking
+void CBMPFrame::runEdgeDetection(Mask::Type maskType)
+{
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
+	CBMPFrame* pDstFrm;
+	CBMPView* pDstView;
+	CBMPDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+
+	// Masking and Edge Detection
+	pDstDoc->detectEdge(maskType);
+
+	// 제목 변경
+	CString newTitle(PFX_EDGE);
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
+}
+
 
 // CBMPFrame 메시지 처리기입니다.
 
@@ -299,6 +327,7 @@ void CBMPFrame::OnPpEndsinContrastStretching()
 void CBMPFrame::OnPpEcsHighEnd()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
 	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_PP_ECSHIGH));
 	if (pSpin != NULL) {
@@ -310,6 +339,7 @@ void CBMPFrame::OnPpEcsHighEnd()
 void CBMPFrame::OnPpEcsLowEnd()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
 	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_PP_ECSLOW));
 	if (pSpin != NULL) {
@@ -320,6 +350,7 @@ void CBMPFrame::OnPpEcsLowEnd()
 void CBMPFrame::OnViewOriginSize()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
 	ActivateFrame();
 }
 
@@ -359,6 +390,7 @@ void CBMPFrame::OnNoiseGaussian()
 void CBMPFrame::OnNoiseSNR()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
 	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_NS_SNR));
 	if (pSpin != NULL) {
@@ -371,47 +403,31 @@ void CBMPFrame::OnApRoberts()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
-	ASSERT_VALID(pSrcDoc);
-	if (!pSrcDoc)
-		return;
-
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
-	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
-
-	// Roberts Masking and Edge Detection
-	pDstDoc->RobertsMasking();
-
-	// 제목 변경
-	CString newTitle(PFX_EDGE);
-	newTitle.Append(pSrcDoc->GetTitle());
-	pDstDoc->SetTitle(newTitle);
-
-	// 영상에 맞게 다시 그리기
-	pDstFrm->ActivateFrame();
-	pDstView->Invalidate();
+	runEdgeDetection(Mask::Roberts);
 }
 
 // Sobel Masking
 void CBMPFrame::OnApSobel()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	runEdgeDetection(Mask::Sobel);
 }
 
 // Prewitt Masking
 void CBMPFrame::OnApPrewitt()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	runEdgeDetection(Mask::Prewitt);
 }
 
 // Stochastic Gradient Masking
 void CBMPFrame::OnApStochasticGradient()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	runEdgeDetection(Mask::StochasticGradient);
 }
 
 // Low-pass Filtering
