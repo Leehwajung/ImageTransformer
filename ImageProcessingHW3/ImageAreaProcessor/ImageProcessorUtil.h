@@ -6,11 +6,25 @@
 #define HTGSIZE	256		// histogram 데이터 너비
 #define HTGMAX	255.0f	// histogram 도메인 최댓값
 #define HTGMIN	0.0f	// histogram 도메인 최솟값
+#define INTMAX	255		// intensity 최댓값
+#define INTMIN	0		// intensity 최솟값
+
 
 // CImageProcessorUtil 명령 대상입니다.
 
 class CImageProcessorUtil : public CObject
 {
 public:
+	// 픽셀 데이터에 대한 histogram 생성
 	static void generateHistogram(IN const BYTE pixelData[], IN const UINT pixelDataSize, OUT UINT histogramData[HTGSIZE]);
+	// Ends-in Contrast Stretching
+	static void stretchContrast(OUT BYTE pixelData[], IN const UINT pixelDataSize, IN const BYTE low, IN const BYTE high);
+	// Get Variance of Pixels
+	static double getImagePower(IN const BYTE pixelData[], IN const UINT pixelDataSize);
+	// Get Standard Deviation of Noise
+	static double getStandardDeviationOfNoise(IN const BYTE pixelData[], IN const UINT pixelDataSize, IN const double snr);
+	// Add Gaussian Noise
+	static void addGaussianNoise(OUT BYTE pixelData[], IN const UINT pixelDataSize, IN const double sigma);
+	// get gaussian
+	static double gaussian(IN const double sd);
 };

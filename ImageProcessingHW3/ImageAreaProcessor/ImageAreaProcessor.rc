@@ -73,8 +73,11 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\ImageAreaProcessor.ico"
+
 IDR_HistogramFileTYPE   ICON                    "res\\HistogramDoc.ico"
+
 IDR_BMPFileTYPE         ICON                    "res\\BMPDoc.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -82,13 +85,21 @@ IDR_BMPFileTYPE         ICON                    "res\\BMPDoc.ico"
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
 IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+
 IDB_MAIN                BITMAP                  "res\\main.bmp"
+
 IDB_FILELARGE           BITMAP                  "res\\filelarge.bmp"
+
 IDB_FILESMALL           BITMAP                  "res\\filesmall.bmp"
+
 IDB_WRITELARGE          BITMAP                  "res\\writelarge.bmp"
+
 IDB_WRITESMALL          BITMAP                  "res\\writesmall.bmp"
+
 IDB_BUTTONS             BITMAP                  "res\\buttons.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -512,8 +523,8 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_IP_ECSHIGH           "엔드인 대비 스트레칭의 최고값을 설정합니다."
-    ID_IP_ECSLOW            "엔드인 대비 스트레칭의 최저값을 설정합니다."
+    ID_PP_ECSHIGH           "엔드인 대비 스트레칭의 최고값을 설정합니다."
+    ID_PP_ECSLOW            "엔드인 대비 스트레칭의 최저값을 설정합니다."
 END
 
 #endif    // 한국어(대한민국) resources

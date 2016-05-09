@@ -29,6 +29,8 @@
 #define new DEBUG_NEW
 #endif
 
+#define PFX_HISTOGRAM	L"histogram_of_"
+
 
 // CImageAreaProcessorApp
 
@@ -167,6 +169,9 @@ BOOL CImageAreaProcessorApp::InitInstance()
 	// 파일 열기 다이얼로그를 활성화합니다.
 	AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_FILE_OPEN);
 
+	// 시간을 시드로 사용하여 랜덤값을 만듭니다.
+	srand((UINT)time(NULL));
+
 	return TRUE;
 }
 
@@ -272,7 +277,7 @@ void CImageAreaProcessorApp::OnHtgPlot()
 	pBMPDoc->clearData(&bitmapData);
 
 	// 제목 변경
-	CString newTitle("histogram_of_");
+	CString newTitle(PFX_HISTOGRAM);
 	newTitle.Append(pBMPDoc->GetTitle());
 	pHtgDoc->SetTitle(newTitle);
 

@@ -40,20 +40,28 @@
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_IMAGEPROCESSING              32771
 #define ID_HTG_PLOT                     32773
-#define ID_IP_HE                        32774
-#define ID_IP_BCS                       32776
-#define ID_IP_ECS                       32777
-#define ID_IP_ECSHIGH                   32781
-#define ID_IP_ECSLOW                    32782
+#define ID_PP_HE                        32774
+#define ID_PP_BCS                       32776
+#define ID_PP_ECS                       32777
+#define ID_PP_ECSHIGH                   32781
+#define ID_PP_ECSLOW                    32782
 #define ID_VIEW_ORIGIN_SIZE             32783
 #define ID_VIEW_HTG_SIZE                32785
+#define ID_AP_LP                        32786
+#define ID_AP_RBT                       32787
+#define ID_AP_MD                        32787
+#define ID_NS_SNR                       32788
+#define ID_AP_SB                        32788
+#define ID_AP_PWT                       32789
+#define ID_AP_SG                        32790
+#define ID_NS_GSN                       32791
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32786
+#define _APS_NEXT_COMMAND_VALUE         32789
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

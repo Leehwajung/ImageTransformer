@@ -15,6 +15,10 @@
 
 #include "MainFrm.h"
 
+#define PFX_EQUALIZATION	L"equalized_"
+#define PFX_STRETCHING		L"stretched_"
+#define PFX_NOISE			L"noisy_"
+
 
 // CBMPFrame
 
@@ -22,12 +26,20 @@ IMPLEMENT_DYNCREATE(CBMPFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
 	ON_WM_NCACTIVATE()
-	ON_COMMAND(ID_IP_HE, &CBMPFrame::OnIpHistogramEqualization)
-	ON_COMMAND(ID_IP_BCS, &CBMPFrame::OnIpBasicContrastStretching)
-	ON_COMMAND(ID_IP_ECS, &CBMPFrame::OnIpEndsinContrastStretching)
-	ON_COMMAND(ID_IP_ECSHIGH, &CBMPFrame::OnIpEcsHighEnd)
-	ON_COMMAND(ID_IP_ECSLOW, &CBMPFrame::OnIpEcsLowEnd)
+	ON_COMMAND(ID_PP_HE, &CBMPFrame::OnPpHistogramEqualization)
+	ON_COMMAND(ID_PP_BCS, &CBMPFrame::OnPpBasicContrastStretching)
+	ON_COMMAND(ID_PP_ECS, &CBMPFrame::OnPpEndsinContrastStretching)
+	ON_COMMAND(ID_PP_ECSHIGH, &CBMPFrame::OnPpEcsHighEnd)
+	ON_COMMAND(ID_PP_ECSLOW, &CBMPFrame::OnPpEcsLowEnd)
 	ON_COMMAND(ID_VIEW_ORIGIN_SIZE, &CBMPFrame::OnViewOriginSize)
+	ON_COMMAND(ID_NS_GSN, &CBMPFrame::OnNoiseGaussian)
+	ON_COMMAND(ID_NS_SNR, &CBMPFrame::OnNoiseSNR)
+	ON_COMMAND(ID_AP_RBT, &CBMPFrame::OnApRoberts)
+	ON_COMMAND(ID_AP_SB, &CBMPFrame::OnApSobel)
+	ON_COMMAND(ID_AP_PWT, &CBMPFrame::OnApPrewitt)
+	ON_COMMAND(ID_AP_SG, &CBMPFrame::OnApStochasticGradient)
+	ON_COMMAND(ID_AP_LP, &CBMPFrame::OnApLowPass)
+	ON_COMMAND(ID_AP_MD, &CBMPFrame::OnApMedian)
 	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
@@ -152,8 +164,8 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 		SetWindowPos(NULL, 0, 0, m_InitW, m_InitH, SWP_NOMOVE | SWP_SHOWWINDOW);
 	}
 
-	OnIpEcsHighEnd();
-	OnIpEcsLowEnd();
+	OnPpEcsHighEnd();
+	OnPpEcsLowEnd();
 
 	CMDIChildWndEx::ActivateFrame(nCmdShow);
 }
@@ -161,6 +173,7 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 BOOL CBMPFrame::OnNcActivate(BOOL bActive)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
 	// Activate/Inactivate ribbon context category: 영상처리
 	CMFCRibbonBar *pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
 	if (bActive) {
@@ -192,7 +205,7 @@ void CBMPFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 // CBMPFrame 명령입니다.
 
 // Histogram Equalization
-void CBMPFrame::OnIpHistogramEqualization()
+void CBMPFrame::OnPpHistogramEqualization()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -212,7 +225,7 @@ void CBMPFrame::OnIpHistogramEqualization()
 	pDstDoc->HistogramEqualization();
 
 	// 제목 변경
-	CString newTitle("equalized_");
+	CString newTitle(PFX_EQUALIZATION);
 	newTitle.Append(pSrcDoc->GetTitle());
 	pDstDoc->SetTitle(newTitle);
 
@@ -222,7 +235,7 @@ void CBMPFrame::OnIpHistogramEqualization()
 }
 
 // Basic Contrast Stretching
-void CBMPFrame::OnIpBasicContrastStretching()
+void CBMPFrame::OnPpBasicContrastStretching()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -242,7 +255,7 @@ void CBMPFrame::OnIpBasicContrastStretching()
 	pDstDoc->BasicContrastStretching();
 
 	// 제목 변경
-	CString newTitle("stretched_");
+	CString newTitle(PFX_STRETCHING);
 	newTitle.Append(pSrcDoc->GetTitle());
 	pDstDoc->SetTitle(newTitle);
 
@@ -252,7 +265,7 @@ void CBMPFrame::OnIpBasicContrastStretching()
 }
 
 // Ends-in Contrast Stretching
-void CBMPFrame::OnIpEndsinContrastStretching()
+void CBMPFrame::OnPpEndsinContrastStretching()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -272,7 +285,7 @@ void CBMPFrame::OnIpEndsinContrastStretching()
 	pDstDoc->EndsinContrastStretching(m_bEcsLowEnd, m_bEcsHighEnd);
 
 	// 제목 변경
-	CString newTitle("stretched_");
+	CString newTitle(PFX_STRETCHING);
 	newTitle.Append(pSrcDoc->GetTitle());
 	pDstDoc->SetTitle(newTitle);
 
@@ -282,21 +295,25 @@ void CBMPFrame::OnIpEndsinContrastStretching()
 }
 
 // Ends-in Contrast Stretching의 최고값 설정
-void CBMPFrame::OnIpEcsHighEnd()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, 
-		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSHIGH));
-	m_bEcsHighEnd = (BYTE)_wtof(pSpin->GetEditText());
-}
-
-// Ends-in Contrast Stretching의 최저값 설정
-void CBMPFrame::OnIpEcsLowEnd()
+void CBMPFrame::OnPpEcsHighEnd()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
-		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IP_ECSLOW));
-	m_bEcsLowEnd = (BYTE)_wtof(pSpin->GetEditText());
+		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_PP_ECSHIGH));
+	if (pSpin != NULL) {
+		m_bEcsHighEnd = (BYTE)_wtof(pSpin->GetEditText());
+	}
+}
+
+// Ends-in Contrast Stretching의 최저값 설정
+void CBMPFrame::OnPpEcsLowEnd()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
+		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_PP_ECSLOW));
+	if (pSpin != NULL) {
+		m_bEcsLowEnd = (BYTE)_wtof(pSpin->GetEditText());
+	}
 }
 
 void CBMPFrame::OnViewOriginSize()
@@ -306,3 +323,81 @@ void CBMPFrame::OnViewOriginSize()
 }
 
 
+// Gaussian Noise
+void CBMPFrame::OnNoiseGaussian()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
+	CBMPFrame* pDstFrm;
+	CBMPView* pDstView;
+	CBMPDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+
+	// Add Gaussian Noise
+	OnNoiseSNR();	// get SNR
+	pDstDoc->GaussianNoise(m_snr);
+
+	// 제목 변경
+	CString newTitle(PFX_NOISE);
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
+}
+
+// SNR of Gaussian Noise
+void CBMPFrame::OnNoiseSNR()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
+		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_NS_SNR));
+	if (pSpin != NULL) {
+		m_snr = _wtof(pSpin->GetEditText());
+	}
+}
+
+// Roberts Masking
+void CBMPFrame::OnApRoberts()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+}
+
+// Sobel Masking
+void CBMPFrame::OnApSobel()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+// Prewitt Masking
+void CBMPFrame::OnApPrewitt()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+// Stochastic Gradient Masking
+void CBMPFrame::OnApStochasticGradient()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+// Low-pass Filtering
+void CBMPFrame::OnApLowPass()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+// Median Filtering
+void CBMPFrame::OnApMedian()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}

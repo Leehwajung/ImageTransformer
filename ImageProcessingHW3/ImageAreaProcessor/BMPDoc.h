@@ -70,4 +70,25 @@ public:
 
 	// Ends-in Contrast Stretching
 	void EndsinContrastStretching(const BYTE low, const BYTE high);
+
+	// Gaussian Noise
+	void CBMPDoc::GaussianNoise(const DOUBLE snr);
+
+	// Roberts Masking
+	void CBMPDoc::RobertsMasking();
+
+	// Sobel Masking
+	void CBMPDoc::SobelMasking();
+
+	// Prewitt Masking
+	void CBMPDoc::PrewittMasking();
+
+	// Stochastic Gradient Masking
+	void CBMPDoc::StochasticGradientMasking();
+
+	// Low-pass Filtering
+	void CBMPDoc::LowPassFiltering();
+
+	// Median Filtering
+	void CBMPDoc::MedianFiltering();
 };

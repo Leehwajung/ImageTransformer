@@ -295,8 +295,8 @@ void CBMPDoc::BasicContrastStretching()
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
 	// 가장 작거나 큰 밝기값을 구함
-	UINT low = (UINT)HTGMAX;
-	UINT high = (UINT)HTGMIN;
+	UINT low = (UINT)INTMAX;
+	UINT high = (UINT)INTMIN;
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		if (pixelData[i] < low) {
 			low = pixelData[i];
@@ -307,10 +307,7 @@ void CBMPDoc::BasicContrastStretching()
 	}
 
 	// Basic Contrast Stretching
-	FLOAT scaleFactor = HTGMAX / (FLOAT)(high - low);
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = (BYTE)((pixelData[i] - low) * scaleFactor);
-	}
+	CImageProcessorUtil::stretchContrast(pixelData, pixelDataSize, low, high);
 
 	clearData(&bitmapData);
 }
@@ -324,18 +321,57 @@ void CBMPDoc::EndsinContrastStretching(const BYTE low, const BYTE high)
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
 	// Ends-in Contrast Stretching
-	float scaleFactor = HTGMAX / (FLOAT)(high - low);
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		if (pixelData[i] <= low) {
-			pixelData[i] = (BYTE)HTGMIN;
-		}
-		else if (pixelData[i] > high) {
-			pixelData[i] = (BYTE)HTGMAX;
-		}
-		else {
-			pixelData[i] = (BYTE)((pixelData[i] - low) * scaleFactor);
-		}
-	}
+	CImageProcessorUtil::stretchContrast(pixelData, pixelDataSize, low, high);
 
 	clearData(&bitmapData);
+}
+
+// Gaussian Noise
+void CBMPDoc::GaussianNoise(const DOUBLE snr)
+{
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+
+	// Add Gaussian Noise
+	CImageProcessorUtil::addGaussianNoise(pixelData, pixelDataSize, snr);
+
+	clearData(&bitmapData);
+}
+
+// Roberts Masking
+void CBMPDoc::RobertsMasking()
+{
+
+}
+
+// Sobel Masking
+void CBMPDoc::SobelMasking()
+{
+
+}
+
+// Prewitt Masking
+void CBMPDoc::PrewittMasking()
+{
+
+}
+
+// Stochastic Gradient Masking
+void CBMPDoc::StochasticGradientMasking()
+{
+
+}
+
+// Low-pass Filtering
+void CBMPDoc::LowPassFiltering()
+{
+
+}
+
+// Median Filtering
+void CBMPDoc::MedianFiltering()
+{
+
 }
