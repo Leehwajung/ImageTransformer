@@ -29,13 +29,13 @@ void CImageProcessorUtil::generateHistogram(IN const BYTE pixelData[], IN const 
 // Ends-in Contrast Stretching
 void CImageProcessorUtil::stretchContrast(OUT BYTE pixelData[], IN const UINT pixelDataSize, IN const BYTE low, IN const BYTE high)
 {
-	float scaleFactor = HTGMAX / (FLOAT)(high - low);
+	float scaleFactor = (FLOAT)INTENSITYMAX / (FLOAT)(high - low);
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		if (pixelData[i] <= low) {
-			pixelData[i] = (BYTE)HTGMIN;
+			pixelData[i] = (BYTE)INTENSITYMIN;
 		}
 		else if (pixelData[i] > high) {
-			pixelData[i] = (BYTE)HTGMAX;
+			pixelData[i] = (BYTE)INTENSITYMAX;
 		}
 		else {
 			pixelData[i] = (BYTE)((pixelData[i] - low) * scaleFactor);
@@ -61,7 +61,7 @@ void CImageProcessorUtil::addGaussianNoise(OUT BYTE pixelData[], IN const UINT p
 {
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		double s = (double)pixelData[i] + gaussian(sigma);
-		pixelData[i] = (BYTE)(s > INTMAX ? INTMAX : s < INTMIN ? INTMIN : s);
+		pixelData[i] = (BYTE)(s > INTENSITYMAX ? INTENSITYMAX : s < INTENSITYMIN ? INTENSITYMIN : s);
 	}
 }
 

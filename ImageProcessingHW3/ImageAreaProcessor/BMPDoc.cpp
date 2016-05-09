@@ -272,7 +272,7 @@ void CBMPDoc::HistogramEqualization()
 	// Histogram의 누적합 및 정규화된 합 계산
 	UINT accruedSum = 0;
 	DOUBLE normalizedSum[HTGSIZE];
-	FLOAT scaleFactor = HTGMAX / (float)pixelDataSize;
+	FLOAT scaleFactor = (FLOAT)INTENSITYMAX / (FLOAT)pixelDataSize;
 	for (UINT i = 0; i < HTGSIZE; i++) {
 		accruedSum += histogramData[i];
 		normalizedSum[i] = accruedSum * scaleFactor;
@@ -295,8 +295,8 @@ void CBMPDoc::BasicContrastStretching()
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
 	// 가장 작거나 큰 밝기값을 구함
-	UINT low = (UINT)INTMAX;
-	UINT high = (UINT)INTMIN;
+	UINT low = (UINT)INTENSITYMAX;
+	UINT high = (UINT)INTENSITYMIN;
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		if (pixelData[i] < low) {
 			low = pixelData[i];
@@ -343,7 +343,71 @@ void CBMPDoc::GaussianNoise(const DOUBLE snr)
 // Roberts Masking
 void CBMPDoc::RobertsMasking()
 {
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
+	// Roberts Mask
+	int MaskRobertsX[3][3] = {
+		{ 0,  0, -1 },
+		{ 0,  1,  0 },
+		{ 0,  0,  0 }
+	};
+	int MaskRobertsY[3][3] = {
+		{ -1,  0,  0 },
+		{  0,  1,  0 },
+		{  0,  0,  0 }
+	};
+
+	// Magnitude Gradient
+	double *g = new double[pixelDataSize];
+
+	// Get Magnitude Gradient
+	for (UINT i = 0; i < bitmapData.Height; i++) {
+		for (UINT j = 0; j < bitmapData.Width; j++) {
+			int newValX = 0;
+			int newValY = 0;
+			for (int r = 0; r < 3; r++) {
+				for (int c = 0; c < 3; c++) {
+					int mi = i + r - 1;
+					int mj = j + c - 1;
+					mi = mi >= bitmapData.Width ? bitmapData.Width - 1 : mi < 0 ? 0 : mi;
+					mj = mj >= bitmapData.Height ? bitmapData.Height - 1 : mj < 0 ? 0 : mj;
+
+					UINT where = mi * bitmapData.Width + mj;
+					newValX += MaskRobertsX[r][c] * pixelData[where];
+					newValY += MaskRobertsY[r][c] * pixelData[where];
+				}
+			}
+
+			g[i * bitmapData.Width + j] = sqrt(pow(newValX, 2.0) + pow(newValY, 2.0));
+		}
+	}
+
+	// 정규화를 위해 가장 작거나 큰 값을 구함
+	double min = INT_MAX;
+	double max = INT_MIN;
+	for (UINT i = 1; i < pixelDataSize; i++) {
+		if (g[i] < min) {
+			min = g[i];
+		}
+		else if (g[i] > max) {
+			max = g[i];
+		}
+	}
+	
+	// [min, max] 구간을 [0, 255]값으로 변환
+	double scaleFactor = (double)INTENSITYMAX / (max - min);
+	double translator = -(double)INTENSITYMAX * min / (max - min);
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		pixelData[i] = (BYTE)(scaleFactor * g[i] + translator + 0.5);
+	}
+
+	// 동적 할당 메모리 해제
+	delete[] g;
+
+	clearData(&bitmapData);
 }
 
 // Sobel Masking

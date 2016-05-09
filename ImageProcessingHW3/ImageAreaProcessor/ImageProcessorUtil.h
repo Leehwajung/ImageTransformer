@@ -3,11 +3,9 @@
 
 #pragma once
 
-#define HTGSIZE	256		// histogram 데이터 너비
-#define HTGMAX	255.0f	// histogram 도메인 최댓값
-#define HTGMIN	0.0f	// histogram 도메인 최솟값
-#define INTMAX	255		// intensity 최댓값
-#define INTMIN	0		// intensity 최솟값
+#define HTGSIZE			256	// histogram 데이터 너비
+#define INTENSITYMAX	255	// intensity 최댓값
+#define INTENSITYMIN	0	// intensity 최솟값
 
 
 // CImageProcessorUtil 명령 대상입니다.
