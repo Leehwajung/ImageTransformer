@@ -465,4 +465,28 @@ void CBMPFrame::OnApLowPass()
 void CBMPFrame::OnApMedian()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
+	CBMPFrame* pDstFrm;
+	CBMPView* pDstView;
+	CBMPDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+
+	// Median Filtering
+	pDstDoc->MedianFiltering(3);
+
+	// 제목 변경
+	CString newTitle(PFX_FILTER);
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
 }

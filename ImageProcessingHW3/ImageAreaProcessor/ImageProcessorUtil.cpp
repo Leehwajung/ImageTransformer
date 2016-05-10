@@ -7,6 +7,8 @@
 
 // CImageProcessorUtil
 
+#define THRESH	150
+
 // CImageProcessorUtil 멤버 함수
 
 // 픽셀 데이터에 대한 histogram 생성
@@ -105,6 +107,7 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 	// Get Magnitude Gradient
 	int length = mask.getLength();	// 마스크의 가로와 세로 길이
 	int indicator = length / 2;		// 마스크 중앙을 찾기 위한 보정
+
 	for (UINT n = 0; n < pixelDataHeight; n++) {		// 영상 세로 방향 루프 (Image Abscissa)
 		for (UINT m = 0; m < pixelDataWidth; m++) {		// 영상 가로 방향 루프 (Image Ordinate)
 			double gx = 0;								// 행 검출기
@@ -135,24 +138,24 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 	}
 
 	// 정규화를 위해 가장 작거나 큰 값을 구함
-	//double min = INT_MAX;
-	//double max = INT_MIN;
-	//for (UINT i = 1; i < pixelDataSize; i++) {
-	//	if (g[i] < min) {
-	//		min = g[i];
-	//	}
-	//	else if (g[i] > max) {
-	//		max = g[i];
-	//	}
-	//}
+	double min = INT_MAX;
+	double max = INT_MIN;
+	for (UINT i = 1; i < pixelDataSize; i++) {
+		if (g[i] < min) {
+			min = g[i];
+		}
+		else if (g[i] > max) {
+			max = g[i];
+		}
+	}
 
 	// [min, max] 구간을 [0, 255]값으로 변환
-	//double scaleFactor = (double)INTENSITYMAX / (max - min);
-	//double translator = -(double)INTENSITYMAX * min / (max - min);
+	double scaleFactor = (double)INTENSITYMAX / (max - min);
+	double translator = -(double)INTENSITYMAX * min / (max - min);
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		//double a = scaleFactor * g[i] + translator + 0.5;
-		//pixelData[i] = (BYTE)(scaleFactor * g[i] + translator + 0.5);
-		if (g[i] > 50) {
+		double a = scaleFactor * g[i] + translator + 0.5;
+		pixelData[i] = (BYTE)(scaleFactor * g[i] + translator + 0.5);
+		if (g[i] > THRESH) {
 			pixelData[i] = INTENSITYMAX;
 		}
 		else {
@@ -166,8 +169,8 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 
 
 Mask::Mask()
+	:Mask(Roberts)
 {
-	Mask(Roberts);
 }
 
 Mask::Mask(Type type)

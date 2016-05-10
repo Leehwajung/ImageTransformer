@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 #define HTGSIZE			256	// histogram 데이터 너비
 #define INTENSITYMAX	255	// intensity 최댓값
 #define INTENSITYMIN	0	// intensity 최솟값
@@ -24,10 +26,17 @@ public:
 	static double getStandardDeviationOfNoise(IN const BYTE pixelData[], IN const UINT pixelDataSize, IN const double snr);
 	// Add Gaussian Noise
 	static void addGaussianNoise(OUT BYTE pixelData[], IN const UINT pixelDataSize, IN const double sigma);
-	// get gaussian
+	// Get gaussian
 	static double gaussian(IN const double sd);
-	// mask
+	// Mask
 	static void mask(OUT BYTE pixelData[], IN const UINT pixelDataWidth,IN const UINT pixelDataHeight, IN Mask& mask);
+	// Quick Sort
+	template<class Num>
+	static void quickSort(OUT Num array[], IN const UINT arraySize);
+private:
+	// Quick Sort
+	template<class Num>
+	static void quickSort(OUT Num array[], IN const int left, IN const int right);
 };
 
 class Mask
@@ -72,3 +81,31 @@ private:
 	static const double StochasticGradientX[StochasticGradientLength][StochasticGradientLength];
 	static const double StochasticGradientY[StochasticGradientLength][StochasticGradientLength];
 };
+
+template<class Num>
+inline void CImageProcessorUtil::quickSort(OUT Num array[], IN const UINT arraySize)
+{
+	quickSort<Num>(array, 0, arraySize);
+}
+
+template<class Num>
+inline void CImageProcessorUtil::quickSort(OUT Num array[], IN const int left, IN const int right)
+{
+	if (left >= right) {
+		return;
+	}
+
+	int last = left;
+	std::swap(array[left], array[(left + right) / 2]);
+
+	for (int i = left + 1; i <= right; i++) {
+		if (array[i] < array[left]) {
+			std::swap(array[++last], array[i]);
+		}
+	}
+
+	std::swap(array[left], array[last]);
+
+	quickSort(array, left, last - 1);
+	quickSort(array, last + 1, right);
+}

@@ -83,5 +83,5 @@ public:
 	void CBMPDoc::LowPassFiltering(UINT filterWidth);
 
 	// Median Filtering
-	void CBMPDoc::MedianFiltering(UINT filterWidth);
+	void CBMPDoc::MedianFiltering(UINT windowWidth);
 };
