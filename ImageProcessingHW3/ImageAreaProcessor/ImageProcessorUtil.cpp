@@ -103,25 +103,34 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 	double *g = new double[pixelDataSize];
 
 	// Get Magnitude Gradient
-	for (UINT i = 0; i < pixelDataHeight; i++) {
-		for (UINT j = 0; j < pixelDataWidth; j++) {
-			double newValX = 0;
-			double newValY = 0;
-			int length = mask.getLength();
-			for (int r = 0; r < length; r++) {
-				for (int c = 0; c < length; c++) {
-					int mi = i + r - length / 2;
-					int mj = j + c - length / 2;
-					mi = mi >= (int)pixelDataWidth ? (int)pixelDataWidth - 1 : mi < 0 ? 0 : mi;
-					mj = mj >= (int)pixelDataHeight ? (int)pixelDataHeight - 1 : mj < 0 ? 0 : mj;
+	int length = mask.getLength();	// 마스크의 가로와 세로 길이
+	int indicator = length / 2;		// 마스크 중앙을 찾기 위한 보정
+	for (UINT n = 0; n < pixelDataHeight; n++) {		// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < pixelDataWidth; m++) {		// 영상 가로 방향 루프 (Image Ordinate)
+			double gx = 0;								// 행 검출기
+			double gy = 0;								// 열 검출기
+			for (int mr = 0; mr < length; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (int mc = 0; mc < length; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					int ir = n + mr - indicator;			// 계산할 영상 픽셀 세로 위치 (Image Row)
+					int ic = m + mc - indicator;			// 계산할 영상 픽셀 가로 위치 (Image Column)
 
-					UINT where = mi * pixelDataWidth + mj;
-					newValX += mask.getMaskX()[r * length + c] * (double)pixelData[where];
-					newValY += mask.getMaskY()[r * length + c] * (double)pixelData[where];
+					// 경계부분 처리
+					//	경계를 넘어가는 영상 픽셀 위치는 가장 가까운 픽셀로 변경하여,
+					//	영상의 경계 부분을 복사해 Resolution을 증가시키는 것과 같은 효과를 얻음
+					ir = ir >= (int)pixelDataHeight ? (int)pixelDataHeight - 1 : ir < 0 ? 0 : ir;
+					ic = ic >= (int)pixelDataWidth ? (int)pixelDataWidth - 1 : ic < 0 ? 0 : ic;
+
+					// 영상 픽셀과 마스크 셀의 곱
+					UINT ip = ir * pixelDataWidth + ic;
+					UINT mp = mr * length + mc;
+					double currPixelValue = (double)pixelData[ip];
+					gx += mask.getMaskX()[mp] * currPixelValue;
+					gy += mask.getMaskY()[mp] * currPixelValue;
 				}
 			}
 
-			g[i * pixelDataWidth + j] = sqrt(pow(newValX, 2.0) + pow(newValY, 2.0));
+			// 셀별 매그니튜드 계산
+			g[n * pixelDataWidth + m] = sqrt(pow(gx, 2.0) + pow(gy, 2.0));
 		}
 	}
 

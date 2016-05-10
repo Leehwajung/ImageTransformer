@@ -166,11 +166,11 @@ BOOL CImageAreaProcessorApp::InitInstance()
 	GdiplusStartupInput gdiplusStartupInput;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
-	// 파일 열기 다이얼로그를 활성화합니다.
-	AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_FILE_OPEN);
-
 	// 시간을 시드로 사용하여 랜덤값을 만듭니다.
 	srand((UINT)time(NULL));
+
+	// 파일 열기 다이얼로그를 활성화합니다.
+	AfxGetMainWnd()->SendMessage(WM_COMMAND, ID_FILE_OPEN);
 
 	return TRUE;
 }
