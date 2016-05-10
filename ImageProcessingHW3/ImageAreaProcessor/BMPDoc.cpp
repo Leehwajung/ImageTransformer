@@ -362,20 +362,17 @@ void CBMPDoc::LowPassFiltering(UINT filterWidth)
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
 	// Low-pass Filtering
-
-	// 
-	double *g = new double[pixelDataSize];
-
-	// 
-	int indicator = filterWidth / 2;	// 필터 중앙을 찾기 위한 보정
-	for (UINT n = 0; n < bitmapData.Height; n++) {		// 영상 세로 방향 루프 (Image Abscissa)
-		for (UINT m = 0; m < bitmapData.Width; m++) {	// 영상 가로 방향 루프 (Image Ordinate)
-			double *gx = &g[n * bitmapData.Width + m];	// 
-			*gx = 0;
-			for (int mr = 0; mr < filterWidth; mr++) {		// 필터 세로 방향 루프 (Filter Row)
-				for (int mc = 0; mc < filterWidth; mc++) {	// 필터 가로 방향 루프 (Filter Column)
-					int ir = n + mr - indicator;			// 계산할 영상 픽셀 세로 위치 (Image Row)
-					int ic = m + mc - indicator;			// 계산할 영상 픽셀 가로 위치 (Image Column)
+	double *result = new double[pixelDataSize];						// 필터링 결과 임시 저장 배열
+	const double denominator = (double)(filterWidth * filterWidth);	// 저주파 통과 필터의 분모
+	const int indicator = filterWidth / 2;							// 필터 중앙을 찾기 위한 보정
+	for (UINT n = 0; n < bitmapData.Height; n++) {					// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < bitmapData.Width; m++) {				// 영상 가로 방향 루프 (Image Ordinate)
+			double *newPixel = &result[n * bitmapData.Width + m];	// 필터링 후 픽셀의 신규 값
+			*newPixel = 0;											// 신규 값 초기화
+			for (int mr = 0; mr < filterWidth; mr++) {				// 필터 세로 방향 루프 (Filter Row)
+				for (int mc = 0; mc < filterWidth; mc++) {			// 필터 가로 방향 루프 (Filter Column)
+					int ir = n + mr - indicator;						// 계산할 영상 픽셀 세로 위치 (Image Row)
+					int ic = m + mc - indicator;						// 계산할 영상 픽셀 가로 위치 (Image Column)
 
 					// 경계부분 처리
 					//	경계를 넘어가는 영상 픽셀 위치는 가장 가까운 픽셀로 변경하여,
@@ -383,20 +380,21 @@ void CBMPDoc::LowPassFiltering(UINT filterWidth)
 					ir = ir >= (int)bitmapData.Height ? (int)bitmapData.Height - 1 : ir < 0 ? 0 : ir;
 					ic = ic >= (int)bitmapData.Width ? (int)bitmapData.Width - 1 : ic < 0 ? 0 : ic;
 
-					// 영상 픽셀과 마스크 셀의 곱
+					// 신규 값은 영상 픽셀과 필터 셀의 곱
 					UINT ip = ir * bitmapData.Width + ic;
-					*gx += (1.0 / 9.0) * (double)pixelData[ip];
+					*newPixel += (1.0 / denominator) * (double)pixelData[ip];
 				}
 			}
 		}
 	}
 
+	// 결과 배열에서 원래 배열로 복사
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = g[i];
+		pixelData[i] = result[i];
 	}
 
 	// 동적 할당 메모리 해제
-	delete[] g;
+	delete[] result;
 
 	clearData(&bitmapData);
 }
