@@ -135,22 +135,29 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 	}
 
 	// 정규화를 위해 가장 작거나 큰 값을 구함
-	double min = INT_MAX;
-	double max = INT_MIN;
-	for (UINT i = 1; i < pixelDataSize; i++) {
-		if (g[i] < min) {
-			min = g[i];
-		}
-		else if (g[i] > max) {
-			max = g[i];
-		}
-	}
+	//double min = INT_MAX;
+	//double max = INT_MIN;
+	//for (UINT i = 1; i < pixelDataSize; i++) {
+	//	if (g[i] < min) {
+	//		min = g[i];
+	//	}
+	//	else if (g[i] > max) {
+	//		max = g[i];
+	//	}
+	//}
 
 	// [min, max] 구간을 [0, 255]값으로 변환
-	double scaleFactor = (double)INTENSITYMAX / (max - min);
-	double translator = -(double)INTENSITYMAX * min / (max - min);
+	//double scaleFactor = (double)INTENSITYMAX / (max - min);
+	//double translator = -(double)INTENSITYMAX * min / (max - min);
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = (BYTE)(scaleFactor * g[i] + translator + 0.5);
+		//double a = scaleFactor * g[i] + translator + 0.5;
+		//pixelData[i] = (BYTE)(scaleFactor * g[i] + translator + 0.5);
+		if (g[i] > 50) {
+			pixelData[i] = INTENSITYMAX;
+		}
+		else {
+			pixelData[i] = INTENSITYMIN;
+		}
 	}
 
 	// 동적 할당 메모리 해제

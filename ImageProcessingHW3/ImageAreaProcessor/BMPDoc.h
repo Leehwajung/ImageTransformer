@@ -80,8 +80,8 @@ public:
 	void CBMPDoc::detectEdge(Mask::Type maskType);
 
 	// Low-pass Filtering
-	void CBMPDoc::LowPassFiltering();
+	void CBMPDoc::LowPassFiltering(UINT filterWidth);
 
 	// Median Filtering
-	void CBMPDoc::MedianFiltering();
+	void CBMPDoc::MedianFiltering(UINT filterWidth);
 };
