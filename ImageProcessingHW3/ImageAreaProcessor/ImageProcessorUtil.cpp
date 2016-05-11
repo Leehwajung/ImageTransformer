@@ -77,7 +77,7 @@ void CImageProcessorUtil::addGaussianNoise(OUT BYTE pixelData[], IN const UINT p
 	}
 }
 
-// get gaussian
+// Get gaussian
 double CImageProcessorUtil::gaussian(IN const double sd)
 {
 	static int ready = 0;
@@ -106,7 +106,7 @@ double CImageProcessorUtil::gaussian(IN const double sd)
 	return (gaus * sd);
 }
 
-// mask
+// Mask
 void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN Mask& mask) {
 	
 	UINT pixelDataSize = pixelDataWidth * pixelDataHeight;
@@ -175,6 +175,114 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 
 	// 동적 할당 메모리 해제
 	delete[] g;
+}
+
+// Low-pass Filtering
+void CImageProcessorUtil::filterLowPass(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN const UINT filterWidth)
+{
+	UINT pixelDataSize = pixelDataWidth * pixelDataHeight;
+
+	// Low-pass Filtering
+	double *result = new double[pixelDataSize];						// 필터링 결과 임시 저장 배열
+	const double denominator = (double)(filterWidth * filterWidth);	// 저주파 통과 필터의 분모
+	const int indicator = filterWidth / 2;							// 필터 중앙을 찾기 위한 보정
+
+	for (UINT n = 0; n < pixelDataHeight; n++) {					// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < pixelDataWidth; m++) {					// 영상 가로 방향 루프 (Image Ordinate)
+			double *newPixel = &result[n * pixelDataWidth + m];		// 필터링 후 픽셀의 신규 값
+			*newPixel = 0;											// 신규 값 초기화
+			for (UINT mr = 0; mr < filterWidth; mr++) {				// 필터 세로 방향 루프 (Filter Row)
+				for (UINT mc = 0; mc < filterWidth; mc++) {			// 필터 가로 방향 루프 (Filter Column)
+					int ir = n + mr - indicator;						// 계산할 영상 픽셀 세로 위치 (Image Row)
+					int ic = m + mc - indicator;						// 계산할 영상 픽셀 가로 위치 (Image Column)
+
+					// 경계부분 처리
+					//	경계를 넘어가는 영상 픽셀 위치는 가장 가까운 픽셀로 변경하여,
+					//	영상의 경계 부분을 복사해 Resolution을 증가시키는 것과 같은 효과를 얻음
+					ir = ir >= (int)pixelDataHeight ? (int)pixelDataHeight - 1 : ir < 0 ? 0 : ir;
+					ic = ic >= (int)pixelDataWidth ? (int)pixelDataWidth - 1 : ic < 0 ? 0 : ic;
+
+					// 신규 값은 영상 픽셀과 필터 셀의 곱
+					UINT ip = ir * pixelDataWidth + ic;
+					*newPixel += (1.0 / denominator) * (double)pixelData[ip];
+				}
+			}
+		}
+	}
+
+	// 결과 배열에서 원래 배열로 복사
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		pixelData[i] = (BYTE)(result[i] + 0.5);
+	}
+
+	// 동적 할당 메모리 해제
+	delete[] result;
+}
+
+// Median Filtering
+void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN UINT windowWidth)
+{
+	UINT pixelDataSize = pixelDataWidth * pixelDataHeight;
+
+	// windowWidth가 짝수인 경우 홀수로 바꿔줌
+	if (windowWidth % 2 == 0) {
+		windowWidth++;
+	}
+
+	// Median Filtering
+	BYTE *result = new BYTE[pixelDataSize];				// 필터링 결과 임시 저장 배열
+	BYTE *sample = new BYTE[windowWidth * windowWidth];	// 윈도우에 포함된 픽셀 값 수집 배열
+	const int indicator = windowWidth / 2;				// 윈도우 중앙을 찾기 위한 보정
+
+	for (UINT n = 0; n < pixelDataHeight; n++) {		// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < pixelDataWidth; m++) {		// 영상 가로 방향 루프 (Image Ordinate)
+
+			// 경계부분 처리
+			//	이미지 픽셀 범위 내의 픽셀 값만을 수집하고 정렬한 다음 그 중간값을 얻어,
+			//	첫 번째 샘플과 마지막 샘플을 복사하여 빈 셀에 채우는 것과 같은 효과를 얻음
+			UINT pixelNum = 0;										// 윈도우에 포함된 픽셀 수 (샘플 수)
+			for (UINT mr = 0; mr < windowWidth; mr++) {				// 윈도우 세로 방향 루프 (Window Row)
+				int ir = n + mr - indicator;							// 계산할 영상 픽셀 세로 위치 (Image Row)
+				if (ir < (int)pixelDataHeight && ir >= 0) {			// 세로 방향 이미지 픽셀 범위 내
+					for (UINT mc = 0; mc < windowWidth; mc++) {		// 윈도우 가로 방향 루프 (Window Column)
+						int ic = m + mc - indicator;					// 계산할 영상 픽셀 가로 위치 (Image Column)
+						if (ic < (int)pixelDataWidth && ic >= 0) {	// 가로 방향 이미지 픽셀 범위 내
+																	// 샘플 수집
+							UINT ip = ir * pixelDataWidth + ic;
+							sample[pixelNum++] = pixelData[ip];
+						}
+					}
+				}
+			}
+
+			// 샘플 정렬
+			CImageProcessorUtil::quickSort<BYTE>(sample, pixelNum);
+
+			// 중간값 가져오기
+			result[n * pixelDataWidth + m] = sample[pixelNum / 2];
+		}
+	}
+
+	// 결과 배열에서 원래 배열로 복사
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		pixelData[i] = result[i];
+	}
+
+	// 동적 할당 메모리 해제
+	delete[] result;
+	delete[] sample;
+}
+
+// Get Mean Square Error
+double CImageProcessorUtil::obtainMeanSquareError(IN BYTE srcPixelData[], IN BYTE dstPixelData[], IN const UINT pixelDataSize)
+{
+	double sum = 0;
+
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		sum += pow(srcPixelData[i] - dstPixelData[i], 2);
+	}
+
+	return sum / (double)pixelDataSize;
 }
 
 

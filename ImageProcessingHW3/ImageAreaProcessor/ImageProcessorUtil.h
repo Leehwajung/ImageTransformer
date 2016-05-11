@@ -30,6 +30,12 @@ public:
 	static double gaussian(IN const double sd);
 	// Mask
 	static void mask(OUT BYTE pixelData[], IN const UINT pixelDataWidth,IN const UINT pixelDataHeight, IN Mask& mask);
+	// Low-pass Filtering
+	static void filterLowPass(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN const UINT filterWidth);
+	// Median Filtering
+	static void filterMedian(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN UINT windowWidth);
+	// Get Mean Square Error
+	static double obtainMeanSquareError(IN BYTE srcPixelData[], IN BYTE dstPixelData[], IN const UINT pixelDataSize);
 	// Quick Sort
 	template<class Num>
 	static void quickSort(OUT Num array[], IN const UINT arraySize);
@@ -38,6 +44,7 @@ private:
 	template<class Num>
 	static void quickSort(OUT Num array[], IN const int left, IN const int right);
 };
+
 
 class Mask
 {
@@ -81,6 +88,8 @@ private:
 	static const double StochasticGradientX[StochasticGradientLength][StochasticGradientLength];
 	static const double StochasticGradientY[StochasticGradientLength][StochasticGradientLength];
 };
+
+
 
 template<class Num>
 inline void CImageProcessorUtil::quickSort(OUT Num array[], IN const UINT arraySize)

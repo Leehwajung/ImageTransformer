@@ -60,13 +60,16 @@
 #define ID_ER_SB                        32790
 #define ID_ER_PWT                       32791
 #define ID_ER_SG                        32792
+#define ID_ER_LP                        32793
+#define ID_BUTTON7                      32794
+#define ID_ER_MD                        32794
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32793
+#define _APS_NEXT_COMMAND_VALUE         32795
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -21,6 +21,36 @@ public:
 
 // 작업입니다.
 public:
+	void copyFrom(const CBMPDoc* bmpDoc);
+	BYTE* getData(BitmapData* bitmapData, const PixelFormat pixelFormat);
+	void clearData(BitmapData* bitmapData);
+
+	// Histogram Equalization
+	void HistogramEqualization();
+
+	// Basic Contrast Stretching
+	void BasicContrastStretching();
+
+	// Ends-in Contrast Stretching
+	void EndsinContrastStretching(const BYTE low, const BYTE high);
+
+	// Gaussian Noise
+	void CBMPDoc::GaussianNoise(const DOUBLE snr);
+
+	// Edge Detection
+	void CBMPDoc::detectEdge(const Mask::Type maskType);
+
+	// Low-pass Filtering
+	void CBMPDoc::LowPassFiltering(const UINT filterWidth);
+
+	// Median Filtering
+	void CBMPDoc::MedianFiltering(const UINT windowWidth);
+
+	// 에러율 계산
+	DOUBLE getErrorRate(const Mask::Type maskType, const DOUBLE snr);
+
+	// MSE (filterType: 0 = Low-Pass, 1 = Median)
+	DOUBLE getMSE(const INT filterType, const DOUBLE snr, const UINT filterWidth);
 
 // 재정의입니다.
 public:
@@ -59,31 +89,4 @@ protected:
 	// 검색 처리기에 대한 검색 콘텐츠를 설정하는 도우미 함수
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
-public:
-	void copyFrom(const CBMPDoc* bmpDoc);
-	BYTE* getData(BitmapData* bitmapData, const PixelFormat pixelFormat);
-	void clearData(BitmapData* bitmapData);
-
-	// Histogram Equalization
-	void HistogramEqualization();
-
-	// Basic Contrast Stretching
-	void BasicContrastStretching();
-
-	// Ends-in Contrast Stretching
-	void EndsinContrastStretching(const BYTE low, const BYTE high);
-
-	// Gaussian Noise
-	void CBMPDoc::GaussianNoise(const DOUBLE snr);
-
-	// Edge Detection
-	void CBMPDoc::detectEdge(Mask::Type maskType);
-
-	// Low-pass Filtering
-	void CBMPDoc::LowPassFiltering(UINT filterWidth);
-
-	// Median Filtering
-	void CBMPDoc::MedianFiltering(UINT windowWidth);
-	// 에러율 계산
-	DOUBLE getErrorRate(Mask::Type maskType, const DOUBLE snr);
 };

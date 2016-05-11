@@ -21,6 +21,8 @@
 #define PFX_EDGE			L"edged_"
 #define PFX_FILTER			L"filtered_"
 
+#define FILTER_WIDTH		3
+
 
 // CBMPFrame
 
@@ -47,6 +49,8 @@ BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_ER_SB, &CBMPFrame::OnErSobel)
 	ON_COMMAND(ID_ER_PWT, &CBMPFrame::OnErPrewitt)
 	ON_COMMAND(ID_ER_SG, &CBMPFrame::OnErStochasticGradient)
+	ON_COMMAND(ID_ER_LP, &CBMPFrame::OnErLowPass)
+	ON_COMMAND(ID_ER_MD, &CBMPFrame::OnErMedian)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
@@ -453,7 +457,7 @@ void CBMPFrame::OnApLowPass()
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Low-pass Filtering
-	pDstDoc->LowPassFiltering(3);
+	pDstDoc->LowPassFiltering(FILTER_WIDTH);
 
 	// 제목 변경
 	CString newTitle(PFX_FILTER);
@@ -483,7 +487,7 @@ void CBMPFrame::OnApMedian()
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Median Filtering
-	pDstDoc->MedianFiltering(3);
+	pDstDoc->MedianFiltering(FILTER_WIDTH);
 
 	// 제목 변경
 	CString newTitle(PFX_FILTER);
@@ -500,15 +504,15 @@ void CBMPFrame::OnErRoberts()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
-	ASSERT_VALID(pSrcDoc);
-	if (!pSrcDoc)
+	// CBMPDoc을 가져옴
+	CBMPDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
 		return;
 
 	// Get Error Rate of Roberts
 	OnNoiseSNR();	// get SNR
-	const double errorRate = pSrcDoc->getErrorRate(Mask::Roberts, m_snr);
+	const double errorRate = pDoc->getErrorRate(Mask::Roberts, m_snr);
 
 	// 메시박스 띄우기
 	CString msg;
@@ -520,15 +524,15 @@ void CBMPFrame::OnErSobel()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
-	ASSERT_VALID(pSrcDoc);
-	if (!pSrcDoc)
+	// CBMPDoc을 가져옴
+	CBMPDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
 		return;
 
 	// Get Error Rate of Sobel
 	OnNoiseSNR();	// get SNR
-	const double errorRate = pSrcDoc->getErrorRate(Mask::Sobel, m_snr);
+	const double errorRate = pDoc->getErrorRate(Mask::Sobel, m_snr);
 
 	// 메시박스 띄우기
 	CString msg;
@@ -540,15 +544,15 @@ void CBMPFrame::OnErPrewitt()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
-	ASSERT_VALID(pSrcDoc);
-	if (!pSrcDoc)
+	// CBMPDoc을 가져옴
+	CBMPDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
 		return;
 
 	// Get Error Rate of Prewitt
 	OnNoiseSNR();	// get SNR
-	const double errorRate = pSrcDoc->getErrorRate(Mask::Prewitt, m_snr);
+	const double errorRate = pDoc->getErrorRate(Mask::Prewitt, m_snr);
 
 	// 메시박스 띄우기
 	CString msg;
@@ -560,18 +564,58 @@ void CBMPFrame::OnErStochasticGradient()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
-	ASSERT_VALID(pSrcDoc);
-	if (!pSrcDoc)
+	// CBMPDoc을 가져옴
+	CBMPDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
 		return;
 
 	// Get Error Rate of Stochastic Gradient
 	OnNoiseSNR();	// get SNR
-	const double errorRate = pSrcDoc->getErrorRate(Mask::StochasticGradient, m_snr);
+	const double errorRate = pDoc->getErrorRate(Mask::StochasticGradient, m_snr);
 
 	// 메시박스 띄우기
 	CString msg;
 	msg.Format(_T("에러율: %f"), errorRate);
 	MessageBox(msg, _T("Error Rate"));
+}
+
+void CBMPFrame::OnErLowPass()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// CBMPDoc을 가져옴
+	CBMPDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// Get Mean Square Error
+	OnNoiseSNR();	// get SNR
+	double mse = pDoc->getMSE(0, m_snr, FILTER_WIDTH);
+
+	// 메시박스 띄우기
+	CString msg;
+	msg.Format(_T("MSE: %f"), mse);
+	MessageBox(msg, _T("Mean Square Error"));
+}
+
+void CBMPFrame::OnErMedian()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// CBMPDoc을 가져옴
+	CBMPDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// Get Mean Square Error
+	OnNoiseSNR();	// get SNR
+	double mse = pDoc->getMSE(1, m_snr, FILTER_WIDTH);
+
+	// 메시박스 띄우기
+	CString msg;
+	msg.Format(_T("MSE: %f"), mse);
+	MessageBox(msg, _T("Mean Square Error"));
 }

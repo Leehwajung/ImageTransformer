@@ -72,4 +72,6 @@ public:
 	afx_msg void OnErSobel();
 	afx_msg void OnErPrewitt();
 	afx_msg void OnErStochasticGradient();
+	afx_msg void OnErLowPass();
+	afx_msg void OnErMedian();
 };

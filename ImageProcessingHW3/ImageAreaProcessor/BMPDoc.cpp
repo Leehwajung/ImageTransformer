@@ -360,43 +360,9 @@ void CBMPDoc::LowPassFiltering(UINT filterWidth)
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
 	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
-	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
-
+	
 	// Low-pass Filtering
-	double *result = new double[pixelDataSize];						// 필터링 결과 임시 저장 배열
-	const double denominator = (double)(filterWidth * filterWidth);	// 저주파 통과 필터의 분모
-	const int indicator = filterWidth / 2;							// 필터 중앙을 찾기 위한 보정
-
-	for (UINT n = 0; n < bitmapData.Height; n++) {					// 영상 세로 방향 루프 (Image Abscissa)
-		for (UINT m = 0; m < bitmapData.Width; m++) {				// 영상 가로 방향 루프 (Image Ordinate)
-			double *newPixel = &result[n * bitmapData.Width + m];	// 필터링 후 픽셀의 신규 값
-			*newPixel = 0;											// 신규 값 초기화
-			for (UINT mr = 0; mr < filterWidth; mr++) {				// 필터 세로 방향 루프 (Filter Row)
-				for (UINT mc = 0; mc < filterWidth; mc++) {			// 필터 가로 방향 루프 (Filter Column)
-					int ir = n + mr - indicator;						// 계산할 영상 픽셀 세로 위치 (Image Row)
-					int ic = m + mc - indicator;						// 계산할 영상 픽셀 가로 위치 (Image Column)
-
-					// 경계부분 처리
-					//	경계를 넘어가는 영상 픽셀 위치는 가장 가까운 픽셀로 변경하여,
-					//	영상의 경계 부분을 복사해 Resolution을 증가시키는 것과 같은 효과를 얻음
-					ir = ir >= (int)bitmapData.Height ? (int)bitmapData.Height - 1 : ir < 0 ? 0 : ir;
-					ic = ic >= (int)bitmapData.Width ? (int)bitmapData.Width - 1 : ic < 0 ? 0 : ic;
-
-					// 신규 값은 영상 픽셀과 필터 셀의 곱
-					UINT ip = ir * bitmapData.Width + ic;
-					*newPixel += (1.0 / denominator) * (double)pixelData[ip];
-				}
-			}
-		}
-	}
-
-	// 결과 배열에서 원래 배열로 복사
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = (BYTE)(result[i] + 0.5);
-	}
-
-	// 동적 할당 메모리 해제
-	delete[] result;
+	CImageProcessorUtil::filterLowPass(pixelData, bitmapData.Width, bitmapData.Height, filterWidth);
 
 	clearData(&bitmapData);
 }
@@ -407,55 +373,9 @@ void CBMPDoc::MedianFiltering(UINT windowWidth)
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
 	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
-	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
-
-	// windowWidth가 짝수인 경우 홀수로 바꿔줌
-	if (windowWidth % 2 == 0) {
-		windowWidth++;
-	}
 
 	// Median Filtering
-	BYTE *result = new BYTE[pixelDataSize];				// 필터링 결과 임시 저장 배열
-	BYTE *sample = new BYTE[windowWidth * windowWidth];	// 윈도우에 포함된 픽셀 값 수집 배열
-	const int indicator = windowWidth / 2;				// 윈도우 중앙을 찾기 위한 보정
-
-	for (UINT n = 0; n < bitmapData.Height; n++) {		// 영상 세로 방향 루프 (Image Abscissa)
-		for (UINT m = 0; m < bitmapData.Width; m++) {	// 영상 가로 방향 루프 (Image Ordinate)
-
-			// 경계부분 처리
-			//	이미지 픽셀 범위 내의 픽셀 값만을 수집하고 정렬한 다음 그 중간값을 얻어,
-			//	첫 번째 샘플과 마지막 샘플을 복사하여 빈 셀에 채우는 것과 같은 효과를 얻음
-			UINT pixelNum = 0;											// 윈도우에 포함된 픽셀 수 (샘플 수)
-			for (UINT mr = 0; mr < windowWidth; mr++) {					// 윈도우 세로 방향 루프 (Window Row)
-				int ir = n + mr - indicator;								// 계산할 영상 픽셀 세로 위치 (Image Row)
-				if (ir < (int)bitmapData.Height && ir >= 0) {			// 세로 방향 이미지 픽셀 범위 내
-					for (UINT mc = 0; mc < windowWidth; mc++) {			// 윈도우 가로 방향 루프 (Window Column)
-						int ic = m + mc - indicator;						// 계산할 영상 픽셀 가로 위치 (Image Column)
-						if (ic < (int)bitmapData.Width && ic >= 0) {	// 가로 방향 이미지 픽셀 범위 내
-							// 샘플 수집
-							UINT ip = ir * bitmapData.Width + ic;
-							sample[pixelNum++] = pixelData[ip];
-						}
-					}
-				}
-			}
-
-			// 샘플 정렬
-			CImageProcessorUtil::quickSort<BYTE>(sample, pixelNum);
-
-			// 중간값 가져오기
-			result[n * bitmapData.Width + m] = sample[pixelNum / 2];
-		}
-	}
-
-	// 결과 배열에서 원래 배열로 복사
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = result[i];
-	}
-
-	// 동적 할당 메모리 해제
-	delete[] result;
-	delete[] sample;
+	CImageProcessorUtil::filterMedian(pixelData, bitmapData.Width, bitmapData.Height, windowWidth);
 
 	clearData(&bitmapData);
 }
@@ -498,7 +418,57 @@ DOUBLE CBMPDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
 		}
 	}
 
+	delete[] origDetectedData;
+	delete[] noisyDetectedData;
+
 	clearData(&bitmapData);
 
 	return n1 / n0;
+}
+
+DOUBLE CBMPDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filterWidth)
+{
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+
+	BYTE *origDetectedData = new BYTE[pixelDataSize];
+	BYTE *noisyDetectedData = new BYTE[pixelDataSize];
+
+	// 복사
+	for (int i = 0; i < pixelDataSize; i++) {
+		origDetectedData[i] = pixelData[i];
+		noisyDetectedData[i] = pixelData[i];
+	}
+
+	// 가우시안 노이즈 첨가
+	double stddevNoise = CImageProcessorUtil::getStandardDeviationOfNoise(noisyDetectedData, pixelDataSize, snr);
+	CImageProcessorUtil::addGaussianNoise(noisyDetectedData, pixelDataSize, stddevNoise);
+
+	// 필터링
+	switch (filterType)
+	{
+		// Low-pass Filtering
+	case 0:
+		CImageProcessorUtil::filterLowPass(origDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
+		CImageProcessorUtil::filterLowPass(noisyDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
+		break;
+		// Median Filtering
+	case 1:
+		// 원본 필터링
+		CImageProcessorUtil::filterMedian(origDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
+		CImageProcessorUtil::filterMedian(noisyDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
+		break;
+	}
+
+	// Mean Square Error
+	double mse = CImageProcessorUtil::obtainMeanSquareError(origDetectedData, noisyDetectedData, pixelDataSize);
+	
+	delete[] origDetectedData;
+	delete[] noisyDetectedData;
+
+	clearData(&bitmapData);
+
+	return mse;
 }
