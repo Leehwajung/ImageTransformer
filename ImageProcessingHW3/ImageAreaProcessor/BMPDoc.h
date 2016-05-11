@@ -84,4 +84,6 @@ public:
 
 	// Median Filtering
 	void CBMPDoc::MedianFiltering(UINT windowWidth);
+	// 에러율 계산
+	DOUBLE getErrorRate(Mask::Type maskType, const DOUBLE snr);
 };

@@ -48,7 +48,17 @@ void CImageProcessorUtil::stretchContrast(OUT BYTE pixelData[], IN const UINT pi
 // Get Power of Pixels
 double CImageProcessorUtil::getImagePower(IN const BYTE pixelData[], IN const UINT pixelDataSize)
 {
-	return DOUBLE();
+	double pixelSquare = 0, wholeSquare = 0;
+
+	for (int i = 0; i < pixelDataSize; i++) {
+		pixelSquare += pow(pixelData[i], 2.0);
+		wholeSquare += pixelData[i];
+	}
+
+	pixelSquare /= pow(pixelDataSize, 2.0);
+	wholeSquare = pow(wholeSquare / pow(pixelDataSize, 2.0), 2.0);
+
+	return pixelSquare - wholeSquare;
 }
 
 // Get Standard Deviation of Noise

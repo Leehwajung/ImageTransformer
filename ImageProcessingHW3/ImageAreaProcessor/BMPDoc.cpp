@@ -333,7 +333,8 @@ void CBMPDoc::GaussianNoise(const DOUBLE snr)
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
 	// Add Gaussian Noise
-	CImageProcessorUtil::addGaussianNoise(pixelData, pixelDataSize, snr);
+	double stddevNoise = CImageProcessorUtil::getStandardDeviationOfNoise(pixelData, pixelDataSize, snr);
+	CImageProcessorUtil::addGaussianNoise(pixelData, pixelDataSize, stddevNoise);
 
 	clearData(&bitmapData);
 }
@@ -457,4 +458,47 @@ void CBMPDoc::MedianFiltering(UINT windowWidth)
 	delete[] sample;
 
 	clearData(&bitmapData);
+}
+
+// 에러율 계산
+DOUBLE CBMPDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
+{
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+
+	BYTE *origDetectedData = new BYTE[pixelDataSize];
+	BYTE *noisyDetectedData = new BYTE[pixelDataSize];
+
+	// 복사
+	for (int i = 0; i < pixelDataSize; i++) {
+		origDetectedData[i] = pixelData[i];
+		noisyDetectedData[i] = pixelData[i];
+	}
+
+	// 원본의 경계선 검출
+	Mask mask(maskType);
+	CImageProcessorUtil::mask(origDetectedData, bitmapData.Width, bitmapData.Height, mask);
+
+	// 노이즈가 첨가된 이미지의 경계선 검출
+	double stddevNoise = CImageProcessorUtil::getStandardDeviationOfNoise(noisyDetectedData, pixelDataSize, snr);
+	CImageProcessorUtil::addGaussianNoise(noisyDetectedData, pixelDataSize, stddevNoise);
+	CImageProcessorUtil::mask(noisyDetectedData, bitmapData.Width, bitmapData.Height, mask);
+
+	// 픽셀 개수 확인
+	double n0 = 0;
+	double n1 = 0;
+	for (int i = 0; i < pixelDataSize; i++) {
+		if (origDetectedData[i] == INTENSITYMAX) {
+			n0++;
+		}
+		if (noisyDetectedData[i] == INTENSITYMAX) {
+			n1++;
+		}
+	}
+
+	clearData(&bitmapData);
+
+	return n1 / n0;
 }

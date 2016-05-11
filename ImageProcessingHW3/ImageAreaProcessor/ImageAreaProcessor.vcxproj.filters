@@ -77,13 +77,13 @@
     <ClCompile Include="BMPView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BMPDoc.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="ImageProcessorUtil.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ImageAreaProcessor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BMPDoc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

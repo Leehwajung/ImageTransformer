@@ -391,7 +391,7 @@ BEGIN
     IDR_MAINFRAME           "Image Area Processor"
     IDR_HistogramFileTYPE   "\nHistogram\nHistogram\nHistogram Files (*.htg)\n.htg\nImageAreaProcessor.Document\nImageAreaProcessor.Document"
     IDR_BMPFileTYPE         "\nBitmap\nBMP\nBMP Files (*.bmp)\n.bmp\ncom.microsoft.bmp\ncom.microsoft.bmp.Document"
-    ID_WINDOW_MANAGER       "â(&W)..."
+    IDR_RAWFileTYPE         "\nRaw Image\nRAW\nRaw Image Files (*.raw)\n.raw\nImageAreaProcessor.RawImage\nImageAreaProcessor.RawImage"
 END
 
 STRINGTABLE
@@ -512,6 +512,7 @@ END
 
 STRINGTABLE
 BEGIN
+    ID_WINDOW_MANAGER       "â(&W)..."
     IDS_STATUS_PANE1        "â 1"
     IDS_STATUS_PANE2        "â 2"
 END

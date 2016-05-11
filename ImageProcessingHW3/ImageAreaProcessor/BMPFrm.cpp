@@ -43,6 +43,10 @@ BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_AP_LP, &CBMPFrame::OnApLowPass)
 	ON_COMMAND(ID_AP_MD, &CBMPFrame::OnApMedian)
 	ON_WM_GETMINMAXINFO()
+	ON_COMMAND(ID_ER_RBT, &CBMPFrame::OnErRoberts)
+	ON_COMMAND(ID_ER_SB, &CBMPFrame::OnErSobel)
+	ON_COMMAND(ID_ER_PWT, &CBMPFrame::OnErPrewitt)
+	ON_COMMAND(ID_ER_SG, &CBMPFrame::OnErStochasticGradient)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
@@ -489,4 +493,85 @@ void CBMPFrame::OnApMedian()
 	// 영상에 맞게 다시 그리기
 	pDstFrm->ActivateFrame();
 	pDstView->Invalidate();
+}
+
+
+void CBMPFrame::OnErRoberts()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// Get Error Rate of Roberts
+	OnNoiseSNR();	// get SNR
+	const double errorRate = pSrcDoc->getErrorRate(Mask::Roberts, m_snr);
+
+	// 메시박스 띄우기
+	CString msg;
+	msg.Format(_T("에러율: %f"), errorRate);
+	MessageBox(msg, _T("Error Rate"));
+}
+
+void CBMPFrame::OnErSobel()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// Get Error Rate of Sobel
+	OnNoiseSNR();	// get SNR
+	const double errorRate = pSrcDoc->getErrorRate(Mask::Sobel, m_snr);
+
+	// 메시박스 띄우기
+	CString msg;
+	msg.Format(_T("에러율: %f"), errorRate);
+	MessageBox(msg, _T("Error Rate"));
+}
+
+void CBMPFrame::OnErPrewitt()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// Get Error Rate of Prewitt
+	OnNoiseSNR();	// get SNR
+	const double errorRate = pSrcDoc->getErrorRate(Mask::Prewitt, m_snr);
+
+	// 메시박스 띄우기
+	CString msg;
+	msg.Format(_T("에러율: %f"), errorRate);
+	MessageBox(msg, _T("Error Rate"));
+}
+
+void CBMPFrame::OnErStochasticGradient()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CBMPDoc을 가져옴
+	CBMPDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// Get Error Rate of Stochastic Gradient
+	OnNoiseSNR();	// get SNR
+	const double errorRate = pSrcDoc->getErrorRate(Mask::StochasticGradient, m_snr);
+
+	// 메시박스 띄우기
+	CString msg;
+	msg.Format(_T("에러율: %f"), errorRate);
+	MessageBox(msg, _T("Error Rate"));
 }

@@ -204,6 +204,7 @@
     <ClInclude Include="BMPDoc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BMPDoc.cpp" />
     <ClCompile Include="ImageProcessorUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -218,7 +219,6 @@
     <ClCompile Include="HistogramDoc.cpp" />
     <ClCompile Include="BMPFrm.cpp" />
     <ClCompile Include="BMPView.cpp" />
-    <ClCompile Include="BMPDoc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ImageAreaProcessor.reg" />

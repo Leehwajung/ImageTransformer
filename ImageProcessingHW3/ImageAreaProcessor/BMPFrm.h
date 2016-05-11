@@ -68,4 +68,8 @@ public:
 	afx_msg void OnApStochasticGradient();
 	afx_msg void OnApLowPass();
 	afx_msg void OnApMedian();
+	afx_msg void OnErRoberts();
+	afx_msg void OnErSobel();
+	afx_msg void OnErPrewitt();
+	afx_msg void OnErStochasticGradient();
 };

@@ -13,13 +13,14 @@
 #define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
+#define ID_WINDOW_MANAGER               121
 #define IDS_STATUS_PANE1                122
 #define IDS_STATUS_PANE2                123
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
 #define IDR_HistogramFileTYPE           130
 #define IDR_BMPFileTYPE                 131
-#define ID_WINDOW_MANAGER               132
+#define IDR_RAWFileTYPE                 132
 #define IDR_PASTE_MENU                  151
 #define IDR_WINDOWS_MENU                152
 #define IDR_THEME_MENU                  200
@@ -55,13 +56,17 @@
 #define ID_AP_SG                        32785
 #define ID_AP_LP                        32786
 #define ID_AP_MD                        32787
+#define ID_ER_RBT                       32789
+#define ID_ER_SB                        32790
+#define ID_ER_PWT                       32791
+#define ID_ER_SG                        32792
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32789
+#define _APS_NEXT_COMMAND_VALUE         32793
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
