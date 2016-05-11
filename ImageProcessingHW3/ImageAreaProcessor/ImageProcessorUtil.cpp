@@ -107,7 +107,8 @@ double CImageProcessorUtil::gaussian(IN const double sd)
 }
 
 // Mask
-void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN Mask& mask) {
+void CImageProcessorUtil::mask(OUT BYTE pixelData[], 
+	IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN Mask& mask) {
 	
 	UINT pixelDataSize = pixelDataWidth * pixelDataHeight;
 
@@ -147,24 +148,8 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 		}
 	}
 
-	// 정규화를 위해 가장 작거나 큰 값을 구함
-	double min = INT_MAX;
-	double max = INT_MIN;
-	for (UINT i = 1; i < pixelDataSize; i++) {
-		if (g[i] < min) {
-			min = g[i];
-		}
-		else if (g[i] > max) {
-			max = g[i];
-		}
-	}
-
-	// [min, max] 구간을 [0, 255]값으로 변환
-	double scaleFactor = (double)INTENSITYMAX / (max - min);
-	double translator = -(double)INTENSITYMAX * min / (max - min);
+	// 임계값 적용
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		double a = scaleFactor * g[i] + translator + 0.5;
-		pixelData[i] = (BYTE)(scaleFactor * g[i] + translator + 0.5);
 		if (g[i] > THRESH) {
 			pixelData[i] = INTENSITYMAX;
 		}
@@ -175,10 +160,14 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[], IN const UINT pixelDataWidt
 
 	// 동적 할당 메모리 해제
 	delete[] g;
+
+	// 동적 할당 메모리 해제
+	delete[] g;
 }
 
 // Low-pass Filtering
-void CImageProcessorUtil::filterLowPass(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN const UINT filterWidth)
+void CImageProcessorUtil::filterLowPass(OUT BYTE pixelData[], 
+	IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN const UINT filterWidth)
 {
 	UINT pixelDataSize = pixelDataWidth * pixelDataHeight;
 
@@ -220,7 +209,8 @@ void CImageProcessorUtil::filterLowPass(OUT BYTE pixelData[], IN const UINT pixe
 }
 
 // Median Filtering
-void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN UINT windowWidth)
+void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[], 
+	IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN UINT windowWidth)
 {
 	UINT pixelDataSize = pixelDataWidth * pixelDataHeight;
 
@@ -263,7 +253,7 @@ void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[], IN const UINT pixel
 			result[n * pixelDataWidth + m] = sample[pixelNum / 2];
 		}
 	}
-	delete[] sample;
+	
 	// 결과 배열에서 원래 배열로 복사
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		pixelData[i] = result[i];
@@ -271,7 +261,7 @@ void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[], IN const UINT pixel
 
 	// 동적 할당 메모리 해제
 	delete[] result;
-	
+	delete[] sample;
 }
 
 // Get Mean Square Error
