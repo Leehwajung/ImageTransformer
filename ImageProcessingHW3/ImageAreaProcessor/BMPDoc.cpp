@@ -468,3 +468,22 @@ DOUBLE CBMPDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filter
 
 	return mse;
 }
+
+BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
+
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+	//CString pathName(lpszPathName);
+	//if (pathName.Collate(L".raw")) {
+
+	//}
+
+	BITMAPINFO info;
+	info.bmiColors;
+
+	//m_bitmap = Bitmap::FromBITMAPINFO(;
+
+	return TRUE;
+}

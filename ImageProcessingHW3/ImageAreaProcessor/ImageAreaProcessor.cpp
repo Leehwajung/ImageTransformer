@@ -122,6 +122,14 @@ BOOL CImageAreaProcessorApp::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
+	pDocTemplate = new CMultiDocTemplate(IDR_RAWFileTYPE,
+		RUNTIME_CLASS(CRAWDoc),
+		RUNTIME_CLASS(CBMPFrame), // 사용자 지정 MDI 자식 프레임입니다.
+		RUNTIME_CLASS(CBMPView));
+	if (!pDocTemplate)
+		return FALSE;
+	AddDocTemplate(pDocTemplate);
+
 	pDocTemplate = new CMultiDocTemplate(IDR_HistogramFileTYPE,
 		RUNTIME_CLASS(CHistogramDoc),
 		RUNTIME_CLASS(CHistogramFrame), // 사용자 지정 MDI 자식 프레임입니다.
