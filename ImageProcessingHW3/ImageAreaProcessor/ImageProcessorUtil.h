@@ -108,5 +108,7 @@ inline int CImageProcessorUtil::compare(IN const void* src, IN const void* dst)
 	if (*(Num*)src > *(Num*)dst) {
 		return 1;
 	}
+
+	return 0;
 }
 

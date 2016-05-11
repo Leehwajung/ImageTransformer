@@ -392,7 +392,7 @@ DOUBLE CBMPDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
 	BYTE *noisyDetectedData = new BYTE[pixelDataSize];
 
 	// 복사
-	for (int i = 0; i < pixelDataSize; i++) {
+	for (UINT i = 0; i < pixelDataSize; i++) {
 		origDetectedData[i] = pixelData[i];
 		noisyDetectedData[i] = pixelData[i];
 	}
@@ -409,7 +409,7 @@ DOUBLE CBMPDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
 	// 픽셀 개수 확인
 	double n0 = 0;
 	double n1 = 0;
-	for (int i = 0; i < pixelDataSize; i++) {
+	for (UINT i = 0; i < pixelDataSize; i++) {
 		if (origDetectedData[i] == INTENSITYMAX) {
 			n0++;
 		}
@@ -437,7 +437,7 @@ DOUBLE CBMPDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filter
 	BYTE *noisyDetectedData = new BYTE[pixelDataSize];
 
 	// 복사
-	for (int i = 0; i < pixelDataSize; i++) {
+	for (UINT i = 0; i < pixelDataSize; i++) {
 		origDetectedData[i] = pixelData[i];
 		noisyDetectedData[i] = pixelData[i];
 	}
