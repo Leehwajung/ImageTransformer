@@ -447,16 +447,12 @@ DOUBLE CBMPDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filter
 	CImageProcessorUtil::addGaussianNoise(noisyDetectedData, pixelDataSize, stddevNoise);
 
 	// 필터링
-	switch (filterType)
-	{
-		// Low-pass Filtering
-	case 0:
+	switch (filterType) {
+	case 0:	// Low-pass Filtering
 		CImageProcessorUtil::filterLowPass(origDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
 		CImageProcessorUtil::filterLowPass(noisyDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
 		break;
-		// Median Filtering
-	case 1:
-		// 원본 필터링
+	case 1:	// Median Filtering
 		CImageProcessorUtil::filterMedian(origDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
 		CImageProcessorUtil::filterMedian(noisyDetectedData, bitmapData.Width, bitmapData.Height, filterWidth);
 		break;

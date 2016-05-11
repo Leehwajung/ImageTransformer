@@ -55,8 +55,8 @@ double CImageProcessorUtil::getImagePower(IN const BYTE pixelData[], IN const UI
 		wholeSquare += pixelData[i];
 	}
 
-	pixelSquare /= pow(pixelDataSize, 2.0);
-	wholeSquare = pow(wholeSquare / pow(pixelDataSize, 2.0), 2.0);
+	pixelSquare /= pixelDataSize;
+	wholeSquare = pow(wholeSquare / pixelDataSize, 2.0);
 
 	return pixelSquare - wholeSquare;
 }
@@ -256,13 +256,14 @@ void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[], IN const UINT pixel
 			}
 
 			// 샘플 정렬
+
 			CImageProcessorUtil::quickSort<BYTE>(sample, pixelNum);
 
 			// 중간값 가져오기
 			result[n * pixelDataWidth + m] = sample[pixelNum / 2];
 		}
 	}
-
+	delete[] sample;
 	// 결과 배열에서 원래 배열로 복사
 	for (UINT i = 0; i < pixelDataSize; i++) {
 		pixelData[i] = result[i];
@@ -270,7 +271,7 @@ void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[], IN const UINT pixel
 
 	// 동적 할당 메모리 해제
 	delete[] result;
-	delete[] sample;
+	
 }
 
 // Get Mean Square Error

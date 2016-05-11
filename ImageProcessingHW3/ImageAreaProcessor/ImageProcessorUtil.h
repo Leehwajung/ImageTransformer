@@ -39,10 +39,8 @@ public:
 	// Quick Sort
 	template<class Num>
 	static void quickSort(OUT Num array[], IN const UINT arraySize);
-private:
-	// Quick Sort
 	template<class Num>
-	static void quickSort(OUT Num array[], IN const int left, IN const int right);
+	static int compare(IN const void* src, IN const void* dst);
 };
 
 
@@ -94,27 +92,21 @@ private:
 template<class Num>
 inline void CImageProcessorUtil::quickSort(OUT Num array[], IN const UINT arraySize)
 {
-	quickSort<Num>(array, 0, arraySize);
+	//quickSort<Num>(array, 0, arraySize);
+	qsort(array, arraySize, sizeof(Num), CImageProcessorUtil::compare<Num>);
 }
 
 template<class Num>
-inline void CImageProcessorUtil::quickSort(OUT Num array[], IN const int left, IN const int right)
+inline int CImageProcessorUtil::compare(IN const void* src, IN const void* dst)
 {
-	if (left >= right) {
-		return;
+	if (*(Num*)src < *(Num*)dst) {
+		return -1;
 	}
-
-	int last = left;
-	std::swap(array[left], array[(left + right) / 2]);
-
-	for (int i = left + 1; i <= right; i++) {
-		if (array[i] < array[left]) {
-			std::swap(array[++last], array[i]);
-		}
+	if (*(Num*)src == *(Num*)dst) {
+		return 0;
 	}
-
-	std::swap(array[left], array[last]);
-
-	quickSort(array, left, last - 1);
-	quickSort(array, last + 1, right);
+	if (*(Num*)src > *(Num*)dst) {
+		return 1;
+	}
 }
+
