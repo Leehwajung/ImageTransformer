@@ -1,5 +1,5 @@
-#Image Area Processor
-Image Processing Course - HW3
+#Image Transformer
+Image Processing Course - HW4
 
 Language:	C++<br/>
 Target:		Win32 Application (MFC)<br/>

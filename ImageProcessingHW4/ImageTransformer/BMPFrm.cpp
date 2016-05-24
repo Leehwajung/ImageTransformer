@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "ImageAreaProcessor.h"
+#include "ImageTransformer.h"
 
 #include "BMPFrm.h"
 

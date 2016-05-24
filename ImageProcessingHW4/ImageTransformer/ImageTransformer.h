@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ImageAreaProcessor.h : ImageAreaProcessor 응용 프로그램에 대한 주 헤더 파일
+// ImageTransformer.h : ImageTransformer 응용 프로그램에 대한 주 헤더 파일
 //
 #pragma once
 
@@ -23,14 +23,14 @@
 
 using namespace Gdiplus;
 
-// CImageAreaProcessorApp:
-// 이 클래스의 구현에 대해서는 ImageAreaProcessor.cpp을 참조하십시오.
+// CImageTransformerApp:
+// 이 클래스의 구현에 대해서는 ImageTransformer.cpp을 참조하십시오.
 //
 
-class CImageAreaProcessorApp : public CWinAppEx
+class CImageTransformerApp : public CWinAppEx
 {
 public:
-	CImageAreaProcessorApp();
+	CImageTransformerApp();
 
 // 특성입니다.
 public:
@@ -52,4 +52,4 @@ public:
 	afx_msg void OnHtgPlot();
 };
 
-extern CImageAreaProcessorApp theApp;
+extern CImageTransformerApp theApp;

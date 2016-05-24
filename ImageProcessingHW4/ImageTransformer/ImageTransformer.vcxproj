@@ -23,7 +23,7 @@
     <RootNamespace>HistogramBased_ImageProcessor</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <Keyword>MFCProj</Keyword>
-    <ProjectName>ImageAreaProcessor</ProjectName>
+    <ProjectName>ImageTransformer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -194,7 +194,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ImageAreaProcessor.h" />
+    <ClInclude Include="ImageTransformer.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="HistogramFrm.h" />
     <ClInclude Include="HistogramView.h" />
@@ -212,7 +212,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ImageAreaProcessor.cpp" />
+    <ClCompile Include="ImageTransformer.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="HistogramFrm.cpp" />
     <ClCompile Include="HistogramView.cpp" />
@@ -221,19 +221,19 @@
     <ClCompile Include="BMPView.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ImageAreaProcessor.reg" />
-    <None Include="res\ImageAreaProcessor.rc2" />
+    <None Include="ImageTransformer.reg" />
+    <None Include="res\ImageTransformer.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ImageAreaProcessor.rc" />
+    <ResourceCompile Include="ImageTransformer.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BMPDoc.ico" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />
-    <Image Include="res\ImageAreaProcessor.ico" />
+    <Image Include="res\ImageTransformer.ico" />
     <Image Include="res\HistogramDoc.ico" />
     <Image Include="res\main.bmp" />
     <Image Include="res\Toolbar.bmp" />

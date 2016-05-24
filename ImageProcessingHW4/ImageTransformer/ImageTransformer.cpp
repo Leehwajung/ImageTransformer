@@ -9,13 +9,13 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// ImageAreaProcessor.cpp : 응용 프로그램에 대한 클래스 동작을 정의합니다.
+// ImageTransformer.cpp : 응용 프로그램에 대한 클래스 동작을 정의합니다.
 //
 
 #include "stdafx.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
-#include "ImageAreaProcessor.h"
+#include "ImageTransformer.h"
 #include "MainFrm.h"
 
 #include "HistogramFrm.h"
@@ -32,22 +32,22 @@
 #define PFX_HISTOGRAM	L"histogram_of_"
 
 
-// CImageAreaProcessorApp
+// CImageTransformerApp
 
-BEGIN_MESSAGE_MAP(CImageAreaProcessorApp, CWinAppEx)
-	ON_COMMAND(ID_APP_ABOUT, &CImageAreaProcessorApp::OnAppAbout)
+BEGIN_MESSAGE_MAP(CImageTransformerApp, CWinAppEx)
+	ON_COMMAND(ID_APP_ABOUT, &CImageTransformerApp::OnAppAbout)
 	// 표준 파일을 기초로 하는 문서 명령입니다.
 	//ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
-	ON_COMMAND(ID_HTG_PLOT, &CImageAreaProcessorApp::OnHtgPlot)
+	ON_COMMAND(ID_HTG_PLOT, &CImageTransformerApp::OnHtgPlot)
 END_MESSAGE_MAP()
 
 
-// CImageAreaProcessorApp 생성
+// CImageTransformerApp 생성
 
-CImageAreaProcessorApp::CImageAreaProcessorApp()
+CImageTransformerApp::CImageTransformerApp()
 {
 	// 다시 시작 관리자 지원
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
@@ -60,20 +60,20 @@ CImageAreaProcessorApp::CImageAreaProcessorApp()
 
 	// TODO: 아래 응용 프로그램 ID 문자열을 고유 ID 문자열로 바꾸십시오(권장).
 	// 문자열에 대한 서식: CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("ImageAreaProcessor.AppID.NoVersion"));
+	SetAppID(_T("ImageTransformer.AppID.NoVersion"));
 
 	// TODO: 여기에 생성 코드를 추가합니다.
 	// InitInstance에 모든 중요한 초기화 작업을 배치합니다.
 }
 
-// 유일한 CImageAreaProcessorApp 개체입니다.
+// 유일한 CImageTransformerApp 개체입니다.
 
-CImageAreaProcessorApp theApp;
+CImageTransformerApp theApp;
 
 
-// CImageAreaProcessorApp 초기화
+// CImageTransformerApp 초기화
 
-BOOL CImageAreaProcessorApp::InitInstance()
+BOOL CImageTransformerApp::InitInstance()
 {
 	CWinAppEx::InitInstance();
 
@@ -183,7 +183,7 @@ BOOL CImageAreaProcessorApp::InitInstance()
 	return TRUE;
 }
 
-int CImageAreaProcessorApp::ExitInstance()
+int CImageTransformerApp::ExitInstance()
 {
 	//TODO: 추가한 추가 리소스를 처리합니다.
 	AfxOleTerm(FALSE);
@@ -192,7 +192,7 @@ int CImageAreaProcessorApp::ExitInstance()
 	return CWinAppEx::ExitInstance();
 }
 
-// CImageAreaProcessorApp 메시지 처리기
+// CImageTransformerApp 메시지 처리기
 
 
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
@@ -228,15 +228,15 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 // 대화 상자를 실행하기 위한 응용 프로그램 명령입니다.
-void CImageAreaProcessorApp::OnAppAbout()
+void CImageTransformerApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
 
-// CImageAreaProcessorApp 사용자 지정 로드/저장 메서드
+// CImageTransformerApp 사용자 지정 로드/저장 메서드
 
-void CImageAreaProcessorApp::PreLoadState()
+void CImageTransformerApp::PreLoadState()
 {
 	BOOL bNameValid;
 	CString strName;
@@ -245,18 +245,18 @@ void CImageAreaProcessorApp::PreLoadState()
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 }
 
-void CImageAreaProcessorApp::LoadCustomState()
+void CImageTransformerApp::LoadCustomState()
 {
 }
 
-void CImageAreaProcessorApp::SaveCustomState()
+void CImageTransformerApp::SaveCustomState()
 {
 }
 
 
-// CImageAreaProcessorApp 메시지 처리기
+// CImageTransformerApp 메시지 처리기
 
-void CImageAreaProcessorApp::OnHtgPlot()
+void CImageTransformerApp::OnHtgPlot()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 

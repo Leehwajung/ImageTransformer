@@ -51,7 +51,7 @@
     <ClInclude Include="ImageProcessorUtil.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ImageAreaProcessor.h">
+    <ClInclude Include="ImageTransformer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,10 +80,10 @@
     <ClCompile Include="ImageProcessorUtil.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ImageAreaProcessor.cpp">
+    <ClCompile Include="BMPDoc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BMPDoc.cpp">
+    <ClCompile Include="ImageTransformer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -91,10 +91,10 @@
     <None Include="res\ribbon.mfcribbon-ms">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="res\ImageAreaProcessor.rc2">
+    <None Include="ImageTransformer.reg" />
+    <None Include="res\ImageTransformer.rc2">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="ImageAreaProcessor.reg" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\buttons.bmp">
@@ -127,12 +127,12 @@
     <Image Include="res\BMPDoc.ico">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="res\ImageAreaProcessor.ico">
+    <Image Include="res\ImageTransformer.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="ImageAreaProcessor.rc">
+    <ResourceCompile Include="ImageTransformer.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>

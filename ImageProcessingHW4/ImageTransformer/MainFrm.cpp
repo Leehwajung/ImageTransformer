@@ -13,7 +13,7 @@
 //
 
 #include "stdafx.h"
-#include "ImageAreaProcessor.h"
+#include "ImageTransformer.h"
 
 #include "MainFrm.h"
 
