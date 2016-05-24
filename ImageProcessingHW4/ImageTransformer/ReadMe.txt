@@ -50,30 +50,30 @@ res\Toolbar.bmp
 
 자식 프레임 창:
 
-HistogramFrm.h, HistogramFrm.cpp
-    이 파일은 MDI 응용 프로그램에서 자식 창을 지원하는 CHistogramFrame 클래스를 정의하고 구현합니다.
+ChildFrm.h, ChildFrm.cpp
+    이 파일은 MDI 응용 프로그램에서 자식 창을 지원하는 CRAWFrame 클래스를 정의하고 구현합니다.
 
 /////////////////////////////////////////////////////////////////////////////
 
 응용 프로그램 마법사에서 문서 형식과 뷰를 한 개씩 만듭니다.
 
-HistogramDoc.h, HistogramDoc.cpp - 문서
-    이 파일에는 CHistogramDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CHistogramDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
+BMPDoc.h, BMPDoc.cpp - 문서
+    이 파일에는 CBMPDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CBMPDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
     문서에는 다음과 같은 문자열이 있습니다.
-        파일 확장명:      htg
-        파일 형식 ID:        ImageTransformer.Document
-        주 프레임 캡션:  Image Transformer
-        Doc 형식 이름:       Histogram
-        필터 이름:         Histogram Files (*.htg)
-        파일의 새 약식 이름: Histogram
-        파일 형식의 긴 이름: ImageTransformer.Document
+        파일 확장명:      bmp
+        파일 형식 ID:        com.microsoft.bmp.Document
+        주 프레임 캡션:  Bitmap
+        Doc 형식 이름:       BMP
+        필터 이름:         BMP Files (*.bmp)
+        파일의 새 약식 이름: bmp
+        파일 형식의 긴 이름: com.microsoft.bmp.Document
 
-HistogramView.h, HistogramView.cpp - 문서 뷰
-    이 파일에는 CHistogramView 클래스가 포함됩니다.
-    CHistogramView 개체는 CHistogramDoc 개체를 보는 데 사용됩니다.
+BMPView.h, BMPView.cpp - 문서 뷰
+    이 파일에는 CBMPView 클래스가 포함됩니다.
+    CBMPView 개체는 CBMPDoc 개체를 보는 데 사용됩니다.
 
-res\HistogramDoc.ico
-    아이콘 파일이며, CHistogramDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 ImageTransformer.rc에 의해 포함됩니다.
+res\ImageTransformerDoc.ico
+    아이콘 파일이며, CBMPDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 ImageTransformer.rc에 의해 포함됩니다.
 
 
 

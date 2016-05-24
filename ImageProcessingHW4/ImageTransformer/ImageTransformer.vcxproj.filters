@@ -54,6 +54,15 @@
     <ClInclude Include="ImageTransformer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="RawFrm.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RawView.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RawDoc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -86,6 +95,15 @@
     <ClCompile Include="ImageTransformer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="RAWFrm.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RAWView.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RAWDoc.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\ribbon.mfcribbon-ms">
@@ -93,6 +111,12 @@
     </None>
     <None Include="ImageTransformer.reg" />
     <None Include="res\ImageTransformer.rc2">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="BOAT512.raw.raw">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="lena_raw_512x512.raw">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>

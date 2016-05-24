@@ -339,7 +339,7 @@ BEGIN
             VALUE "LegalCopyright", "(c) Hwajung Lee.  All rights reserved."
             VALUE "OriginalFilename", "Image Transformer.exe"
             VALUE "ProductName", "Image Transformer"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "ProductVersion", "1.3.0.1"
         END
     END
     BLOCK "VarFileInfo"

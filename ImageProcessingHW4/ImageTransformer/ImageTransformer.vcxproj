@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CA0B5B3D-E9AA-4636-89E8-2D058402DDA4}</ProjectGuid>
-    <RootNamespace>HistogramBased_ImageProcessor</RootNamespace>
+    <ProjectGuid>{D731CDED-A7A2-476A-AE16-0B2D7D0C6CFF}</ProjectGuid>
+    <RootNamespace>ImageTransformer</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <Keyword>MFCProj</Keyword>
     <ProjectName>ImageTransformer</ProjectName>
@@ -196,15 +196,17 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ImageTransformer.h" />
     <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="HistogramFrm.h" />
-    <ClInclude Include="HistogramView.h" />
-    <ClInclude Include="HistogramDoc.h" />
     <ClInclude Include="BMPFrm.h" />
     <ClInclude Include="BMPView.h" />
     <ClInclude Include="BMPDoc.h" />
+    <ClInclude Include="RawFrm.h" />
+    <ClInclude Include="RawView.h" />
+    <ClInclude Include="RawDoc.h" />
+    <ClInclude Include="HistogramFrm.h" />
+    <ClInclude Include="HistogramView.h" />
+    <ClInclude Include="HistogramDoc.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BMPDoc.cpp" />
     <ClCompile Include="ImageProcessorUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -214,14 +216,20 @@
     </ClCompile>
     <ClCompile Include="ImageTransformer.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="BMPFrm.cpp" />
+    <ClCompile Include="BMPView.cpp" />
+    <ClCompile Include="BMPDoc.cpp" />
+    <ClCompile Include="RAWFrm.cpp" />
+    <ClCompile Include="RAWView.cpp" />
+    <ClCompile Include="RAWDoc.cpp" />
     <ClCompile Include="HistogramFrm.cpp" />
     <ClCompile Include="HistogramView.cpp" />
     <ClCompile Include="HistogramDoc.cpp" />
-    <ClCompile Include="BMPFrm.cpp" />
-    <ClCompile Include="BMPView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BOAT512.raw.raw" />
     <None Include="ImageTransformer.reg" />
+    <None Include="lena_raw_512x512.raw" />
     <None Include="res\ImageTransformer.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
   </ItemGroup>

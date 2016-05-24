@@ -18,12 +18,15 @@
 #include "ImageTransformer.h"
 #include "MainFrm.h"
 
-#include "HistogramFrm.h"
-#include "HistogramDoc.h"
-#include "HistogramView.h"
 #include "BMPFrm.h"
 #include "BMPDoc.h"
 #include "BMPView.h"
+#include "RAWFrm.h"
+#include "RAWDoc.h"
+#include "RAWView.h"
+#include "HistogramFrm.h"
+#include "HistogramDoc.h"
+#include "HistogramView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -267,7 +270,7 @@ void CImageTransformerApp::OnHtgPlot()
 	// 신규 Historam 문서 (CHistogramDoc) 생성
 	POSITION pos = GetFirstDocTemplatePosition();
 	CDocTemplate *pTml;
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 3; i++) {
 		pTml = GetNextDocTemplate(pos);
 	}
 	pTml->OpenDocumentFile(NULL);
