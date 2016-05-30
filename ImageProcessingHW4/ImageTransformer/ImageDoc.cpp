@@ -70,24 +70,30 @@ BOOL CImageDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
-	////파일 확장자 복사
-	//CString strTmp(lpszPathName);
-	//int i = strTmp.ReverseFind('.');
-	//CString strTmp2;
-	//if (i != -1)
-	//{
-	//	strTmp2 = strTmp.Right(strTmp.GetLength() - i - 1);
-	//}
-	//else
-	//{
-	//	strTmp2 = _T("");
-	//}
-
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
-	m_bitmap = Bitmap::FromFile(lpszPathName);
 
 	return TRUE;
 }
+
+BOOL CImageDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	return CDocument::OnSaveDocument(lpszPathName);
+}
+
+void CImageDoc::OnCloseDocument()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (m_bitmap) {
+		delete m_bitmap;
+	}
+
+	CDocument::OnCloseDocument();
+}
+
+#ifndef _WIN32_WCE
+// CImageDoc serialization입니다.
 
 //int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 //{
@@ -120,35 +126,14 @@ BOOL CImageDoc::OnOpenDocument(LPCTSTR lpszPathName)
 //	return -1;  // Failure
 //}
 
-BOOL CImageDoc::OnSaveDocument(LPCTSTR lpszPathName)
-{
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	//CLSID bmpClsid;
-	//GetEncoderClsid(L"image/png", &bmpClsid);
-	//m_bitmap->Save(lpszPathName, &bmpClsid, NULL);
-
-	return CDocument::OnSaveDocument(lpszPathName);
-}
-
-void CImageDoc::OnCloseDocument()
-{
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (m_bitmap) {
-		delete m_bitmap;
-	}
-
-	CDocument::OnCloseDocument();
-}
-
-#ifndef _WIN32_WCE
-// CImageDoc serialization입니다.
-
 void CImageDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
-		//m_bitmap->Save(ar.GetFile(),)
+		//CLSID bmpClsid;
+		//GetEncoderClsid(L"image/bmp", &bmpClsid);
+		//m_bitmap->Save(ar.GetFile()->GetFilePath(), &bmpClsid, NULL);
 	}
 	else
 	{

@@ -30,6 +30,7 @@ IMPLEMENT_DYNCREATE(CImageFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CImageFrame, CMDIChildWndEx)
 	ON_WM_NCACTIVATE()
+	ON_WM_GETMINMAXINFO()
 	ON_COMMAND(ID_PP_HE, &CImageFrame::OnPpHistogramEqualization)
 	ON_COMMAND(ID_PP_BCS, &CImageFrame::OnPpBasicContrastStretching)
 	ON_COMMAND(ID_PP_ECS, &CImageFrame::OnPpEndsinContrastStretching)
@@ -44,13 +45,15 @@ BEGIN_MESSAGE_MAP(CImageFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_AP_SG, &CImageFrame::OnApStochasticGradient)
 	ON_COMMAND(ID_AP_LP, &CImageFrame::OnApLowPass)
 	ON_COMMAND(ID_AP_MD, &CImageFrame::OnApMedian)
-	ON_WM_GETMINMAXINFO()
 	ON_COMMAND(ID_ER_RBT, &CImageFrame::OnErRoberts)
 	ON_COMMAND(ID_ER_SB, &CImageFrame::OnErSobel)
 	ON_COMMAND(ID_ER_PWT, &CImageFrame::OnErPrewitt)
 	ON_COMMAND(ID_ER_SG, &CImageFrame::OnErStochasticGradient)
 	ON_COMMAND(ID_ER_LP, &CImageFrame::OnErLowPass)
 	ON_COMMAND(ID_ER_MD, &CImageFrame::OnErMedian)
+	ON_COMMAND(ID_IT_FDCT, &CImageFrame::OnItForwardDCT)
+	ON_COMMAND(ID_IT_IDCT, &CImageFrame::OnItInverseDCT)
+	ON_COMMAND(ID_IT_MASK, &CImageFrame::OnItMaskWidth)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CImageFrame, CMDIChildWndEx)
@@ -618,4 +621,25 @@ void CImageFrame::OnErMedian()
 	CString msg;
 	msg.Format(_T("MSE: %f"), mse);
 	MessageBox(msg, _T("Mean Square Error"));
+}
+
+void CImageFrame::OnItForwardDCT()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+void CImageFrame::OnItInverseDCT()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+void CImageFrame::OnItMaskWidth()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
+		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IT_MASK));
+	if (pSpin != NULL) {
+		m_TransformMaskWidth = (BYTE)_wtof(pSpin->GetEditText());
+	}
 }

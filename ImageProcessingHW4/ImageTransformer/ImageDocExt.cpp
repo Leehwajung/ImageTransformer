@@ -50,8 +50,9 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	const UINT height = dlg.m_RawHeight;
 	const UINT depth = dlg.m_RawDepth;
 
+	// BMP 데이터 생성
 	BITMAPINFO* info;
-	
+
 	if (depth == 8) {
 		info = (BITMAPINFO*)new BYTE[sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD)];
 
@@ -68,6 +69,8 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 		info->bmiHeader.biClrUsed = 0;
 		info->bmiHeader.biClrImportant = 0;
+		info->bmiColors->rgbRed = info->bmiColors->rgbGreen
+			= info->bmiColors->rgbBlue = info->bmiColors->rgbReserved = 0;
 	}
 
 	int rwsize = (((width) + 31) / 32 * 4);	// 4바이트의 배수여야 함
@@ -123,16 +126,16 @@ void CRAWDoc::Serialize(CArchive & ar)
 	else
 	{
 		// TODO: 여기에 로딩 코드를 추가합니다.
-		CFile *infile = ar.GetFile(); // 입력할 파일의 포인트를 가져옴.
+		CFile *infile = ar.GetFile();
 
 		UINT length = (UINT)infile->GetLength();
-		if (length == 0) {	// 파일 사이즈를 검사함.
+		if (length == 0) {					// 파일 사이즈를 검사함.
 			AfxMessageBox(_T("파일 크기가 0 입니다."));
 			return;
 		}
 
 		allocRawPixelData(length);
-		ar.Read(m_RawPixelData, length); // 영상파일을 읽어 m_RawPixelData배열에 저장 
+		ar.Read(m_RawPixelData, length);	// 영상파일을 읽어 m_RawPixelData 배열에 저장 
 	}
 }
 #endif

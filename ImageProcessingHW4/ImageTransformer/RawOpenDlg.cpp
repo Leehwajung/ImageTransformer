@@ -65,7 +65,7 @@ void CRawOpenDlg::OnOK()
 		m_RawDepth = 8;
 	}
 	else {
-		m_RawDepth = 8;
+		m_RawDepth = 8;	// TODO: 지원 가능 Depth를 추가하면 변경
 	}
 
 	CDialogEx::OnOK();

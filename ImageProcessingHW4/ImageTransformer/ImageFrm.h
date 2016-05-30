@@ -28,6 +28,7 @@ public:
 	DOUBLE m_snr;
 	UINT m_InitW = 552;
 	UINT m_InitH = 555;
+	UINT m_TransformMaskWidth;
 
 // 작업입니다.
 public:
@@ -75,4 +76,7 @@ public:
 	afx_msg void OnErStochasticGradient();
 	afx_msg void OnErLowPass();
 	afx_msg void OnErMedian();
+	afx_msg void OnItForwardDCT();
+	afx_msg void OnItInverseDCT();
+	afx_msg void OnItMaskWidth();
 };

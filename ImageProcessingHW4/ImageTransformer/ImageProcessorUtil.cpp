@@ -168,15 +168,15 @@ void CImageProcessorUtil::mask(OUT BYTE pixelData[],
 		double normalized = scaleFactor * g[i] + translator + 0.5;
 
 		// 임계값 적용
-		if (normalized > THRESH) {
-			pixelData[i] = INTENSITYMAX;
-		}
-		else {
-			pixelData[i] = INTENSITYMIN;
-		}
+		//if (normalized > THRESH) {
+		//	pixelData[i] = INTENSITYMAX;
+		//}
+		//else {
+		//	pixelData[i] = INTENSITYMIN;
+		//}
 
 		// 임계값 비적용
-		//pixelData[i] = (BYTE)normalized;
+		pixelData[i] = (BYTE)normalized;
 	}
 
 	// 동적 할당 메모리 해제
