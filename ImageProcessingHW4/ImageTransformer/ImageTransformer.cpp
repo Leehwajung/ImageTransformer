@@ -19,14 +19,12 @@
 #include "MainFrm.h"
 
 #include "ImageFrm.h"
-#include "ImageDoc.h"
 #include "ImageView.h"
-#include "RAWFrm.h"
-#include "RAWDoc.h"
-#include "RAWView.h"
+#include "ImageDoc.h"
+#include "ImageDocExt.h"
 #include "HistogramFrm.h"
-#include "HistogramDoc.h"
 #include "HistogramView.h"
+#include "HistogramDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -118,7 +116,7 @@ BOOL CImageTransformerApp::InitInstance()
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CMultiDocTemplate* pDocTemplate;
 	pDocTemplate = new CMultiDocTemplate(IDR_BMPFileTYPE,
-		RUNTIME_CLASS(CImageDoc),
+		RUNTIME_CLASS(CBMPDoc),
 		RUNTIME_CLASS(CImageFrame), // 사용자 지정 MDI 자식 프레임입니다.
 		RUNTIME_CLASS(CImageView));
 	if (!pDocTemplate)

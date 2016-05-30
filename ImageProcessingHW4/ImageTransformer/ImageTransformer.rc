@@ -309,6 +309,26 @@ BEGIN
     DEFPUSHBUTTON   "확인",IDOK,113,41,50,14,WS_GROUP
 END
 
+IDD_RAWOPEN DIALOGEX 0, 0, 165, 176
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Raw Image Option"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "크기",IDC_STATIC,12,12,132,54
+    LTEXT           "너비:",IDC_STATIC,18,24,18,8
+    EDITTEXT        IDC_SIZE_WIDTH,42,24,72,14,ES_NUMBER | WS_GROUP,WS_EX_STATICEDGE
+    LTEXT           "Pixels",IDC_STATIC,120,24,19,8
+    LTEXT           "높이:",IDC_STATIC,18,48,18,8
+    EDITTEXT        IDC_SIZE_HEIGHT,42,48,72,14,ES_NUMBER,WS_EX_STATICEDGE
+    LTEXT           "Pixels",IDC_STATIC,120,48,19,8
+    GROUPBOX        "채널",IDC_STATIC,12,78,132,72
+    LTEXT           "깊이:",IDC_STATIC,18,90,18,8
+    CONTROL         "8비트",IDC_DEPTH_8,"Button",BS_AUTORADIOBUTTON | BS_LEFT | BS_FLAT | WS_DISABLED | WS_GROUP,18,102,35,10
+    CONTROL         "32비트",IDC_DEPTH_32,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE | WS_DISABLED,18,114,39,10
+    DEFPUSHBUTTON   "확인",IDOK,54,156,25,14
+    PUSHBUTTON      "취소",IDCANCEL,83,156,25,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -364,6 +384,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 55
     END
+
+    IDD_RAWOPEN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 158
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -374,6 +402,30 @@ END
 //
 
 IDR_RIBBON              RT_RIBBON_XML           "res\\ribbon.mfcribbon-ms"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_RAWOPEN AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 100, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 100, 0,
+    0, 0, 0, 0,
+    100, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////

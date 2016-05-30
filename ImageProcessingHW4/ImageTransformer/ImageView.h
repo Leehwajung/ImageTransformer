@@ -6,6 +6,7 @@
 #include "ImageFrm.h"
 #include "ImageDoc.h"
 
+
 // CImageView ∫‰¿‘¥œ¥Ÿ.
 
 class CImageView : public CView

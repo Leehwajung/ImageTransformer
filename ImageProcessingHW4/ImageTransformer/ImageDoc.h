@@ -7,6 +7,7 @@
 
 using Gdiplus::Bitmap;
 
+
 // CImageDoc 문서입니다.
 
 class CImageDoc : public CDocument
@@ -17,7 +18,7 @@ protected:	// serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
-	Bitmap* m_bitmap;
+	Bitmap *m_bitmap;
 
 // 작업입니다.
 public:

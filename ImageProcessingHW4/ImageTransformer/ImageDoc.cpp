@@ -70,18 +70,18 @@ BOOL CImageDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
-	//파일 확장자 복사
-	CString strTmp(lpszPathName);
-	int i = strTmp.ReverseFind('.');
-	CString strTmp2;
-	if (i != -1)
-	{
-		strTmp2 = strTmp.Right(strTmp.GetLength() - i - 1);
-	}
-	else
-	{
-		strTmp2 = _T("");
-	}
+	////파일 확장자 복사
+	//CString strTmp(lpszPathName);
+	//int i = strTmp.ReverseFind('.');
+	//CString strTmp2;
+	//if (i != -1)
+	//{
+	//	strTmp2 = strTmp.Right(strTmp.GetLength() - i - 1);
+	//}
+	//else
+	//{
+	//	strTmp2 = _T("");
+	//}
 
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 	m_bitmap = Bitmap::FromFile(lpszPathName);
@@ -133,7 +133,9 @@ BOOL CImageDoc::OnSaveDocument(LPCTSTR lpszPathName)
 void CImageDoc::OnCloseDocument()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (m_bitmap) delete m_bitmap;
+	if (m_bitmap) {
+		delete m_bitmap;
+	}
 
 	CDocument::OnCloseDocument();
 }
@@ -146,12 +148,12 @@ void CImageDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
-
+		//m_bitmap->Save(ar.GetFile(),)
 	}
 	else
 	{
 		// TODO: 여기에 로딩 코드를 추가합니다.
-
+		m_bitmap = Bitmap::FromFile(ar.GetFile()->GetFilePath());
 	}
 }
 #endif

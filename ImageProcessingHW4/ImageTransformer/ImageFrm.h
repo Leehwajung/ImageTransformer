@@ -8,7 +8,8 @@
 
 #include "ImageProcessorUtil.h"
 
-// CImageFrame
+
+// CImageFrame 프레임입니다.
 
 class CImageView;
 
