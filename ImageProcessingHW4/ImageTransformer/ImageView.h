@@ -1,23 +1,23 @@
-// BMPView.h : CBMPView 클래스의 인터페이스입니다.
+// ImageView.h : CImageView 클래스의 인터페이스입니다.
 //
 
 #pragma once
 
-#include "BMPFrm.h"
-#include "BMPDoc.h"
+#include "ImageFrm.h"
+#include "ImageDoc.h"
 
-// CBMPView 뷰입니다.
+// CImageView 뷰입니다.
 
-class CBMPView : public CView
+class CImageView : public CView
 {
 protected:	// serialization에서만 만들어집니다.
-	CBMPView();		// 동적 만들기에 사용되는 protected 생성자입니다.
-	DECLARE_DYNCREATE(CBMPView)
+	CImageView();		// 동적 만들기에 사용되는 protected 생성자입니다.
+	DECLARE_DYNCREATE(CImageView)
 
 // 특성입니다.
 public:
-//	CBMPFrame* GetFrame() const;
-	CBMPDoc* GetDocument() const;
+//	CImageFrame* GetFrame() const;
+	CImageDoc* GetDocument() const;
 
 // 작업입니다.
 public:
@@ -30,7 +30,7 @@ public:
 
 // 구현입니다.
 public:
-	virtual ~CBMPView();
+	virtual ~CImageView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 #ifndef _WIN32_WCE
@@ -49,10 +49,10 @@ public:
 	afx_msg void OnUpdateViewHtgSize(CCmdUI *pCmdUI);
 };
 
-#ifndef _DEBUG	// BMPView.cpp의 디버그 버전
-inline CBMPFrame* CBMPView::GetFrame() const
-   { return reinterpret_cast<CBMPFrame*>(CView::GetParentFrame()); }
+#ifndef _DEBUG	// ImageView.cpp의 디버그 버전
+inline CImageFrame* CImageView::GetFrame() const
+   { return reinterpret_cast<CImageFrame*>(CView::GetParentFrame()); }
 
-inline CBMPDoc* CBMPView::GetDocument() const
-   { return reinterpret_cast<CBMPDoc*>(m_pDocument); }
+inline CImageDoc* CImageView::GetDocument() const
+   { return reinterpret_cast<CImageDoc*>(m_pDocument); }
 #endif

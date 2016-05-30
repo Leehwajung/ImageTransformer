@@ -1,27 +1,27 @@
-// BMPFrm.h : CBMPFrame 클래스의 인터페이스입니다.
+// ImageFrm.h : CImageFrame 클래스의 인터페이스입니다.
 //
 
 #pragma once
 
-#include "BMPView.h"
-#include "BMPDoc.h"
+#include "ImageView.h"
+#include "ImageDoc.h"
 
 #include "ImageProcessorUtil.h"
 
-// CBMPFrame
+// CImageFrame
 
-class CBMPView;
+class CImageView;
 
-class CBMPFrame : public CMDIChildWndEx
+class CImageFrame : public CMDIChildWndEx
 {
 public:
-	CBMPFrame();
-	DECLARE_DYNCREATE(CBMPFrame)
+	CImageFrame();
+	DECLARE_DYNCREATE(CImageFrame)
 
 // 특성입니다.
 public:
-//	virtual CBMPView* GetActiveView();
-	virtual CBMPDoc* GetActiveDocument();
+//	virtual CImageView* GetActiveView();
+	virtual CImageDoc* GetActiveDocument();
 	BYTE m_bEcsHighEnd;
 	BYTE m_bEcsLowEnd;
 	DOUBLE m_snr;
@@ -30,7 +30,7 @@ public:
 
 // 작업입니다.
 public:
-	void Duplicate(OUT CBMPFrame** frame, OUT CBMPView** view, OUT CBMPDoc** document);
+	void Duplicate(OUT CImageFrame** frame, OUT CImageView** view, OUT CImageDoc** document);
 	void runEdgeDetection(Mask::Type maskType);
 
 // 재정의입니다.
@@ -40,7 +40,7 @@ public:
 
 // 구현입니다.
 public:
-	virtual ~CBMPFrame();
+	virtual ~CImageFrame();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

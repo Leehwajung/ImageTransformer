@@ -1,17 +1,17 @@
-// BMPFrm.cpp : CBMPFrame 클래스의 구현 파일입니다.
+// ImageFrm.cpp : CImageFrame 클래스의 구현 파일입니다.
 //
 
 #include "stdafx.h"
 #include "ImageTransformer.h"
 
-#include "BMPFrm.h"
+#include "ImageFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-#include "BMPView.h"
-#include "BMPDoc.h"
+#include "ImageView.h"
+#include "ImageDoc.h"
 
 #include "MainFrm.h"
 
@@ -24,64 +24,64 @@
 #define FILTER_WIDTH		3
 
 
-// CBMPFrame
+// CImageFrame
 
-IMPLEMENT_DYNCREATE(CBMPFrame, CMDIChildWndEx)
+IMPLEMENT_DYNCREATE(CImageFrame, CMDIChildWndEx)
 
-BEGIN_MESSAGE_MAP(CBMPFrame, CMDIChildWndEx)
+BEGIN_MESSAGE_MAP(CImageFrame, CMDIChildWndEx)
 	ON_WM_NCACTIVATE()
-	ON_COMMAND(ID_PP_HE, &CBMPFrame::OnPpHistogramEqualization)
-	ON_COMMAND(ID_PP_BCS, &CBMPFrame::OnPpBasicContrastStretching)
-	ON_COMMAND(ID_PP_ECS, &CBMPFrame::OnPpEndsinContrastStretching)
-	ON_COMMAND(ID_PP_ECSHIGH, &CBMPFrame::OnPpEcsHighEnd)
-	ON_COMMAND(ID_PP_ECSLOW, &CBMPFrame::OnPpEcsLowEnd)
-	ON_COMMAND(ID_VIEW_ORIGIN_SIZE, &CBMPFrame::OnViewOriginSize)
-	ON_COMMAND(ID_NS_GSN, &CBMPFrame::OnNoiseGaussian)
-	ON_COMMAND(ID_NS_SNR, &CBMPFrame::OnNoiseSNR)
-	ON_COMMAND(ID_AP_RBT, &CBMPFrame::OnApRoberts)
-	ON_COMMAND(ID_AP_SB, &CBMPFrame::OnApSobel)
-	ON_COMMAND(ID_AP_PWT, &CBMPFrame::OnApPrewitt)
-	ON_COMMAND(ID_AP_SG, &CBMPFrame::OnApStochasticGradient)
-	ON_COMMAND(ID_AP_LP, &CBMPFrame::OnApLowPass)
-	ON_COMMAND(ID_AP_MD, &CBMPFrame::OnApMedian)
+	ON_COMMAND(ID_PP_HE, &CImageFrame::OnPpHistogramEqualization)
+	ON_COMMAND(ID_PP_BCS, &CImageFrame::OnPpBasicContrastStretching)
+	ON_COMMAND(ID_PP_ECS, &CImageFrame::OnPpEndsinContrastStretching)
+	ON_COMMAND(ID_PP_ECSHIGH, &CImageFrame::OnPpEcsHighEnd)
+	ON_COMMAND(ID_PP_ECSLOW, &CImageFrame::OnPpEcsLowEnd)
+	ON_COMMAND(ID_VIEW_ORIGIN_SIZE, &CImageFrame::OnViewOriginSize)
+	ON_COMMAND(ID_NS_GSN, &CImageFrame::OnNoiseGaussian)
+	ON_COMMAND(ID_NS_SNR, &CImageFrame::OnNoiseSNR)
+	ON_COMMAND(ID_AP_RBT, &CImageFrame::OnApRoberts)
+	ON_COMMAND(ID_AP_SB, &CImageFrame::OnApSobel)
+	ON_COMMAND(ID_AP_PWT, &CImageFrame::OnApPrewitt)
+	ON_COMMAND(ID_AP_SG, &CImageFrame::OnApStochasticGradient)
+	ON_COMMAND(ID_AP_LP, &CImageFrame::OnApLowPass)
+	ON_COMMAND(ID_AP_MD, &CImageFrame::OnApMedian)
 	ON_WM_GETMINMAXINFO()
-	ON_COMMAND(ID_ER_RBT, &CBMPFrame::OnErRoberts)
-	ON_COMMAND(ID_ER_SB, &CBMPFrame::OnErSobel)
-	ON_COMMAND(ID_ER_PWT, &CBMPFrame::OnErPrewitt)
-	ON_COMMAND(ID_ER_SG, &CBMPFrame::OnErStochasticGradient)
-	ON_COMMAND(ID_ER_LP, &CBMPFrame::OnErLowPass)
-	ON_COMMAND(ID_ER_MD, &CBMPFrame::OnErMedian)
+	ON_COMMAND(ID_ER_RBT, &CImageFrame::OnErRoberts)
+	ON_COMMAND(ID_ER_SB, &CImageFrame::OnErSobel)
+	ON_COMMAND(ID_ER_PWT, &CImageFrame::OnErPrewitt)
+	ON_COMMAND(ID_ER_SG, &CImageFrame::OnErStochasticGradient)
+	ON_COMMAND(ID_ER_LP, &CImageFrame::OnErLowPass)
+	ON_COMMAND(ID_ER_MD, &CImageFrame::OnErMedian)
 END_MESSAGE_MAP()
 
-BEGIN_DISPATCH_MAP(CBMPFrame, CMDIChildWndEx)
+BEGIN_DISPATCH_MAP(CImageFrame, CMDIChildWndEx)
 END_DISPATCH_MAP()
 
-// 참고: IID_IBMPFrame에 대한 지원을 추가하여
+// 참고: IID_IImageFrame에 대한 지원을 추가하여
 //  VBA에서 형식 안전 바인딩을 지원합니다. 
 //  이 IID는 .IDL 파일에 있는 dispinterface의 GUID와 일치해야 합니다.
 
 // {49124138-EE54-4C37-9CB5-71965CF97CC5}
-static const IID IID_IBMPFrame =
+static const IID IID_IImageFrame =
 { 0x49124138, 0xEE54, 0x4C37,{ 0x9C, 0xB5, 0x71, 0x96, 0x5C, 0xF9, 0x7C, 0xC5 } };
 
-BEGIN_INTERFACE_MAP(CBMPFrame, CMDIChildWndEx)
-	INTERFACE_PART(CBMPFrame, IID_IBMPFrame, Dispatch)
+BEGIN_INTERFACE_MAP(CImageFrame, CMDIChildWndEx)
+	INTERFACE_PART(CImageFrame, IID_IImageFrame, Dispatch)
 END_INTERFACE_MAP()
 
 
-// CBMPFrame 생성/소멸입니다.
+// CImageFrame 생성/소멸입니다.
 
-CBMPFrame::CBMPFrame()
+CImageFrame::CImageFrame()
 {
 	EnableAutomation();
 }
 
-CBMPFrame::~CBMPFrame()
+CImageFrame::~CImageFrame()
 {
 }
 
 
-BOOL CBMPFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CImageFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서 Window 클래스 또는 스타일을 수정합니다.
 	if (!CMDIChildWndEx::PreCreateWindow(cs))
@@ -93,7 +93,7 @@ BOOL CBMPFrame::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-void CBMPFrame::OnFinalRelease()
+void CImageFrame::OnFinalRelease()
 {
 	// 자동화 개체에 대한 마지막 참조가 해제되면
 	// OnFinalRelease가 호출됩니다.  기본 클래스에서 자동으로 개체를 삭제합니다.
@@ -104,66 +104,66 @@ void CBMPFrame::OnFinalRelease()
 }
 
 
-//CBMPView* CBMPFrame::GetActiveView()
+//CImageView* CImageFrame::GetActiveView()
 //{
-//	return (CBMPView*)CFrameWnd::GetActiveView();
+//	return (CImageView*)CFrameWnd::GetActiveView();
 //}
 
-CBMPDoc* CBMPFrame::GetActiveDocument()
+CImageDoc* CImageFrame::GetActiveDocument()
 {
-	return (CBMPDoc*)CFrameWnd::GetActiveDocument();
+	return (CImageDoc*)CFrameWnd::GetActiveDocument();
 }
 
 
-// CBMPFrame 진단입니다.
+// CImageFrame 진단입니다.
 
 #ifdef _DEBUG
-void CBMPFrame::AssertValid() const
+void CImageFrame::AssertValid() const
 {
 	CMDIChildWndEx::AssertValid();
 }
 
-void CBMPFrame::Dump(CDumpContext& dc) const
+void CImageFrame::Dump(CDumpContext& dc) const
 {
 	CMDIChildWndEx::Dump(dc);
 }
 #endif //_DEBUG
 
 
-// CBMPFrame 작업입니다.
+// CImageFrame 작업입니다.
 
-void CBMPFrame::Duplicate(OUT CBMPFrame** frame, OUT CBMPView** view, OUT CBMPDoc** document)
+void CImageFrame::Duplicate(OUT CImageFrame** frame, OUT CImageView** view, OUT CImageDoc** document)
 {
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 	
-	// 신규 BMP 문서 (CBMPDoc) 생성
+	// 신규 Image 문서 (CImageDoc) 생성
 	CDocTemplate *pTml = pSrcDoc->GetDocTemplate();
 	pTml->OpenDocumentFile(NULL);
 
-	// 기존 CBMPDoc으로부터 복제
-	*frame = (CBMPFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
-	*view = (CBMPView*)(*frame)->GetActiveView();
+	// 기존 CImageDoc으로부터 복제
+	*frame = (CImageFrame*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame();
+	*view = (CImageView*)(*frame)->GetActiveView();
 	*document = (*view)->GetDocument();
 	(*document)->copyFrom(pSrcDoc);
 }
 
 // Masking
-void CBMPFrame::runEdgeDetection(Mask::Type maskType)
+void CImageFrame::runEdgeDetection(Mask::Type maskType)
 {
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Masking and Edge Detection
@@ -180,13 +180,13 @@ void CBMPFrame::runEdgeDetection(Mask::Type maskType)
 }
 
 
-// CBMPFrame 메시지 처리기입니다.
+// CImageFrame 메시지 처리기입니다.
 
-void CBMPFrame::ActivateFrame(int nCmdShow)
+void CImageFrame::ActivateFrame(int nCmdShow)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
-	CBMPDoc *pDoc = GetActiveDocument();
+	CImageDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -208,7 +208,7 @@ void CBMPFrame::ActivateFrame(int nCmdShow)
 	CMDIChildWndEx::ActivateFrame(nCmdShow);
 }
 
-BOOL CBMPFrame::OnNcActivate(BOOL bActive)
+BOOL CImageFrame::OnNcActivate(BOOL bActive)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
@@ -227,7 +227,7 @@ BOOL CBMPFrame::OnNcActivate(BOOL bActive)
 	return CMDIChildWndEx::OnNcActivate(bActive);
 }
 
-void CBMPFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+void CImageFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
@@ -240,23 +240,23 @@ void CBMPFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 }
 
 
-// CBMPFrame 명령입니다.
+// CImageFrame 명령입니다.
 
 // Histogram Equalization
-void CBMPFrame::OnPpHistogramEqualization()
+void CImageFrame::OnPpHistogramEqualization()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 	
 	// Histogram Equalization
@@ -273,20 +273,20 @@ void CBMPFrame::OnPpHistogramEqualization()
 }
 
 // Basic Contrast Stretching
-void CBMPFrame::OnPpBasicContrastStretching()
+void CImageFrame::OnPpBasicContrastStretching()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Basic Contrast Stretching
@@ -303,20 +303,20 @@ void CBMPFrame::OnPpBasicContrastStretching()
 }
 
 // Ends-in Contrast Stretching
-void CBMPFrame::OnPpEndsinContrastStretching()
+void CImageFrame::OnPpEndsinContrastStretching()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Basic Contrast Stretching
@@ -333,7 +333,7 @@ void CBMPFrame::OnPpEndsinContrastStretching()
 }
 
 // Ends-in Contrast Stretching의 최고값 설정
-void CBMPFrame::OnPpEcsHighEnd()
+void CImageFrame::OnPpEcsHighEnd()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -345,7 +345,7 @@ void CBMPFrame::OnPpEcsHighEnd()
 }
 
 // Ends-in Contrast Stretching의 최저값 설정
-void CBMPFrame::OnPpEcsLowEnd()
+void CImageFrame::OnPpEcsLowEnd()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -356,7 +356,7 @@ void CBMPFrame::OnPpEcsLowEnd()
 	}
 }
 
-void CBMPFrame::OnViewOriginSize()
+void CImageFrame::OnViewOriginSize()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -365,20 +365,20 @@ void CBMPFrame::OnViewOriginSize()
 
 
 // Gaussian Noise
-void CBMPFrame::OnNoiseGaussian()
+void CImageFrame::OnNoiseGaussian()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Add Gaussian Noise
@@ -396,7 +396,7 @@ void CBMPFrame::OnNoiseGaussian()
 }
 
 // SNR of Gaussian Noise
-void CBMPFrame::OnNoiseSNR()
+void CImageFrame::OnNoiseSNR()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -408,7 +408,7 @@ void CBMPFrame::OnNoiseSNR()
 }
 
 // Roberts Masking
-void CBMPFrame::OnApRoberts()
+void CImageFrame::OnApRoberts()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -416,7 +416,7 @@ void CBMPFrame::OnApRoberts()
 }
 
 // Sobel Masking
-void CBMPFrame::OnApSobel()
+void CImageFrame::OnApSobel()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -424,7 +424,7 @@ void CBMPFrame::OnApSobel()
 }
 
 // Prewitt Masking
-void CBMPFrame::OnApPrewitt()
+void CImageFrame::OnApPrewitt()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -432,7 +432,7 @@ void CBMPFrame::OnApPrewitt()
 }
 
 // Stochastic Gradient Masking
-void CBMPFrame::OnApStochasticGradient()
+void CImageFrame::OnApStochasticGradient()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -440,20 +440,20 @@ void CBMPFrame::OnApStochasticGradient()
 }
 
 // Low-pass Filtering
-void CBMPFrame::OnApLowPass()
+void CImageFrame::OnApLowPass()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Low-pass Filtering
@@ -470,20 +470,20 @@ void CBMPFrame::OnApLowPass()
 }
 
 // Median Filtering
-void CBMPFrame::OnApMedian()
+void CImageFrame::OnApMedian()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CBMPDoc을 가져옴
-	CBMPDoc *pSrcDoc = GetActiveDocument();
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
 	ASSERT_VALID(pSrcDoc);
 	if (!pSrcDoc)
 		return;
 
-	// 신규 BMP 문서 (CBMPDoc) 생성 및 복제
-	CBMPFrame* pDstFrm;
-	CBMPView* pDstView;
-	CBMPDoc* pDstDoc;
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
 	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
 	// Median Filtering
@@ -500,12 +500,12 @@ void CBMPFrame::OnApMedian()
 }
 
 
-void CBMPFrame::OnErRoberts()
+void CImageFrame::OnErRoberts()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// CBMPDoc을 가져옴
-	CBMPDoc *pDoc = GetActiveDocument();
+	// CImageDoc을 가져옴
+	CImageDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -520,12 +520,12 @@ void CBMPFrame::OnErRoberts()
 	MessageBox(msg, _T("Error Rate"));
 }
 
-void CBMPFrame::OnErSobel()
+void CImageFrame::OnErSobel()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// CBMPDoc을 가져옴
-	CBMPDoc *pDoc = GetActiveDocument();
+	// CImageDoc을 가져옴
+	CImageDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -540,12 +540,12 @@ void CBMPFrame::OnErSobel()
 	MessageBox(msg, _T("Error Rate"));
 }
 
-void CBMPFrame::OnErPrewitt()
+void CImageFrame::OnErPrewitt()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// CBMPDoc을 가져옴
-	CBMPDoc *pDoc = GetActiveDocument();
+	// CImageDoc을 가져옴
+	CImageDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -560,12 +560,12 @@ void CBMPFrame::OnErPrewitt()
 	MessageBox(msg, _T("Error Rate"));
 }
 
-void CBMPFrame::OnErStochasticGradient()
+void CImageFrame::OnErStochasticGradient()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// CBMPDoc을 가져옴
-	CBMPDoc *pDoc = GetActiveDocument();
+	// CImageDoc을 가져옴
+	CImageDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -580,12 +580,12 @@ void CBMPFrame::OnErStochasticGradient()
 	MessageBox(msg, _T("Error Rate"));
 }
 
-void CBMPFrame::OnErLowPass()
+void CImageFrame::OnErLowPass()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// CBMPDoc을 가져옴
-	CBMPDoc *pDoc = GetActiveDocument();
+	// CImageDoc을 가져옴
+	CImageDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -600,12 +600,12 @@ void CBMPFrame::OnErLowPass()
 	MessageBox(msg, _T("Mean Square Error"));
 }
 
-void CBMPFrame::OnErMedian()
+void CImageFrame::OnErMedian()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// CBMPDoc을 가져옴
-	CBMPDoc *pDoc = GetActiveDocument();
+	// CImageDoc을 가져옴
+	CImageDoc *pDoc = GetActiveDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;

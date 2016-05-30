@@ -58,7 +58,7 @@ ChildFrm.h, ChildFrm.cpp
 응용 프로그램 마법사에서 문서 형식과 뷰를 한 개씩 만듭니다.
 
 BMPDoc.h, BMPDoc.cpp - 문서
-    이 파일에는 CBMPDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CBMPDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
+    이 파일에는 CBMPDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CImageDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
     문서에는 다음과 같은 문자열이 있습니다.
         파일 확장명:      bmp
         파일 형식 ID:        com.microsoft.bmp.Document
@@ -68,12 +68,12 @@ BMPDoc.h, BMPDoc.cpp - 문서
         파일의 새 약식 이름: bmp
         파일 형식의 긴 이름: com.microsoft.bmp.Document
 
-BMPView.h, BMPView.cpp - 문서 뷰
-    이 파일에는 CBMPView 클래스가 포함됩니다.
-    CBMPView 개체는 CBMPDoc 개체를 보는 데 사용됩니다.
+ImageView.h, ImageView.cpp - 문서 뷰
+    이 파일에는 CImageView 클래스가 포함됩니다.
+    CImageView 개체는 CImageDoc 개체를 보는 데 사용됩니다.
 
 res\ImageTransformerDoc.ico
-    아이콘 파일이며, CBMPDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 ImageTransformer.rc에 의해 포함됩니다.
+    아이콘 파일이며, CImageDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 ImageTransformer.rc에 의해 포함됩니다.
 
 
 

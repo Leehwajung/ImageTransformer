@@ -1,4 +1,4 @@
-// BMPDoc.h : CBMPDoc 클래스의 인터페이스입니다.
+// ImageDoc.h : CImageDoc 클래스의 인터페이스입니다.
 //
 
 #pragma once
@@ -7,13 +7,13 @@
 
 using Gdiplus::Bitmap;
 
-// CBMPDoc 문서입니다.
+// CImageDoc 문서입니다.
 
-class CBMPDoc : public CDocument
+class CImageDoc : public CDocument
 {
 protected:	// serialization에서만 만들어집니다.
-	CBMPDoc();
-	DECLARE_DYNCREATE(CBMPDoc)
+	CImageDoc();
+	DECLARE_DYNCREATE(CImageDoc)
 
 // 특성입니다.
 public:
@@ -21,7 +21,7 @@ public:
 
 // 작업입니다.
 public:
-	void copyFrom(const CBMPDoc* bmpDoc);
+	void copyFrom(const CImageDoc* bmpDoc);
 	BYTE* getData(BitmapData* bitmapData, const PixelFormat pixelFormat);
 	void clearData(BitmapData* bitmapData);
 
@@ -35,16 +35,16 @@ public:
 	void EndsinContrastStretching(const BYTE low, const BYTE high);
 
 	// Gaussian Noise
-	void CBMPDoc::GaussianNoise(const DOUBLE snr);
+	void CImageDoc::GaussianNoise(const DOUBLE snr);
 
 	// Edge Detection
-	void CBMPDoc::detectEdge(const Mask::Type maskType);
+	void CImageDoc::detectEdge(const Mask::Type maskType);
 
 	// Low-pass Filtering
-	void CBMPDoc::LowPassFiltering(const UINT filterWidth);
+	void CImageDoc::LowPassFiltering(const UINT filterWidth);
 
 	// Median Filtering
-	void CBMPDoc::MedianFiltering(const UINT windowWidth);
+	void CImageDoc::MedianFiltering(const UINT windowWidth);
 
 	// 에러율 계산
 	DOUBLE getErrorRate(const Mask::Type maskType, const DOUBLE snr);
@@ -69,7 +69,7 @@ public:
 
 // 구현입니다.
 public:
-	virtual ~CBMPDoc();
+	virtual ~CImageDoc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 #ifndef _WIN32_WCE

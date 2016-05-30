@@ -196,9 +196,9 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ImageTransformer.h" />
     <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="BMPFrm.h" />
-    <ClInclude Include="BMPView.h" />
-    <ClInclude Include="BMPDoc.h" />
+    <ClInclude Include="ImageFrm.h" />
+    <ClInclude Include="ImageView.h" />
+    <ClInclude Include="ImageDoc.h" />
     <ClInclude Include="RawFrm.h" />
     <ClInclude Include="RawView.h" />
     <ClInclude Include="RawDoc.h" />
@@ -216,9 +216,9 @@
     </ClCompile>
     <ClCompile Include="ImageTransformer.cpp" />
     <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="BMPFrm.cpp" />
-    <ClCompile Include="BMPView.cpp" />
-    <ClCompile Include="BMPDoc.cpp" />
+    <ClCompile Include="ImageFrm.cpp" />
+    <ClCompile Include="ImageView.cpp" />
+    <ClCompile Include="ImageDoc.cpp" />
     <ClCompile Include="RAWFrm.cpp" />
     <ClCompile Include="RAWView.cpp" />
     <ClCompile Include="RAWDoc.cpp" />
@@ -237,7 +237,7 @@
     <ResourceCompile Include="ImageTransformer.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\BMPDoc.ico" />
+    <Image Include="res\ImageDoc.ico" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />

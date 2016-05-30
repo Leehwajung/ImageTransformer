@@ -1,4 +1,4 @@
-// BMPDoc.cpp : CBMPDoc 클래스의 구현 파일입니다.
+// ImageDoc.cpp : CImageDoc 클래스의 구현 파일입니다.
 //
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 #include "ImageTransformer.h"
 #endif
 
-#include "BMPDoc.h"
+#include "ImageDoc.h"
 
 #include <propkey.h>
 
@@ -20,58 +20,70 @@
 #include <gdiplus.h>
 using namespace Gdiplus;
 
-// CBMPDoc
+// CImageDoc
 
-IMPLEMENT_DYNCREATE(CBMPDoc, CDocument)
+IMPLEMENT_DYNCREATE(CImageDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CBMPDoc, CDocument)
+BEGIN_MESSAGE_MAP(CImageDoc, CDocument)
 END_MESSAGE_MAP()
 
-BEGIN_DISPATCH_MAP(CBMPDoc, CDocument)
+BEGIN_DISPATCH_MAP(CImageDoc, CDocument)
 END_DISPATCH_MAP()
 
-// 참고: IID_IBMPDoc에 대한 지원을 추가하여
+// 참고: IID_IImageDoc에 대한 지원을 추가하여
 //  VBA에서 형식 안전 바인딩을 지원합니다. 
 //  이 IID는 .IDL 파일에 있는 dispinterface의 GUID와 일치해야 합니다.
 
 // {56F902D5-BA11-4E73-9A1D-C873816130E7}
-static const IID IID_IBMPDoc =
+static const IID IID_IImageDoc =
 { 0x56F902D5, 0xBA11, 0x4E73,{ 0x9A, 0x1D, 0xC8, 0x73, 0x81, 0x61, 0x30, 0xE7 } };
 
-BEGIN_INTERFACE_MAP(CBMPDoc, CDocument)
-	INTERFACE_PART(CBMPDoc, IID_IBMPDoc, Dispatch)
+BEGIN_INTERFACE_MAP(CImageDoc, CDocument)
+	INTERFACE_PART(CImageDoc, IID_IImageDoc, Dispatch)
 END_INTERFACE_MAP()
 
 
-// CBMPDoc 생성/소멸입니다.
+// CImageDoc 생성/소멸입니다.
 
-CBMPDoc::CBMPDoc()
+CImageDoc::CImageDoc()
 {
 	EnableAutomation();
 	m_bitmap = NULL;
 }
 
-CBMPDoc::~CBMPDoc()
+CImageDoc::~CImageDoc()
 {
 	//if (m_bitmap) {
 	//	delete m_bitmap;
 	//}
 }
 
-BOOL CBMPDoc::OnNewDocument()
+BOOL CImageDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 	return TRUE;
 }
 
-BOOL CBMPDoc::OnOpenDocument(LPCTSTR lpszPathName)
+BOOL CImageDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
+	//파일 확장자 복사
+	CString strTmp(lpszPathName);
+	int i = strTmp.ReverseFind('.');
+	CString strTmp2;
+	if (i != -1)
+	{
+		strTmp2 = strTmp.Right(strTmp.GetLength() - i - 1);
+	}
+	else
+	{
+		strTmp2 = _T("");
+	}
+
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
-	//m_bitmap.LoadBitmapW(lpszPathName);
 	m_bitmap = Bitmap::FromFile(lpszPathName);
 
 	return TRUE;
@@ -108,7 +120,7 @@ BOOL CBMPDoc::OnOpenDocument(LPCTSTR lpszPathName)
 //	return -1;  // Failure
 //}
 
-BOOL CBMPDoc::OnSaveDocument(LPCTSTR lpszPathName)
+BOOL CImageDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	//CLSID bmpClsid;
@@ -118,7 +130,7 @@ BOOL CBMPDoc::OnSaveDocument(LPCTSTR lpszPathName)
 	return CDocument::OnSaveDocument(lpszPathName);
 }
 
-void CBMPDoc::OnCloseDocument()
+void CImageDoc::OnCloseDocument()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	if (m_bitmap) delete m_bitmap;
@@ -127,9 +139,9 @@ void CBMPDoc::OnCloseDocument()
 }
 
 #ifndef _WIN32_WCE
-// CBMPDoc serialization입니다.
+// CImageDoc serialization입니다.
 
-void CBMPDoc::Serialize(CArchive& ar)
+void CImageDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
@@ -144,7 +156,7 @@ void CBMPDoc::Serialize(CArchive& ar)
 }
 #endif
 
-void CBMPDoc::OnFinalRelease()
+void CImageDoc::OnFinalRelease()
 {
 	// 자동화 개체에 대한 마지막 참조가 해제되면
 	// OnFinalRelease가 호출됩니다.  기본 클래스에서 자동으로 개체를 삭제합니다.
@@ -157,7 +169,7 @@ void CBMPDoc::OnFinalRelease()
 #ifdef SHARED_HANDLERS
 
 // 축소판 그림을 지원합니다.
-void CBMPDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
+void CImageDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 {
 	// 문서의 데이터를 그리려면 이 코드를 수정하십시오.
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
@@ -178,7 +190,7 @@ void CBMPDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 }
 
 // 검색 처리기를 지원합니다.
-void CBMPDoc::InitializeSearchContent()
+void CImageDoc::InitializeSearchContent()
 {
 	CString strSearchContent;
 	// 문서의 데이터에서 검색 콘텐츠를 설정합니다.
@@ -188,7 +200,7 @@ void CBMPDoc::InitializeSearchContent()
 	SetSearchContent(strSearchContent);
 }
 
-void CBMPDoc::SetSearchContent(const CString& value)
+void CImageDoc::SetSearchContent(const CString& value)
 {
 	if (value.IsEmpty())
 	{
@@ -208,16 +220,16 @@ void CBMPDoc::SetSearchContent(const CString& value)
 
 #endif // SHARED_HANDLERS
 
-// CBMPDoc 진단입니다.
+// CImageDoc 진단입니다.
 
 #ifdef _DEBUG
-void CBMPDoc::AssertValid() const
+void CImageDoc::AssertValid() const
 {
 	CDocument::AssertValid();
 }
 
 #ifndef _WIN32_WCE
-void CBMPDoc::Dump(CDumpContext& dc) const
+void CImageDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
@@ -225,9 +237,9 @@ void CBMPDoc::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// CBMPDoc 명령입니다.
+// CImageDoc 명령입니다.
 
-void CBMPDoc::copyFrom(const CBMPDoc* bmpDoc)
+void CImageDoc::copyFrom(const CImageDoc* bmpDoc)
 {
 	Bitmap *src = bmpDoc->m_bitmap;
 	this->m_bitmap = src->Clone(0, 0, src->GetWidth(), src->GetHeight(), PixelFormat8bppIndexed);
@@ -237,7 +249,7 @@ void CBMPDoc::copyFrom(const CBMPDoc* bmpDoc)
 	this->SetTitle(newTitle);
 }
 
-BYTE* CBMPDoc::getData(BitmapData* bitmapData, const PixelFormat pixelFormat)
+BYTE* CImageDoc::getData(BitmapData* bitmapData, const PixelFormat pixelFormat)
 {
 	Rect imageArea(0, 0, m_bitmap->GetWidth(), m_bitmap->GetHeight());
 	m_bitmap->LockBits(
@@ -249,13 +261,13 @@ BYTE* CBMPDoc::getData(BitmapData* bitmapData, const PixelFormat pixelFormat)
 	return (BYTE*)bitmapData->Scan0;
 }
 
-void CBMPDoc::clearData(BitmapData* bitmapData)
+void CImageDoc::clearData(BitmapData* bitmapData)
 {
 	m_bitmap->UnlockBits(bitmapData);
 }
 
 // Histogram Equalization
-void CBMPDoc::HistogramEqualization()
+void CImageDoc::HistogramEqualization()
 {
 	// 영상의 histogram을 계산
 	BitmapData bitmapData;
@@ -285,7 +297,7 @@ void CBMPDoc::HistogramEqualization()
 }
 
 // Basic Contrast Stretching
-void CBMPDoc::BasicContrastStretching()
+void CImageDoc::BasicContrastStretching()
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -311,7 +323,7 @@ void CBMPDoc::BasicContrastStretching()
 }
 
 // Ends-in Contrast Stretching
-void CBMPDoc::EndsinContrastStretching(const BYTE low, const BYTE high)
+void CImageDoc::EndsinContrastStretching(const BYTE low, const BYTE high)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -325,7 +337,7 @@ void CBMPDoc::EndsinContrastStretching(const BYTE low, const BYTE high)
 }
 
 // Gaussian Noise
-void CBMPDoc::GaussianNoise(const DOUBLE snr)
+void CImageDoc::GaussianNoise(const DOUBLE snr)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -340,7 +352,7 @@ void CBMPDoc::GaussianNoise(const DOUBLE snr)
 }
 
 // Edge Detection
-void CBMPDoc::detectEdge(Mask::Type maskType)
+void CImageDoc::detectEdge(Mask::Type maskType)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -355,7 +367,7 @@ void CBMPDoc::detectEdge(Mask::Type maskType)
 }
 
 // Low-pass Filtering
-void CBMPDoc::LowPassFiltering(UINT filterWidth)
+void CImageDoc::LowPassFiltering(UINT filterWidth)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -368,7 +380,7 @@ void CBMPDoc::LowPassFiltering(UINT filterWidth)
 }
 
 // Median Filtering
-void CBMPDoc::MedianFiltering(UINT windowWidth)
+void CImageDoc::MedianFiltering(UINT windowWidth)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -381,7 +393,7 @@ void CBMPDoc::MedianFiltering(UINT windowWidth)
 }
 
 // 에러율 계산
-DOUBLE CBMPDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
+DOUBLE CImageDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -426,7 +438,7 @@ DOUBLE CBMPDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
 	return n1 / n0;
 }
 
-DOUBLE CBMPDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filterWidth)
+DOUBLE CImageDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filterWidth)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;

@@ -1,4 +1,4 @@
-// BMPView.cpp : CBMPView 클래스의 구현 파일입니다.
+// ImageView.cpp : CImageView 클래스의 구현 파일입니다.
 //
 
 #include "stdafx.h"
@@ -8,44 +8,44 @@
 #include "ImageTransformer.h"
 #endif
 
-#include "BMPDoc.h"
-#include "BMPView.h"
+#include "ImageDoc.h"
+#include "ImageView.h"
 
 #include "MainFrm.h"
-#include "BMPFrm.h"
+#include "ImageFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CBMPView
+// CImageView
 
-IMPLEMENT_DYNCREATE(CBMPView, CView)
+IMPLEMENT_DYNCREATE(CImageView, CView)
 
-BEGIN_MESSAGE_MAP(CBMPView, CView)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_HTG_SIZE, &CBMPView::OnUpdateViewHtgSize)
+BEGIN_MESSAGE_MAP(CImageView, CView)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_HTG_SIZE, &CImageView::OnUpdateViewHtgSize)
 END_MESSAGE_MAP()
 
-BEGIN_DISPATCH_MAP(CBMPView, CView)
+BEGIN_DISPATCH_MAP(CImageView, CView)
 END_DISPATCH_MAP()
 
-// 참고: IID_IBMPView에 대한 지원을 추가하여
+// 참고: IID_IImageView에 대한 지원을 추가하여
 //  VBA에서 형식 안전 바인딩을 지원합니다. 
 //  이 IID는 .IDL 파일에 있는 dispinterface의 GUID와 일치해야 합니다.
 
 // {615CB34A-1700-4769-91F1-130F47067028}
-static const IID IID_IBMPView =
+static const IID IID_IImageView =
 { 0x615CB34A, 0x1700, 0x4769,{ 0x91, 0xF1, 0x13, 0xF, 0x47, 0x6, 0x70, 0x28 } };
 
-BEGIN_INTERFACE_MAP(CBMPView, CView)
-	INTERFACE_PART(CBMPView, IID_IBMPView, Dispatch)
+BEGIN_INTERFACE_MAP(CImageView, CView)
+	INTERFACE_PART(CImageView, IID_IImageView, Dispatch)
 END_INTERFACE_MAP()
 
 
-// CBMPView 생성/소멸입니다.
+// CImageView 생성/소멸입니다.
 
-CBMPView::CBMPView()
+CImageView::CImageView()
 {
 #ifndef _WIN32_WCE
 	EnableActiveAccessibility();
@@ -53,17 +53,17 @@ CBMPView::CBMPView()
 	EnableAutomation();
 }
 
-CBMPView::~CBMPView()
+CImageView::~CImageView()
 {
 }
 
-void CBMPView::OnInitialUpdate()
+void CImageView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	
-	//CBMPDoc *pDoc = GetDocument();
+	//CImageDoc *pDoc = GetDocument();
 	//ASSERT_VALID(pDoc);
 	//if (!pDoc)
 	//	return;
@@ -80,7 +80,7 @@ void CBMPView::OnInitialUpdate()
 	//GetFrame()->posY += 26;
 }
 
-void CBMPView::OnFinalRelease()
+void CImageView::OnFinalRelease()
 {
 	// 자동화 개체에 대한 마지막 참조가 해제되면
 	// OnFinalRelease가 호출됩니다.  기본 클래스에서 자동으로 개체를 삭제합니다.
@@ -91,9 +91,9 @@ void CBMPView::OnFinalRelease()
 }
 
 
-// CBMPView 그리기입니다.
+// CImageView 그리기입니다.
 
-void CBMPView::OnDraw(CDC* pDC)
+void CImageView::OnDraw(CDC* pDC)
 {
 	Graphics graphicsDC(*pDC);					// gdi+ 그리기를 위한 객체
 	CRect clientRect;
@@ -102,7 +102,7 @@ void CBMPView::OnDraw(CDC* pDC)
 	Graphics graphicsCanvas(&bmpCanvas);		// 캔버스 그래픽스 생성
 	graphicsCanvas.Clear(Color::Azure);			// 캔버스 배경색 지정
 
-	CBMPDoc *pDoc = GetDocument();
+	CImageDoc *pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -121,42 +121,42 @@ void CBMPView::OnDraw(CDC* pDC)
 }
 
 
-// CBMPView 진단입니다.
+// CImageView 진단입니다.
 
 #ifdef _DEBUG
-void CBMPView::AssertValid() const
+void CImageView::AssertValid() const
 {
 	CView::AssertValid();
 }
 
 #ifndef _WIN32_WCE
-void CBMPView::Dump(CDumpContext& dc) const
+void CImageView::Dump(CDumpContext& dc) const
 {
 	CView::Dump(dc);
 }
 #endif
 
-//CBMPFrame* CBMPView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
+//CImageFrame* CImageView::GetFrame() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
 //{
-//	ASSERT(CView::GetParentFrame()->IsKindOf(RUNTIME_CLASS(CBMPFrame)));
-//	return (CBMPFrame*)CView::GetParentFrame();
+//	ASSERT(CView::GetParentFrame()->IsKindOf(RUNTIME_CLASS(CImageFrame)));
+//	return (CImageFrame*)CView::GetParentFrame();
 //}
 
-CBMPDoc* CBMPView::GetDocument() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
+CImageDoc* CImageView::GetDocument() const	// 디버그되지 않은 버전은 인라인으로 지정됩니다.
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CBMPDoc)));
-	return (CBMPDoc*)m_pDocument;
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CImageDoc)));
+	return (CImageDoc*)m_pDocument;
 }
 #endif //_DEBUG
 
 
-// CBMPView 메시지 처리기입니다.
+// CImageView 메시지 처리기입니다.
 
 
 
-// CBMPView 명령입니다.
+// CImageView 명령입니다.
 
-void CBMPView::OnUpdateViewHtgSize(CCmdUI *pCmdUI)
+void CImageView::OnUpdateViewHtgSize(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	pCmdUI->Enable(FALSE);

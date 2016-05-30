@@ -76,7 +76,7 @@ IDR_MAINFRAME           ICON                    "res\\ImageTransformer.ico"
 
 IDR_HistogramFileTYPE   ICON                    "res\\HistogramDoc.ico"
 
-IDR_BMPFileTYPE         ICON                    "res\\BMPDoc.ico"
+IDR_BMPFileTYPE         ICON                    "res\\ImageDoc.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////

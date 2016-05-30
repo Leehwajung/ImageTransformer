@@ -18,9 +18,9 @@
 #include "ImageTransformer.h"
 #include "MainFrm.h"
 
-#include "BMPFrm.h"
-#include "BMPDoc.h"
-#include "BMPView.h"
+#include "ImageFrm.h"
+#include "ImageDoc.h"
+#include "ImageView.h"
 #include "RAWFrm.h"
 #include "RAWDoc.h"
 #include "RAWView.h"
@@ -118,17 +118,17 @@ BOOL CImageTransformerApp::InitInstance()
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CMultiDocTemplate* pDocTemplate;
 	pDocTemplate = new CMultiDocTemplate(IDR_BMPFileTYPE,
-		RUNTIME_CLASS(CBMPDoc),
-		RUNTIME_CLASS(CBMPFrame), // 사용자 지정 MDI 자식 프레임입니다.
-		RUNTIME_CLASS(CBMPView));
+		RUNTIME_CLASS(CImageDoc),
+		RUNTIME_CLASS(CImageFrame), // 사용자 지정 MDI 자식 프레임입니다.
+		RUNTIME_CLASS(CImageView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
 	pDocTemplate = new CMultiDocTemplate(IDR_RAWFileTYPE,
 		RUNTIME_CLASS(CRAWDoc),
-		RUNTIME_CLASS(CBMPFrame), // 사용자 지정 MDI 자식 프레임입니다.
-		RUNTIME_CLASS(CBMPView));
+		RUNTIME_CLASS(CImageFrame), // 사용자 지정 MDI 자식 프레임입니다.
+		RUNTIME_CLASS(CImageView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
@@ -265,7 +265,7 @@ void CImageTransformerApp::OnHtgPlot()
 
 	// Source(image)를 가져옴
 	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());		// Main Frame
-	CBMPDoc *pBMPDoc = ((CBMPFrame*)pMainFrm->MDIGetActive())->GetActiveDocument();
+	CImageDoc *pImageDoc = ((CImageFrame*)pMainFrm->MDIGetActive())->GetActiveDocument();
 
 	// 신규 Historam 문서 (CHistogramDoc) 생성
 	POSITION pos = GetFirstDocTemplatePosition();
@@ -282,14 +282,14 @@ void CImageTransformerApp::OnHtgPlot()
 
 	// Source의 픽셀 데이터를 기반으로하여 Destination에 histogram 생성
 	BitmapData bitmapData;
-	BYTE* pixelData = pBMPDoc->getData(&bitmapData, ImageLockModeRead);
+	BYTE* pixelData = pImageDoc->getData(&bitmapData, ImageLockModeRead);
 	pHtgDoc->plotHistogram(pixelData, bitmapData.Width * bitmapData.Height);
 	pHtgView->plotHistogramImage();
-	pBMPDoc->clearData(&bitmapData);
+	pImageDoc->clearData(&bitmapData);
 
 	// 제목 변경
 	CString newTitle(PFX_HISTOGRAM);
-	newTitle.Append(pBMPDoc->GetTitle());
+	newTitle.Append(pImageDoc->GetTitle());
 	pHtgDoc->SetTitle(newTitle);
 
 	// Histogram에 맞게 다시 그리기
