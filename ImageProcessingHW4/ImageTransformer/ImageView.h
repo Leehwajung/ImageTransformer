@@ -48,6 +48,7 @@ protected:
 	DECLARE_INTERFACE_MAP()
 public:
 	afx_msg void OnUpdateViewHtgSize(CCmdUI *pCmdUI);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG	// ImageView.cpp의 디버그 버전

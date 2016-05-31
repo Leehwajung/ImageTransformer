@@ -21,11 +21,11 @@ public:
 	// 픽셀 데이터에 대한 histogram 생성
 	static void generateHistogram(IN const BYTE pixelData[], IN const UINT pixelDataSize, OUT UINT histogramData[HTGSIZE]);
 	// Basic Contrast Stretching
-	template<class Num>
-	static void stretchContrast(OUT Num pixelData[], IN const UINT dataSize);
+	template<class NUM1, class NUM2 = NUM1>
+	static void stretchContrast(OUT NUM1 pixelData[], IN const UINT dataSize, OUT NUM2* outputPixelData = NULL);
 	// Ends-in Contrast Stretching
-	template<class Num>
-	static void stretchContrast(OUT Num data[], IN const UINT dataSize, IN const Num low, IN const Num high);
+	template<class NUM1, class NUM2 = NUM1>
+	static void stretchContrast(OUT NUM1 data[], IN const UINT dataSize, IN const NUM1 low, IN const NUM1 high, OUT NUM2* outputPixelData = NULL);
 	// Get Variance of Pixels
 	static double getImagePower(IN const BYTE data[], IN const UINT pixelDataSize);
 	// Get Standard Deviation of Noise
@@ -47,10 +47,10 @@ public:
 	// Inverse Discrete Cosine Transform (8 * 8)
 	static void idct8x8(int ix[][B_size]);
 	// Quick Sort
-	template<class Num>
-	static void quickSort(OUT Num array[], IN const UINT arraySize);
+	template<class NUM1>
+	static void quickSort(OUT NUM1 array[], IN const UINT arraySize);
 	// Compare for Quick Sort
-	template<class Num>
+	template<class NUM1>
 	static int compare(IN const void* src, IN const void* dst);
 };
 

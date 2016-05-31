@@ -28,6 +28,10 @@
 #endif
 
 
+#include "ImageProcessorUtil.h"
+#include "ImageProcessorUtilGeneric.cpp"
+
+
 // CSpectrumDoc
 
 IMPLEMENT_DYNCREATE(CSpectrumDoc, CDocument)
@@ -42,10 +46,16 @@ CSpectrumDoc::CSpectrumDoc()
 {
 	// TODO: 여기에 일회성 생성 코드를 추가합니다.
 
+	m_DctData = NULL;
+	m_Height = 0;
+	m_Width = 0;
 }
 
 CSpectrumDoc::~CSpectrumDoc()
 {
+	if (m_DctData) {
+		delete[] m_DctData;
+	}
 }
 
 BOOL CSpectrumDoc::OnNewDocument()
@@ -57,6 +67,30 @@ BOOL CSpectrumDoc::OnNewDocument()
 	// SDI 문서는 이 문서를 다시 사용합니다.
 
 	return TRUE;
+}
+
+BOOL CSpectrumDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
+
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+
+	return TRUE;
+}
+
+BOOL CSpectrumDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	return CDocument::OnSaveDocument(lpszPathName);
+}
+
+void CSpectrumDoc::OnCloseDocument()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	CDocument::OnCloseDocument();
 }
 
 
@@ -144,3 +178,83 @@ void CSpectrumDoc::Dump(CDumpContext& dc) const
 
 
 // CSpectrumDoc 명령
+
+void CSpectrumDoc::forwardDiscreteCosineTransform(BYTE inputPixelData[], UINT height, UINT width, UINT maskWidth /*= 8*/)
+{
+	UINT pixelDataSize = height * width;
+
+	if (!m_DctData) {
+		m_DctData = new double[pixelDataSize];
+	}
+	else if (pixelDataSize != m_Height * m_Width) {
+		delete[] m_DctData;
+		m_DctData = new double[pixelDataSize];
+	}
+
+	m_Height = height;
+	m_Width = width;
+
+	//int *subPixelArr = new int[maskWidth * maskWidth];
+	int subPixelArr[B_size][B_size];
+
+	for (UINT n = 0; n < height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < width; m += maskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					subPixelArr[mr][mc] = inputPixelData[(n + mr) * width + (m + mc)];
+				}
+			}
+
+			CImageProcessorUtil::dct8x8(subPixelArr);
+
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					m_DctData[(n + mr) * width + (m + mc)] = subPixelArr[mr][mc];
+				}
+			}
+		}
+	}
+
+	//// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
+	//CImageProcessorUtil::stretchContrast(m_DctData, pixelDataSize);
+
+	//for (UINT i = 0; i < pixelDataSize; i++) {
+	//	inputPixelData[i] = (BYTE)m_DctData[i];
+	//}
+}
+
+void CSpectrumDoc::inverseDiscreteCosineTransform(BYTE outputPixelData[], UINT pixelDataSize, UINT maskWidth /*= 8*/)
+{
+	if (!outputPixelData || pixelDataSize != m_Height * m_Width) {
+		return;
+	}
+
+	//int *subPixelArr = new int[maskWidth * maskWidth];
+	int subPixelArr[B_size][B_size];
+
+	for (UINT n = 0; n < m_Height; n += maskWidth) {	// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < m_Width; m += maskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					subPixelArr[mr][mc] = m_DctData[(n + mr) * m_Width + (m + mc)];
+				}
+			}
+
+			CImageProcessorUtil::idct8x8(subPixelArr);
+
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					outputPixelData[(n + mr) * m_Width + (m + mc)] = subPixelArr[mr][mc];
+				}
+			}
+		}
+	}
+
+	//// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
+	//CImageProcessorUtil::stretchContrast(m_DctData, pixelDataSize);
+
+	//for (UINT i = 0; i < pixelDataSize; i++) {
+	//	inputPixelData[i] = (BYTE)m_DctData[i];
+	//}
+}
+

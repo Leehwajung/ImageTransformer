@@ -25,9 +25,16 @@ protected:	// serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CSpectrumDoc* GetDocument() const;
+	void allocPixelData(UINT length);
+	void deletePixelData();
+
+	Bitmap* m_bitmap;
+	BYTE* m_ScaledData;
+	BOOL m_bCreatedDataFirsthand;	// m_RawPixelData를 직접 할당한 경우 TRUE
 
 // 작업입니다.
 public:
+	void scaleData();
 
 // 재정의입니다.
 public:
@@ -54,6 +61,8 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG	// SpectrumView.cpp의 디버그 버전

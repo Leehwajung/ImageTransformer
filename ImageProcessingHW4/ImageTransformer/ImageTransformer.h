@@ -48,8 +48,8 @@ public:
 	virtual void SaveCustomState();
 
 	afx_msg void OnAppAbout();
-	DECLARE_MESSAGE_MAP()
 	afx_msg void OnHtgPlot();
+	DECLARE_MESSAGE_MAP()
 };
 
 extern CImageTransformerApp theApp;

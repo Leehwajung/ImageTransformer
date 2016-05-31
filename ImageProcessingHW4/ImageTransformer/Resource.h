@@ -4,7 +4,6 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
-#define IDR_SpectrumFileTYPE            130
 #define IDB_WRITESMALL                  110
 #define IDB_WRITELARGE                  111
 #define IDB_MAIN                        112
@@ -19,6 +18,7 @@
 #define IDS_STATUS_PANE2                123
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
+#define IDR_SpectrumFileTYPE            130
 #define IDR_HistogramFileTYPE           131
 #define IDR_BMPFileTYPE                 132
 #define IDR_RAWFileTYPE                 133
@@ -71,13 +71,14 @@
 #define ID_IT_FDCT                      32795
 #define ID_IT_IDCT                      32797
 #define ID_IT_MASK                      32798
+#define ID_IMAGETRANSFORMING            32799
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32799
+#define _APS_NEXT_COMMAND_VALUE         32800
 #define _APS_NEXT_CONTROL_VALUE         1005
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

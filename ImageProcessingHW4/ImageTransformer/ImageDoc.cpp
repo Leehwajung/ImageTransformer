@@ -22,6 +22,7 @@
 #include <gdiplus.h>
 using namespace Gdiplus;
 
+
 // CImageDoc
 
 IMPLEMENT_DYNCREATE(CImageDoc, CDocument)
@@ -458,92 +459,92 @@ DOUBLE CImageDoc::getMeanSquareError(const INT filterType, const DOUBLE snr, con
 	return mse;
 }
 
-void CImageDoc::forwardDiscreteCosineTransform(UINT maskWidth /*= 8*/)
-{
-	// 영상의 pixel data를 가져옴
-	BitmapData bitmapData;
-	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
-	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
-
-	double *g = new double[pixelDataSize];
-
-	int length = maskWidth;	// 마스크의 가로와 세로 길이
-
-	//int *subPixelArr = new int[maskWidth * maskWidth];
-	int subPixelArr[B_size][B_size];
-
-	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
-		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
-			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
-					subPixelArr[mr][mc] = pixelData[(n + mr) * bitmapData.Width + (m + mc)];
-				}
-			}
-			
-			CImageProcessorUtil::dct8x8(subPixelArr);
-
-			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
-					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
-				}
-			}
-		}
-	}
-
-	// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
-	CImageProcessorUtil::stretchContrast(g, pixelDataSize);
-
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = (BYTE)g[i];
-	}
-
-	// 동적 할당 메모리 해제
-	delete[] g;
-
-	clearData(&bitmapData);
-}
-
-void CImageDoc::inverseDiscreteCosineTransform(UINT maskWidth /*= 8*/)
-{
-	// 영상의 pixel data를 가져옴
-	BitmapData bitmapData;
-	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
-	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
-
-	double *g = new double[pixelDataSize];
-
-	int length = maskWidth;	// 마스크의 가로와 세로 길이
-
-	//int *subPixelArr = new int[maskWidth * maskWidth];
-	int subPixelArr[B_size][B_size];
-
-	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
-		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
-			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
-					subPixelArr[mr][mc] = pixelData[(n + mr) * maskWidth + (m + mc)];
-				}
-			}
-
-			CImageProcessorUtil::idct8x8(subPixelArr);
-
-			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
-					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
-				}
-			}
-		}
-	}
-
-	// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
-	CImageProcessorUtil::stretchContrast(g, pixelDataSize);
-
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		pixelData[i] = (BYTE)g[i];
-	}
-
-	// 동적 할당 메모리 해제
-	delete[] g;
-
-	clearData(&bitmapData);
-}
+//void CImageDoc::forwardDiscreteCosineTransform(UINT maskWidth /*= 8*/)
+//{
+//	// 영상의 pixel data를 가져옴
+//	BitmapData bitmapData;
+//	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+//	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+//
+//	double *g = new double[pixelDataSize];
+//
+//	int length = maskWidth;	// 마스크의 가로와 세로 길이
+//
+//	//int *subPixelArr = new int[maskWidth * maskWidth];
+//	int subPixelArr[B_size][B_size];
+//
+//	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
+//		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
+//			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+//				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+//					subPixelArr[mr][mc] = pixelData[(n + mr) * bitmapData.Width + (m + mc)];
+//				}
+//			}
+//			
+//			CImageProcessorUtil::dct8x8(subPixelArr);
+//
+//			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+//				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+//					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
+//				}
+//			}
+//		}
+//	}
+//
+//	// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
+//	CImageProcessorUtil::stretchContrast(g, pixelDataSize);
+//
+//	for (UINT i = 0; i < pixelDataSize; i++) {
+//		pixelData[i] = (BYTE)g[i];
+//	}
+//
+//	// 동적 할당 메모리 해제
+//	delete[] g;
+//
+//	clearData(&bitmapData);
+//}
+//
+//void CImageDoc::inverseDiscreteCosineTransform(UINT maskWidth /*= 8*/)
+//{
+//	// 영상의 pixel data를 가져옴
+//	BitmapData bitmapData;
+//	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+//	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+//
+//	double *g = new double[pixelDataSize];
+//
+//	int length = maskWidth;	// 마스크의 가로와 세로 길이
+//
+//	//int *subPixelArr = new int[maskWidth * maskWidth];
+//	int subPixelArr[B_size][B_size];
+//
+//	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
+//		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
+//			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+//				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+//					subPixelArr[mr][mc] = pixelData[(n + mr) * maskWidth + (m + mc)];
+//				}
+//			}
+//
+//			CImageProcessorUtil::idct8x8(subPixelArr);
+//
+//			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+//				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+//					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
+//				}
+//			}
+//		}
+//	}
+//
+//	// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
+//	CImageProcessorUtil::stretchContrast(g, pixelDataSize);
+//
+//	for (UINT i = 0; i < pixelDataSize; i++) {
+//		pixelData[i] = (BYTE)g[i];
+//	}
+//
+//	// 동적 할당 메모리 해제
+//	delete[] g;
+//
+//	clearData(&bitmapData);
+//}

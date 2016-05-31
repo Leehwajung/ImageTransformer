@@ -26,6 +26,9 @@
 #define new DEBUG_NEW
 #endif
 
+#include "ImageProcessorUtil.h"
+#include "ImageProcessorUtilGeneric.cpp"
+
 
 // CSpectrumView
 
@@ -38,6 +41,7 @@ BEGIN_MESSAGE_MAP(CSpectrumView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CSpectrumView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -47,10 +51,13 @@ CSpectrumView::CSpectrumView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
+	m_ScaledData = NULL;
+	m_bCreatedDataFirsthand = FALSE;
 }
 
 CSpectrumView::~CSpectrumView()
 {
+	deletePixelData();
 }
 
 BOOL CSpectrumView::PreCreateWindow(CREATESTRUCT& cs)
@@ -63,14 +70,26 @@ BOOL CSpectrumView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CSpectrumView 그리기
 
-void CSpectrumView::OnDraw(CDC* /*pDC*/)
+void CSpectrumView::OnDraw(CDC* pDC)
 {
-	CSpectrumDoc* pDoc = GetDocument();
+	Graphics graphicsDC(*pDC);					// gdi+ 그리기를 위한 객체
+	CRect clientRect;
+	GetClientRect(clientRect);
+	Bitmap bmpCanvas(clientRect.right, clientRect.bottom);	// 캔버스 비트맵 생성
+	Graphics graphicsCanvas(&bmpCanvas);		// 캔버스 그래픽스 생성
+	graphicsCanvas.Clear(Color::Azure);			// 캔버스 배경색 지정
+
+	CSpectrumDoc *pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+	// TODO: 여기에 그리기 코드를 추가합니다.
+	scaleData();
+	if (m_bitmap) {
+		graphicsCanvas.DrawImage(m_bitmap, 0, 0, m_bitmap->GetWidth(), m_bitmap->GetHeight());
+	}
+	graphicsDC.DrawImage(&bmpCanvas, clientRect.left, clientRect.top, clientRect.right, clientRect.bottom);	// 캔버스 그리기
 }
 
 
@@ -134,4 +153,78 @@ CSpectrumDoc* CSpectrumView::GetDocument() const // 디버그되지 않은 버전은 인라�
 #endif //_DEBUG
 
 
+// CSpectrumView 특성
+
+void CSpectrumView::allocPixelData(UINT length)
+{
+	if (m_bCreatedDataFirsthand && m_ScaledData) {
+		delete[] m_ScaledData;
+	}
+	m_ScaledData = new BYTE[length];
+	m_bCreatedDataFirsthand = TRUE;
+}
+
+void CSpectrumView::deletePixelData()
+{
+	if (m_bCreatedDataFirsthand && m_ScaledData) {
+		delete[] m_ScaledData;
+	}
+	m_ScaledData = NULL;
+	m_bCreatedDataFirsthand = FALSE;
+}
+
+
+// CSpectrumView 작업
+
+void CSpectrumView::scaleData()
+{
+	CSpectrumDoc *pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	const UINT width = pDoc->m_Width;
+	const UINT height = pDoc->m_Height;
+	const UINT pixelDataSize = width * height;
+
+	// BMP 데이터 생성
+	BITMAPINFO* info = (BITMAPINFO*)new BYTE[sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD)];
+
+	int rwsize = (((width)+31) / 32 * 4);	// 4바이트의 배수여야 함
+	info->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	info->bmiHeader.biWidth = width;
+	info->bmiHeader.biHeight = height;
+	info->bmiHeader.biPlanes = 1;
+	info->bmiHeader.biBitCount = 8;
+	info->bmiHeader.biCompression = BI_RGB;
+	info->bmiHeader.biSizeImage = (DWORD)rwsize * (DWORD)height;
+	info->bmiHeader.biXPelsPerMeter = 0;
+	info->bmiHeader.biYPelsPerMeter = 0;
+	info->bmiHeader.biClrUsed = 256;
+	info->bmiHeader.biClrImportant = 256;
+
+	for (int i = 0; i < 256; i++) {		// Palette number is 256
+		info->bmiColors[i].rgbRed = info->bmiColors[i].rgbGreen = info->bmiColors[i].rgbBlue = i;
+		info->bmiColors[i].rgbReserved = 0;
+	}
+
+	allocPixelData(pDoc->m_Height * pDoc->m_Width);
+	CImageProcessorUtil::stretchContrast(pDoc->m_DctData, pixelDataSize, m_ScaledData);
+
+	m_bitmap = Bitmap::FromBITMAPINFO(info, m_ScaledData);
+	m_bitmap->RotateFlip(RotateFlipType::RotateNoneFlipY);
+
+	delete[](BYTE*)info;
+}
+
+
 // CSpectrumView 메시지 처리기
+
+
+BOOL CSpectrumView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	//return CView::OnEraseBkgnd(pDC);
+	return FALSE;
+}

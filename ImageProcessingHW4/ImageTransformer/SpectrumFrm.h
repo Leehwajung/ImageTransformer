@@ -22,6 +22,9 @@ public:
 
 // 특성입니다.
 public:
+	UINT m_TransformMaskWidth = 8;
+	UINT m_InitW = 552 - 20;
+	UINT m_InitH = 555;
 
 // 작업입니다.
 public:
@@ -42,5 +45,10 @@ protected:
 	afx_msg void OnFilePrint();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
+	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
+	afx_msg BOOL OnNcActivate(BOOL bActive);
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+	afx_msg void OnItInverseDCT();
+	afx_msg void OnItMaskWidth();
 	DECLARE_MESSAGE_MAP()
 };

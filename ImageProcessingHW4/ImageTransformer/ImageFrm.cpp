@@ -12,6 +12,9 @@
 
 #include "ImageView.h"
 #include "ImageDoc.h"
+#include "SpectrumFrm.h"
+#include "SpectrumView.h"
+#include "SpectrumDoc.h"
 
 #include "MainFrm.h"
 
@@ -629,59 +632,75 @@ void CImageFrame::OnItForwardDCT()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	// 기존 CImageDoc을 가져옴
-	CImageDoc *pSrcDoc = GetActiveDocument();
-	ASSERT_VALID(pSrcDoc);
-	if (!pSrcDoc)
+	CImageDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
 		return;
 
-	// 신규 Image 문서 (CImageDoc) 생성 및 복제
-	CImageFrame* pDstFrm;
-	CImageView* pDstView;
-	CImageDoc* pDstDoc;
-	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
-
-	// Masking and Edge Detection
 	OnItMaskWidth();
-	pDstDoc->forwardDiscreteCosineTransform(m_TransformMaskWidth);
+
+	// 신규 Spectrum 문서 (CSpectrumDoc) 생성
+	CImageTransformerApp *app = (CImageTransformerApp*)AfxGetApp();
+	POSITION pos = app->GetFirstDocTemplatePosition();
+	CDocTemplate *pTml;
+	for (int i = 0; i < 4; i++) {
+		pTml = app->GetNextDocTemplate(pos);
+	}
+	pTml->OpenDocumentFile(NULL);
+
+	// Destination(Spectrum)을 가져옴
+	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());		// Main Frame
+	CSpectrumFrame *pStmFrm = (CSpectrumFrame*)pMainFrm->MDIGetActive();	// Histogram Frame
+	CSpectrumView *pStmView = (CSpectrumView*)(pStmFrm->GetActiveView());	// Histogram View
+	CSpectrumDoc *pStmDoc = pStmView->GetDocument();						// Histogram Document
+
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = pDoc->getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+
+	// Forward Discrete Cosine Transform
+	pStmDoc->forwardDiscreteCosineTransform(pixelData, bitmapData.Height, bitmapData.Width, m_TransformMaskWidth);
+	pDoc->clearData(&bitmapData);
 
 	// 제목 변경
 	CString newTitle(PFX_TRANSFORM);
-	newTitle.Append(pSrcDoc->GetTitle());
-	pDstDoc->SetTitle(newTitle);
+	newTitle.Append(pDoc->GetTitle());
+	pStmDoc->SetTitle(newTitle);
 
 	// 영상에 맞게 다시 그리기
-	pDstFrm->ActivateFrame();
-	pDstView->Invalidate();
+	pStmFrm->ActivateFrame();
+	pStmView->Invalidate();
+	Invalidate();
 }
 
 void CImageFrame::OnItInverseDCT()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	//// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	// 기존 CImageDoc을 가져옴
-	CImageDoc *pSrcDoc = GetActiveDocument();
-	ASSERT_VALID(pSrcDoc);
-	if (!pSrcDoc)
-		return;
+	//// 기존 CImageDoc을 가져옴
+	//CImageDoc *pSrcDoc = GetActiveDocument();
+	//ASSERT_VALID(pSrcDoc);
+	//if (!pSrcDoc)
+	//	return;
 
-	// 신규 Image 문서 (CImageDoc) 생성 및 복제
-	CImageFrame* pDstFrm;
-	CImageView* pDstView;
-	CImageDoc* pDstDoc;
-	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+	//// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	//CImageFrame* pDstFrm;
+	//CImageView* pDstView;
+	//CImageDoc* pDstDoc;
+	//Duplicate(&pDstFrm, &pDstView, &pDstDoc);
 
-	// Masking and Edge Detection
-	OnItMaskWidth();
-	pDstDoc->inverseDiscreteCosineTransform(m_TransformMaskWidth);
+	//// Masking and Edge Detection
+	//OnItMaskWidth();
+	//pDstDoc->inverseDiscreteCosineTransform(m_TransformMaskWidth);
 
-	// 제목 변경
-	CString newTitle(PFX_TRANSFORM);
-	newTitle.Append(pSrcDoc->GetTitle());
-	pDstDoc->SetTitle(newTitle);
+	//// 제목 변경
+	//CString newTitle(PFX_TRANSFORM);
+	//newTitle.Append(pSrcDoc->GetTitle());
+	//pDstDoc->SetTitle(newTitle);
 
-	// 영상에 맞게 다시 그리기
-	pDstFrm->ActivateFrame();
-	pDstView->Invalidate();
+	//// 영상에 맞게 다시 그리기
+	//pDstFrm->ActivateFrame();
+	//pDstView->Invalidate();
 }
 
 void CImageFrame::OnItMaskWidth()
@@ -691,6 +710,6 @@ void CImageFrame::OnItMaskWidth()
 	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
 		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IT_MASK));
 	if (pSpin != NULL) {
-		m_TransformMaskWidth = (BYTE)_wtof(pSpin->GetEditText());
+		m_TransformMaskWidth = (UINT)_wtof(pSpin->GetEditText());
 	}
 }
