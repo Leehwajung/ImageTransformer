@@ -203,29 +203,47 @@ void CSpectrumFrame::OnItInverseDCT()
 	pTml->OpenDocumentFile(NULL);
 
 	// Destination(Spectrum)을 가져옴
-	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());			// Main Frame
-	CImageFrame *pBMPFrm = (CImageFrame*)pMainFrm->MDIGetActive();	// BMP Frame
-	CImageView *pBMPView = (CImageView*)(pBMPFrm->GetActiveView());	// BMP View
-	CBMPDoc *pBMPDoc = (CBMPDoc*)pBMPView->GetDocument();			// BMP Document
+	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());					// Main Frame
+	CImageFrame *pDstBMPFrm = (CImageFrame*)pMainFrm->MDIGetActive();		// BMP Frame
+	CImageView *pDstBMPView = (CImageView*)(pDstBMPFrm->GetActiveView());	// BMP View
+	CBMPDoc *pDstBMPDoc = (CBMPDoc*)pDstBMPView->GetDocument();				// BMP Document
 
 	// 영상의 pixel data를 가져옴
 	Bitmap *pBitmap = pView->m_bitmap;
-	pBMPDoc->m_bitmap = pBitmap->Clone(0, 0, pBitmap->GetWidth(), pBitmap->GetHeight(), PixelFormat8bppIndexed);	// TODO: FIX HARD CODING
-	BitmapData bitmapData;
-	BYTE *pixelData = pBMPDoc->getData(&bitmapData, ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
+	pDstBMPDoc->m_bitmap = pBitmap->Clone(0, 0, pBitmap->GetWidth(), pBitmap->GetHeight(), PixelFormat8bppIndexed);	// TODO: FIX HARD CODING
+	BitmapData dstBitmapData;
+	BYTE *dstPixelData = pDstBMPDoc->getData(&dstBitmapData, ImageLockModeWrite | ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
 
 	// Inverse Discrete Cosine Transform
-	pDoc->inverseDiscreteCosineTransform(pixelData, pDoc->m_Height * pDoc->m_Width, m_TransformMaskWidth);
-	pBMPDoc->clearData(&bitmapData);
-
+	pDoc->inverseDiscreteCosineTransform(dstPixelData, pDoc->m_Height * pDoc->m_Width, m_TransformMaskWidth);
+	
 	// 제목 변경
 	CString newTitle(PFX_TRANSFORM);
 	newTitle.Append(pDoc->GetTitle());
-	pBMPDoc->SetTitle(newTitle);
+	pDstBMPDoc->SetTitle(newTitle);
+
+	// Mean Square Error (이전 프레임 정보가 있는 경우에만 계산)
+	if (m_PrevFrame) {
+		// 원본 영상의 pixel data를 가져옴
+		CImageView *pSrcBMPView = (CImageView*)(m_PrevFrame->GetActiveView());	// BMP View
+		CBMPDoc *pSrcBMPDoc = (CBMPDoc*)pSrcBMPView->GetDocument();				// BMP Document
+		BitmapData srcBitmapData;
+		BYTE *srcPixelData = pSrcBMPDoc->getData(&srcBitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+		
+		// Mean Square Error
+		double mse = CImageProcessorUtil::obtainMeanSquareError(srcPixelData, dstPixelData, srcBitmapData.Height * srcBitmapData.Width);
+		pSrcBMPDoc->clearData(&srcBitmapData);
+
+		// MSE 출력
+		CString msg;
+		msg.Format(_T("MSE: %f"), mse);
+		MessageBox(msg, _T("Mean Square Error"));
+	}
+	pDstBMPDoc->clearData(&dstBitmapData);
 
 	// 영상에 맞게 다시 그리기
-	pBMPFrm->ActivateFrame();
-	pBMPView->Invalidate();
+	pDstBMPFrm->ActivateFrame();
+	pDstBMPView->Invalidate();
 }
 
 void CSpectrumFrame::OnItMaskWidth()

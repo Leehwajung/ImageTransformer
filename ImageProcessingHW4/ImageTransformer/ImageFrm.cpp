@@ -656,6 +656,7 @@ void CImageFrame::OnItForwardDCT()
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
 	BYTE *pixelData = pDoc->getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+	pStmFrm->m_PrevFrame = this;		// 이전 프레임 정보 저장
 
 	// Forward Discrete Cosine Transform
 	pStmDoc->forwardDiscreteCosineTransform(pixelData, bitmapData.Height, bitmapData.Width, m_TransformMaskWidth);

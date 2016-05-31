@@ -14,6 +14,8 @@
 
 #pragma once
 
+class CImageFrame;
+
 class CSpectrumFrame : public CMDIChildWndEx
 {
 	DECLARE_DYNCREATE(CSpectrumFrame)
@@ -22,6 +24,7 @@ public:
 
 // 특성입니다.
 public:
+	CImageFrame *m_PrevFrame = NULL;
 	UINT m_TransformMaskWidth = 8;
 	UINT m_InitW = 552 - 20;
 	UINT m_InitH = 555;
