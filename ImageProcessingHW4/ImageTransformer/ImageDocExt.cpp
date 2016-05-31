@@ -16,7 +16,7 @@
 #define new DEBUG_NEW
 #endif
 
-#include "RawOpenDlg.h"
+#include "RAWOpenDlg.h"
 
 
 IMPLEMENT_DYNCREATE(CRAWDoc, CImageDoc)
@@ -39,7 +39,7 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		return FALSE;
 	}
 
-	CRawOpenDlg dlg;
+	CRAWOpenDlg dlg;
 
 	int result = dlg.DoModal();
 	if (result != IDOK) {

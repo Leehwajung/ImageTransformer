@@ -1,16 +1,19 @@
+// RAWOpenDlg.h : CRAWOpenDlg 클래스의 인터페이스입니다.
+//
+
 #pragma once
 #include "afxwin.h"
 
 
-// CRawOpenDlg 대화 상자입니다.
+// CRAWOpenDlg 대화 상자입니다.
 
-class CRawOpenDlg : public CDialogEx
+class CRAWOpenDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CRawOpenDlg)
+	DECLARE_DYNAMIC(CRAWOpenDlg)
 
 public:
-	CRawOpenDlg(CWnd* pParent = NULL);   // 표준 생성자입니다.
-	virtual ~CRawOpenDlg();
+	CRAWOpenDlg(CWnd* pParent = NULL);   // 표준 생성자입니다.
+	virtual ~CRAWOpenDlg();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME

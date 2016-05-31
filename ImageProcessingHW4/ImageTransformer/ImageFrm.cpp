@@ -20,6 +20,7 @@
 #define PFX_NOISE			L"noisy_"
 #define PFX_EDGE			L"edged_"
 #define PFX_FILTER			L"filtered_"
+#define PFX_TRANSFORM		L"transformed_"
 
 #define FILTER_WIDTH		3
 
@@ -595,7 +596,7 @@ void CImageFrame::OnErLowPass()
 
 	// Get Mean Square Error
 	OnNoiseSNR();	// get SNR
-	double mse = pDoc->getMSE(0, m_snr, FILTER_WIDTH);
+	double mse = pDoc->getMeanSquareError(0, m_snr, FILTER_WIDTH);
 
 	// 메시박스 띄우기
 	CString msg;
@@ -615,7 +616,7 @@ void CImageFrame::OnErMedian()
 
 	// Get Mean Square Error
 	OnNoiseSNR();	// get SNR
-	double mse = pDoc->getMSE(1, m_snr, FILTER_WIDTH);
+	double mse = pDoc->getMeanSquareError(1, m_snr, FILTER_WIDTH);
 
 	// 메시박스 띄우기
 	CString msg;
@@ -626,11 +627,61 @@ void CImageFrame::OnErMedian()
 void CImageFrame::OnItForwardDCT()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+
+	// Masking and Edge Detection
+	OnItMaskWidth();
+	pDstDoc->forwardDiscreteCosineTransform(m_TransformMaskWidth);
+
+	// 제목 변경
+	CString newTitle(PFX_TRANSFORM);
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
 }
 
 void CImageFrame::OnItInverseDCT()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pSrcDoc = GetActiveDocument();
+	ASSERT_VALID(pSrcDoc);
+	if (!pSrcDoc)
+		return;
+
+	// 신규 Image 문서 (CImageDoc) 생성 및 복제
+	CImageFrame* pDstFrm;
+	CImageView* pDstView;
+	CImageDoc* pDstDoc;
+	Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+
+	// Masking and Edge Detection
+	OnItMaskWidth();
+	pDstDoc->inverseDiscreteCosineTransform(m_TransformMaskWidth);
+
+	// 제목 변경
+	CString newTitle(PFX_TRANSFORM);
+	newTitle.Append(pSrcDoc->GetTitle());
+	pDstDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pDstFrm->ActivateFrame();
+	pDstView->Invalidate();
 }
 
 void CImageFrame::OnItMaskWidth()

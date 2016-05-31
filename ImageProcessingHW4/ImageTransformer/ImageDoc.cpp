@@ -425,7 +425,7 @@ DOUBLE CImageDoc::getErrorRate(Mask::Type maskType, const DOUBLE snr)
 	return n1 / n0;
 }
 
-DOUBLE CImageDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filterWidth)
+DOUBLE CImageDoc::getMeanSquareError(const INT filterType, const DOUBLE snr, const UINT filterWidth)
 {
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -468,3 +468,140 @@ DOUBLE CImageDoc::getMSE(const INT filterType, const DOUBLE snr, const UINT filt
 	return mse;
 }
 
+void CImageDoc::forwardDiscreteCosineTransform(UINT maskWidth /*= 8*/)
+{
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+
+	double *g = new double[pixelDataSize];
+
+	int length = maskWidth;	// 마스크의 가로와 세로 길이
+
+	//int *subPixelArr = new int[maskWidth * maskWidth];
+	int subPixelArr[B_size][B_size];
+
+	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
+			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					subPixelArr[mr][mc] = pixelData[(n + mr) * maskWidth + (m + mc)];
+				}
+			}
+
+			CImageProcessorUtil::dct8x8(subPixelArr);
+
+			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
+				}
+			}
+		}
+	}
+
+	// 정규화를 위해 가장 작거나 큰 값을 구함
+	double min = INT_MAX;
+	double max = INT_MIN;
+	for (UINT i = 1; i < pixelDataSize; i++) {
+		if (g[i] < min) {
+			min = g[i];
+		}
+		else if (g[i] > max) {
+			max = g[i];
+		}
+	}
+
+	// [min, max] 구간을 [0, 255]값으로 변환
+	double scaleFactor = (double)INTENSITYMAX / (max - min);
+	double translator = -(double)INTENSITYMAX * min / (max - min);
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		// 정규화
+		double normalized = scaleFactor * g[i] + translator + 0.5;
+
+		// 임계값 적용
+		//if (normalized > THRESH) {
+		//	pixelData[i] = INTENSITYMAX;
+		//}
+		//else {
+		//	pixelData[i] = INTENSITYMIN;
+		//}
+
+		// 임계값 비적용
+		pixelData[i] = (BYTE)normalized;
+	}
+
+	// 동적 할당 메모리 해제
+	delete[] g;
+
+	clearData(&bitmapData);
+}
+
+void CImageDoc::inverseDiscreteCosineTransform(UINT maskWidth /*= 8*/)
+{
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
+
+	double *g = new double[pixelDataSize];
+
+	int length = maskWidth;	// 마스크의 가로와 세로 길이
+
+							//int *subPixelArr = new int[maskWidth * maskWidth];
+	int subPixelArr[B_size][B_size];
+
+	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
+		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
+			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					subPixelArr[mr][mc] = pixelData[(n + mr) * maskWidth + (m + mc)];
+				}
+			}
+
+			CImageProcessorUtil::idct8x8(subPixelArr);
+
+			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
+				}
+			}
+		}
+	}
+
+	// 정규화를 위해 가장 작거나 큰 값을 구함
+	double min = INT_MAX;
+	double max = INT_MIN;
+	for (UINT i = 1; i < pixelDataSize; i++) {
+		if (g[i] < min) {
+			min = g[i];
+		}
+		else if (g[i] > max) {
+			max = g[i];
+		}
+	}
+
+	// [min, max] 구간을 [0, 255]값으로 변환
+	double scaleFactor = (double)INTENSITYMAX / (max - min);
+	double translator = -(double)INTENSITYMAX * min / (max - min);
+	for (UINT i = 0; i < pixelDataSize; i++) {
+		// 정규화
+		double normalized = scaleFactor * g[i] + translator + 0.5;
+
+		// 임계값 적용
+		//if (normalized > THRESH) {
+		//	pixelData[i] = INTENSITYMAX;
+		//}
+		//else {
+		//	pixelData[i] = INTENSITYMIN;
+		//}
+
+		// 임계값 비적용
+		pixelData[i] = (BYTE)normalized;
+	}
+
+	// 동적 할당 메모리 해제
+	delete[] g;
+
+	clearData(&bitmapData);
+}

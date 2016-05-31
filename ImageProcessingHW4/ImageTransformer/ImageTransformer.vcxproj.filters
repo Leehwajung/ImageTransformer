@@ -57,7 +57,7 @@
     <ClInclude Include="ImageProcessorUtil.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="RawOpenDlg.h">
+    <ClInclude Include="RAWOpenDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,7 +95,7 @@
     <ClCompile Include="ImageProcessorUtil.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="RawOpenDlg.cpp">
+    <ClCompile Include="RAWOpenDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

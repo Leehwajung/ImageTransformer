@@ -9,6 +9,8 @@
 #define INTENSITYMAX	255	// intensity 최댓값
 #define INTENSITYMIN	0	// intensity 최솟값
 
+#define B_size 8
+
 // CImageProcessorUtil 명령 대상입니다.
 
 class Mask;
@@ -36,6 +38,10 @@ public:
 	static void filterMedian(OUT BYTE pixelData[], IN const UINT pixelDataWidth, IN const UINT pixelDataHeight, IN UINT windowWidth);
 	// Get Mean Square Error
 	static double obtainMeanSquareError(IN BYTE srcPixelData[], IN BYTE dstPixelData[], IN const UINT pixelDataSize);
+	// Forward Discrete Cosine Transform (8 * 8)
+	static void dct8x8(int ix[][B_size]);
+	// Inverse Discrete Cosine Transform (8 * 8)
+	static void idct8x8(int ix[][B_size]);
 	// Quick Sort
 	template<class Num>
 	static void quickSort(OUT Num array[], IN const UINT arraySize);

@@ -51,7 +51,7 @@ public:
 	DOUBLE getErrorRate(const Mask::Type maskType, const DOUBLE snr);
 
 	// MSE (filterType: 0 = Low-Pass, 1 = Median)
-	DOUBLE getMSE(const INT filterType, const DOUBLE snr, const UINT filterWidth);
+	DOUBLE getMeanSquareError(const INT filterType, const DOUBLE snr, const UINT filterWidth);
 
 // 재정의입니다.
 public:
@@ -90,5 +90,8 @@ protected:
 	// 검색 처리기에 대한 검색 콘텐츠를 설정하는 도우미 함수
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
+public:
+	void forwardDiscreteCosineTransform(UINT maskWidth = 8);
+	void inverseDiscreteCosineTransform(UINT maskWidth = 8);
 };
 

@@ -1,17 +1,17 @@
-// RawOpenDlg.cpp : 구현 파일입니다.
+// RAWOpenDlg.cpp : CRAWOpenDlg 클래스의 구현 파일입니다.
 //
 
 #include "stdafx.h"
 #include "ImageTransformer.h"
-#include "RawOpenDlg.h"
+#include "RAWOpenDlg.h"
 #include "afxdialogex.h"
 
 
-// CRawOpenDlg 대화 상자입니다.
+// CRAWOpenDlg 대화 상자입니다.
 
-IMPLEMENT_DYNAMIC(CRawOpenDlg, CDialogEx)
+IMPLEMENT_DYNAMIC(CRAWOpenDlg, CDialogEx)
 
-CRawOpenDlg::CRawOpenDlg(CWnd* pParent /*=NULL*/)
+CRAWOpenDlg::CRAWOpenDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_RAWOPEN, pParent)
 	, m_RawWidth(512)
 	, m_RawHeight(512)
@@ -19,11 +19,11 @@ CRawOpenDlg::CRawOpenDlg(CWnd* pParent /*=NULL*/)
 
 }
 
-CRawOpenDlg::~CRawOpenDlg()
+CRAWOpenDlg::~CRAWOpenDlg()
 {
 }
 
-void CRawOpenDlg::DoDataExchange(CDataExchange* pDX)
+void CRAWOpenDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	//DDX_OCInt(pDX, IDC_SIZE_WIDTH, DISPID_VALUE, m_RawWidth);
@@ -33,14 +33,14 @@ void CRawOpenDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CRawOpenDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CRAWOpenDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CRawOpenDlg 메시지 처리기입니다.
+// CRAWOpenDlg 메시지 처리기입니다.
 
 
-BOOL CRawOpenDlg::OnInitDialog()
+BOOL CRAWOpenDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -55,7 +55,7 @@ BOOL CRawOpenDlg::OnInitDialog()
 }
 
 
-void CRawOpenDlg::OnOK()
+void CRAWOpenDlg::OnOK()
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
