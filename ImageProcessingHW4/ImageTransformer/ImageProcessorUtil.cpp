@@ -305,18 +305,18 @@ void CImageProcessorUtil::dct8x8(int ix[][B_size])
 	float x[B_size][B_size], z[B_size][B_size], y[B_size], c[40], s[40],
 		ft[4], fxy[4], yy[B_size], zz;
 	int i, ii, jj;
-	for (i = 0; i<40; i++) {
+	for (i = 0; i < 40; i++) {
 		zz = pi * (float)(i + 1) / 64.0;
 		c[i] = cos(zz);
 		s[i] = sin(zz);
 	}
-	for (ii = 0; ii<B_size; ii++)
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++)
+		for (jj = 0; jj < B_size; jj++)
 			x[ii][jj] = (float)ix[ii][jj];
-	for (ii = 0; ii<B_size; ii++) {
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++) {
+		for (jj = 0; jj < B_size; jj++)
 			y[jj] = x[ii][jj];
-		for (jj = 0; jj<4; jj++)
+		for (jj = 0; jj < 4; jj++)
 			ft[jj] = y[jj] + y[7 - jj];
 		fxy[0] = ft[0] + ft[3];
 		fxy[1] = ft[1] + ft[2];
@@ -326,7 +326,7 @@ void CImageProcessorUtil::dct8x8(int ix[][B_size])
 		ft[2] = c[15] * (fxy[0] - fxy[1]);
 		ft[1] = s[7] * fxy[2] + c[7] * fxy[3];
 		ft[3] = -s[23] * fxy[2] + c[23] * fxy[3];
-		for (jj = 4; jj<8; jj++)
+		for (jj = 4; jj < 8; jj++)
 			yy[jj] = y[7 - jj] - y[jj];
 		y[4] = yy[4];
 		y[7] = yy[7];
@@ -344,13 +344,13 @@ void CImageProcessorUtil::dct8x8(int ix[][B_size])
 		y[5] = s[19] * yy[5] + c[19] * yy[6];
 		y[3] = -s[11] * yy[5] + c[11] * yy[6];
 		y[7] = -s[27] * yy[4] + c[27] * yy[7];
-		for (jj = 0; jj<B_size; jj++)
+		for (jj = 0; jj < B_size; jj++)
 			z[ii][jj] = y[jj];
 	}
-	for (ii = 0; ii<B_size; ii++) {
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++) {
+		for (jj = 0; jj < B_size; jj++)
 			y[jj] = z[jj][ii];
-		for (jj = 0; jj<4; jj++)
+		for (jj = 0; jj < 4; jj++)
 			ft[jj] = y[jj] + y[7 - jj];
 		fxy[0] = ft[0] + ft[3];
 		fxy[1] = ft[1] + ft[2];
@@ -360,7 +360,7 @@ void CImageProcessorUtil::dct8x8(int ix[][B_size])
 		ft[2] = c[15] * (fxy[0] - fxy[1]);
 		ft[1] = s[7] * fxy[2] + c[7] * fxy[3];
 		ft[3] = -s[23] * fxy[2] + c[23] * fxy[3];
-		for (jj = 4; jj<8; jj++)
+		for (jj = 4; jj < 8; jj++)
 			yy[jj] = y[7 - jj] - y[jj];
 		y[4] = yy[4];
 		y[7] = yy[7];
@@ -378,13 +378,13 @@ void CImageProcessorUtil::dct8x8(int ix[][B_size])
 		y[5] = s[19] * yy[5] + c[19] * yy[6];
 		y[3] = -s[11] * yy[5] + c[11] * yy[6];
 		y[7] = -s[27] * yy[4] + c[27] * yy[7];
-		for (jj = 0; jj<B_size; jj++)
+		for (jj = 0; jj < B_size; jj++)
 			y[jj] = y[jj] / 4.0;
-		for (jj = 0; jj<B_size; jj++)
+		for (jj = 0; jj < B_size; jj++)
 			z[jj][ii] = y[jj];
 	}
-	for (ii = 0; ii<B_size; ii++)
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++)
+		for (jj = 0; jj < B_size; jj++)
 			ix[ii][jj] = nint(z[ii][jj]);
 }
 
@@ -397,16 +397,16 @@ void CImageProcessorUtil::idct8x8(int ix[][B_size])
 	float x[B_size][B_size], z[B_size][B_size], y[B_size], c[40], s[40],
 		ait[4], aixy[4], yy[B_size], zz;
 	int i, ii, jj;
-	for (i = 0; i<40; i++) {
+	for (i = 0; i < 40; i++) {
 		zz = pi * (float)(i + 1) / 64.0;
 		c[i] = cos(zz);
 		s[i] = sin(zz);
 	}
-	for (ii = 0; ii<B_size; ii++)
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++)
+		for (jj = 0; jj < B_size; jj++)
 			x[ii][jj] = (float)ix[ii][jj];
-	for (ii = 0; ii<B_size; ii++) {
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++) {
+		for (jj = 0; jj < B_size; jj++)
 			y[jj] = x[jj][ii];
 		ait[0] = y[0];
 		ait[1] = y[2];
@@ -432,15 +432,15 @@ void CImageProcessorUtil::idct8x8(int ix[][B_size])
 		yy[7] = y[7];
 		yy[5] = c[15] * (-y[5] + y[6]);
 		yy[6] = c[15] * (y[5] + y[6]);
-		for (jj = 0; jj<4; jj++)
+		for (jj = 0; jj < 4; jj++)
 			y[jj] = ait[jj] + yy[7 - jj];
-		for (jj = 4; jj<8; jj++)
+		for (jj = 4; jj < 8; jj++)
 			y[jj] = ait[7 - jj] - yy[jj];
-		for (jj = 0; jj<B_size; jj++)
+		for (jj = 0; jj < B_size; jj++)
 			z[jj][ii] = y[jj];
 	}
-	for (ii = 0; ii<B_size; ii++) {
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++) {
+		for (jj = 0; jj < B_size; jj++)
 			y[jj] = z[ii][jj];
 		ait[0] = y[0];
 		ait[1] = y[2];
@@ -466,15 +466,15 @@ void CImageProcessorUtil::idct8x8(int ix[][B_size])
 		yy[7] = y[7];
 		yy[5] = c[15] * (-y[5] + y[6]);
 		yy[6] = c[15] * (y[5] + y[6]);
-		for (jj = 0; jj<4; jj++)
+		for (jj = 0; jj < 4; jj++)
 			y[jj] = ait[jj] + yy[7 - jj];
-		for (jj = 4; jj<8; jj++)
+		for (jj = 4; jj < 8; jj++)
 			y[jj] = ait[7 - jj] - yy[jj];
-		for (jj = 0; jj<B_size; jj++)
+		for (jj = 0; jj < B_size; jj++)
 			z[ii][jj] = y[jj] / 4.0;
 	}
-	for (ii = 0; ii<B_size; ii++)
-		for (jj = 0; jj<B_size; jj++)
+	for (ii = 0; ii < B_size; ii++)
+		for (jj = 0; jj < B_size; jj++)
 			ix[ii][jj] = nint(z[ii][jj]);
 }
 

@@ -24,6 +24,7 @@ private:
 	void deleteRawPixelData();
 
 	BYTE* m_RawPixelData;
+	BOOL m_bCreatedDataFirsthand;	// m_RawPixelData를 직접 할당한 경우 TRUE
 
 // 작업입니다.
 private:

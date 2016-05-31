@@ -25,6 +25,7 @@ CRAWDoc::CRAWDoc()
 	:CImageDoc()
 {
 	m_RawPixelData = NULL;
+	m_bCreatedDataFirsthand = FALSE;
 }
 
 BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
@@ -100,6 +101,14 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 BOOL CRAWDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	
+	if (!m_bCreatedDataFirsthand && !m_RawPixelData) {
+		BitmapData bitmapData;
+		m_RawPixelData = getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+
+		clearData(&bitmapData);
+		m_bCreatedDataFirsthand = FALSE;
+	}
 
 	return CDocument::OnSaveDocument(lpszPathName);
 }
@@ -142,17 +151,19 @@ void CRAWDoc::Serialize(CArchive & ar)
 
 void CRAWDoc::allocRawPixelData(UINT length)
 {
-	if (m_RawPixelData) {
+	if (m_bCreatedDataFirsthand && m_RawPixelData) {
 		delete[] m_RawPixelData;
 	}
 	m_RawPixelData = new BYTE[length];
+	m_bCreatedDataFirsthand = TRUE;
 }
 
 void CRAWDoc::deleteRawPixelData()
 {
-	if (m_RawPixelData) {
+	if (m_bCreatedDataFirsthand && m_RawPixelData) {
 		delete[] m_RawPixelData;
-		m_RawPixelData = NULL;
 	}
+	m_RawPixelData = NULL;
+	m_bCreatedDataFirsthand = FALSE;
 }
 
