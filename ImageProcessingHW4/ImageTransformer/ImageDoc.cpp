@@ -17,6 +17,8 @@
 #endif
 
 
+#include "ImageProcessorUtilGeneric.cpp"
+
 #include <gdiplus.h>
 using namespace Gdiplus;
 
@@ -291,20 +293,8 @@ void CImageDoc::BasicContrastStretching()
 	BYTE *pixelData = getData(&bitmapData, ImageLockModeRead | ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
 	UINT pixelDataSize = bitmapData.Width * bitmapData.Height;
 
-	// 가장 작거나 큰 밝기값을 구함
-	UINT low = (UINT)INTENSITYMAX;
-	UINT high = (UINT)INTENSITYMIN;
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		if (pixelData[i] < low) {
-			low = pixelData[i];
-		}
-		else if (pixelData[i] > high) {
-			high = pixelData[i];
-		}
-	}
-
 	// Basic Contrast Stretching
-	CImageProcessorUtil::stretchContrast(pixelData, pixelDataSize, low, high);
+	CImageProcessorUtil::stretchContrast(pixelData, pixelDataSize);
 
 	clearData(&bitmapData);
 }
@@ -483,13 +473,13 @@ void CImageDoc::forwardDiscreteCosineTransform(UINT maskWidth /*= 8*/)
 	int subPixelArr[B_size][B_size];
 
 	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
-		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
+		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
 			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
 				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
-					subPixelArr[mr][mc] = pixelData[(n + mr) * maskWidth + (m + mc)];
+					subPixelArr[mr][mc] = pixelData[(n + mr) * bitmapData.Width + (m + mc)];
 				}
 			}
-
+			
 			CImageProcessorUtil::dct8x8(subPixelArr);
 
 			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
@@ -500,35 +490,11 @@ void CImageDoc::forwardDiscreteCosineTransform(UINT maskWidth /*= 8*/)
 		}
 	}
 
-	// 정규화를 위해 가장 작거나 큰 값을 구함
-	double min = INT_MAX;
-	double max = INT_MIN;
-	for (UINT i = 1; i < pixelDataSize; i++) {
-		if (g[i] < min) {
-			min = g[i];
-		}
-		else if (g[i] > max) {
-			max = g[i];
-		}
-	}
+	// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
+	CImageProcessorUtil::stretchContrast(g, pixelDataSize);
 
-	// [min, max] 구간을 [0, 255]값으로 변환
-	double scaleFactor = (double)INTENSITYMAX / (max - min);
-	double translator = -(double)INTENSITYMAX * min / (max - min);
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		// 정규화
-		double normalized = scaleFactor * g[i] + translator + 0.5;
-
-		// 임계값 적용
-		//if (normalized > THRESH) {
-		//	pixelData[i] = INTENSITYMAX;
-		//}
-		//else {
-		//	pixelData[i] = INTENSITYMIN;
-		//}
-
-		// 임계값 비적용
-		pixelData[i] = (BYTE)normalized;
+		pixelData[i] = (BYTE)g[i];
 	}
 
 	// 동적 할당 메모리 해제
@@ -548,7 +514,7 @@ void CImageDoc::inverseDiscreteCosineTransform(UINT maskWidth /*= 8*/)
 
 	int length = maskWidth;	// 마스크의 가로와 세로 길이
 
-							//int *subPixelArr = new int[maskWidth * maskWidth];
+	//int *subPixelArr = new int[maskWidth * maskWidth];
 	int subPixelArr[B_size][B_size];
 
 	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
@@ -569,35 +535,11 @@ void CImageDoc::inverseDiscreteCosineTransform(UINT maskWidth /*= 8*/)
 		}
 	}
 
-	// 정규화를 위해 가장 작거나 큰 값을 구함
-	double min = INT_MAX;
-	double max = INT_MIN;
-	for (UINT i = 1; i < pixelDataSize; i++) {
-		if (g[i] < min) {
-			min = g[i];
-		}
-		else if (g[i] > max) {
-			max = g[i];
-		}
-	}
+	// [min, max] 구간을 [0, 255] 구간으로 scaling (정규화)
+	CImageProcessorUtil::stretchContrast(g, pixelDataSize);
 
-	// [min, max] 구간을 [0, 255]값으로 변환
-	double scaleFactor = (double)INTENSITYMAX / (max - min);
-	double translator = -(double)INTENSITYMAX * min / (max - min);
 	for (UINT i = 0; i < pixelDataSize; i++) {
-		// 정규화
-		double normalized = scaleFactor * g[i] + translator + 0.5;
-
-		// 임계값 적용
-		//if (normalized > THRESH) {
-		//	pixelData[i] = INTENSITYMAX;
-		//}
-		//else {
-		//	pixelData[i] = INTENSITYMIN;
-		//}
-
-		// 임계값 비적용
-		pixelData[i] = (BYTE)normalized;
+		pixelData[i] = (BYTE)g[i];
 	}
 
 	// 동적 할당 메모리 해제

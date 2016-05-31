@@ -1,15 +1,16 @@
-// ImageProcessorUtil.cpp : CImageProcessorUtil 클래스의 구현 파일입니다.
+// ImageProcessorUtil.cpp : CImageProcessorUtil 클래스의 구현 파일입니다. (Non-Template)
 //
 
 #include "stdafx.h"
 #include "ImageProcessorUtil.h"
+#include "ImageProcessorUtilGeneric.cpp"
 
 
 // CImageProcessorUtil
 
 #define THRESH	150
 
-// CImageProcessorUtil 멤버 함수
+// CImageProcessorUtil 멤버 함수 (Non-Template)
 
 // 픽셀 데이터에 대한 histogram 생성
 void CImageProcessorUtil::generateHistogram(IN const BYTE pixelData[], IN const UINT pixelDataSize, OUT UINT histogramData[HTGSIZE])
@@ -24,23 +25,6 @@ void CImageProcessorUtil::generateHistogram(IN const BYTE pixelData[], IN const 
 		}
 		else {	// 잘못된 픽셀 데이터이면 종료
 			return;
-		}
-	}
-}
-
-// Ends-in Contrast Stretching
-void CImageProcessorUtil::stretchContrast(OUT BYTE pixelData[], IN const UINT pixelDataSize, IN const BYTE low, IN const BYTE high)
-{
-	float scaleFactor = (FLOAT)INTENSITYMAX / (FLOAT)(high - low);
-	for (UINT i = 0; i < pixelDataSize; i++) {
-		if (pixelData[i] <= low) {
-			pixelData[i] = (BYTE)INTENSITYMIN;
-		}
-		else if (pixelData[i] > high) {
-			pixelData[i] = (BYTE)INTENSITYMAX;
-		}
-		else {
-			pixelData[i] = (BYTE)((pixelData[i] - low) * scaleFactor);
 		}
 	}
 }
@@ -264,7 +248,6 @@ void CImageProcessorUtil::filterMedian(OUT BYTE pixelData[],
 			}
 
 			// 샘플 정렬
-
 			CImageProcessorUtil::quickSort<BYTE>(sample, pixelNum);
 
 			// 중간값 가져오기
@@ -312,7 +295,7 @@ void CImageProcessorUtil::dct8x8(int ix[][B_size])
 	}
 	for (ii = 0; ii < B_size; ii++)
 		for (jj = 0; jj < B_size; jj++)
-			x[ii][jj] = (float)ix[ii][jj];
+			x[ii][jj] = (double)ix[ii][jj];
 	for (ii = 0; ii < B_size; ii++) {
 		for (jj = 0; jj < B_size; jj++)
 			y[jj] = x[ii][jj];

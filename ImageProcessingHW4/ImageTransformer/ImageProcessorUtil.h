@@ -20,10 +20,14 @@ class CImageProcessorUtil : public CObject
 public:
 	// 픽셀 데이터에 대한 histogram 생성
 	static void generateHistogram(IN const BYTE pixelData[], IN const UINT pixelDataSize, OUT UINT histogramData[HTGSIZE]);
+	// Basic Contrast Stretching
+	template<class Num>
+	static void stretchContrast(OUT Num pixelData[], IN const UINT dataSize);
 	// Ends-in Contrast Stretching
-	static void stretchContrast(OUT BYTE pixelData[], IN const UINT pixelDataSize, IN const BYTE low, IN const BYTE high);
+	template<class Num>
+	static void stretchContrast(OUT Num data[], IN const UINT dataSize, IN const Num low, IN const Num high);
 	// Get Variance of Pixels
-	static double getImagePower(IN const BYTE pixelData[], IN const UINT pixelDataSize);
+	static double getImagePower(IN const BYTE data[], IN const UINT pixelDataSize);
 	// Get Standard Deviation of Noise
 	static double getStandardDeviationOfNoise(IN const BYTE pixelData[], IN const UINT pixelDataSize, IN const double snr);
 	// Add Gaussian Noise
@@ -45,6 +49,7 @@ public:
 	// Quick Sort
 	template<class Num>
 	static void quickSort(OUT Num array[], IN const UINT arraySize);
+	// Compare for Quick Sort
 	template<class Num>
 	static int compare(IN const void* src, IN const void* dst);
 };
@@ -92,29 +97,3 @@ private:
 	static const double StochasticGradientX[StochasticGradientLength][StochasticGradientLength];
 	static const double StochasticGradientY[StochasticGradientLength][StochasticGradientLength];
 };
-
-
-
-template<class Num>
-inline void CImageProcessorUtil::quickSort(OUT Num array[], IN const UINT arraySize)
-{
-	//quickSort<Num>(array, 0, arraySize);
-	qsort(array, arraySize, sizeof(Num), CImageProcessorUtil::compare<Num>);
-}
-
-template<class Num>
-inline int CImageProcessorUtil::compare(IN const void* src, IN const void* dst)
-{
-	if (*(Num*)src < *(Num*)dst) {
-		return -1;
-	}
-	if (*(Num*)src == *(Num*)dst) {
-		return 0;
-	}
-	if (*(Num*)src > *(Num*)dst) {
-		return 1;
-	}
-
-	return 0;
-}
-

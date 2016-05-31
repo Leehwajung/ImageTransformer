@@ -229,6 +229,7 @@
     <ClCompile Include="SpectrumDoc.cpp" />
     <ClCompile Include="RAWOpenDlg.cpp" />
     <ClCompile Include="ImageProcessorUtil.cpp" />
+    <ClCompile Include="ImageProcessorUtilGeneric.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\ImageTransformer.rc2" />
