@@ -9,48 +9,48 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// HistogramFrm.h : CHistogramFrame 클래스의 인터페이스
+// SpectrumDoc.h : CSpectrumDoc 클래스의 인터페이스
 //
 
 #pragma once
 
-#include "HistogramView.h"
-#include "HistogramDoc.h"
-
-class CHistogramFrame : public CMDIChildWndEx
+class CSpectrumDoc : public CDocument
 {
-public:
-	CHistogramFrame();
-	DECLARE_DYNCREATE(CHistogramFrame)
+protected: // serialization에서만 만들어집니다.
+	CSpectrumDoc();
+	DECLARE_DYNCREATE(CSpectrumDoc)
 
 // 특성입니다.
 public:
-	virtual CHistogramView* GetActiveView();
-	virtual CHistogramDoc* GetActiveDocument();
-	UINT m_InitW = 276;
-	UINT m_InitH = 299;
 
 // 작업입니다.
 public:
 
 // 재정의입니다.
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual void ActivateFrame(int nCmdShow = -1);
+public:
+	virtual BOOL OnNewDocument();
+	virtual void Serialize(CArchive& ar);
+#ifdef SHARED_HANDLERS
+	virtual void InitializeSearchContent();
+	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
+#endif // SHARED_HANDLERS
 
 // 구현입니다.
 public:
-	virtual ~CHistogramFrame();
+	virtual ~CSpectrumDoc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+protected:
+
 // 생성된 메시지 맵 함수
 protected:
-	afx_msg void OnFilePrint();
-	afx_msg void OnFilePrintPreview();
-	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
-	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
-	afx_msg void OnViewOriginSize();
 	DECLARE_MESSAGE_MAP()
+
+#ifdef SHARED_HANDLERS
+	// 검색 처리기에 대한 검색 콘텐츠를 설정하는 도우미 함수
+	void SetSearchContent(const CString& value);
+#endif // SHARED_HANDLERS
 };

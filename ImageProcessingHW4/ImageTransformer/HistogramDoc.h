@@ -62,5 +62,4 @@ protected:
 public:
 	// 픽셀 데이터에 대한 histogram 생성
 	void plotHistogram(const BYTE pixelData[], const UINT pixelDataSize);
-	
 };

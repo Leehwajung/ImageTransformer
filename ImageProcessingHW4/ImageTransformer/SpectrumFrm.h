@@ -9,37 +9,29 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// HistogramFrm.h : CHistogramFrame 클래스의 인터페이스
+// SpectrumFrm.h : CSpectrumFrame 클래스의 인터페이스
 //
 
 #pragma once
 
-#include "HistogramView.h"
-#include "HistogramDoc.h"
-
-class CHistogramFrame : public CMDIChildWndEx
+class CSpectrumFrame : public CMDIChildWndEx
 {
+	DECLARE_DYNCREATE(CSpectrumFrame)
 public:
-	CHistogramFrame();
-	DECLARE_DYNCREATE(CHistogramFrame)
+	CSpectrumFrame();
 
 // 특성입니다.
 public:
-	virtual CHistogramView* GetActiveView();
-	virtual CHistogramDoc* GetActiveDocument();
-	UINT m_InitW = 276;
-	UINT m_InitH = 299;
 
 // 작업입니다.
 public:
 
 // 재정의입니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual void ActivateFrame(int nCmdShow = -1);
 
 // 구현입니다.
 public:
-	virtual ~CHistogramFrame();
+	virtual ~CSpectrumFrame();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -50,7 +42,5 @@ protected:
 	afx_msg void OnFilePrint();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
-	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
-	afx_msg void OnViewOriginSize();
 	DECLARE_MESSAGE_MAP()
 };

@@ -104,7 +104,6 @@ void CHistogramView::OnDraw(CDC* pDC)
 
 // CHistogramView ¿Œº‚
 
-
 void CHistogramView::OnFilePrintPreview()
 {
 #ifndef SHARED_HANDLERS

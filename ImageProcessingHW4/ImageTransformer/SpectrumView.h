@@ -9,34 +9,25 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// HistogramView.h : CHistogramView 클래스의 인터페이스
+// SpectrumView.h : CSpectrumView 클래스의 인터페이스
 //
 
 #pragma once
 
-class CHistogramDoc;
+class CSpectrumDoc;
 
-class CHistogramView : public CView
+class CSpectrumView : public CView
 {
 protected:	// serialization에서만 만들어집니다.
-	CHistogramView();
-	DECLARE_DYNCREATE(CHistogramView)
+	CSpectrumView();
+	DECLARE_DYNCREATE(CSpectrumView)
 
 // 특성입니다.
 public:
-	CHistogramDoc* GetDocument() const;
-private:
-	BYTE* m_Image;		// histogram 출력 배열
-	UINT m_Width;		// histogram 출력 배열의 width
-	UINT m_Height;		// histogram 출력 배열의 height
-	UINT m_Stride;
-	FLOAT m_HeightRate;	// histogram 출력 배열에서 실제 출력할 height
+	CSpectrumDoc* GetDocument() const;
 
 // 작업입니다.
 public:
-	// histogram의 2차원 이미지 생성
-	void plotHistogramImage();
-	void resetHeightRate();
 
 // 재정의입니다.
 public:
@@ -49,7 +40,7 @@ protected:
 
 // 구현입니다.
 public:
-	virtual ~CHistogramView();
+	virtual ~CSpectrumView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -63,13 +54,10 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnViewHtgSize();
-	afx_msg void OnUpdateViewHtgSize(CCmdUI *pCmdUI);
 };
 
-#ifndef _DEBUG	// HistogramView.cpp의 디버그 버전
-inline CHistogramDoc* CHistogramView::GetDocument() const
-   { return reinterpret_cast<CHistogramDoc*>(m_pDocument); }
+#ifndef _DEBUG	// SpectrumView.cpp의 디버그 버전
+inline CSpectrumDoc* CSpectrumView::GetDocument() const
+   { return reinterpret_cast<CSpectrumDoc*>(m_pDocument); }
 #endif
 

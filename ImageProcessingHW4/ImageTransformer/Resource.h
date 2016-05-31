@@ -4,6 +4,7 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
+#define IDR_SpectrumFileTYPE            130
 #define IDB_WRITESMALL                  110
 #define IDB_WRITELARGE                  111
 #define IDB_MAIN                        112
@@ -18,9 +19,9 @@
 #define IDS_STATUS_PANE2                123
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
-#define IDR_HistogramFileTYPE           130
-#define IDR_BMPFileTYPE                 131
-#define IDR_RAWFileTYPE                 132
+#define IDR_HistogramFileTYPE           131
+#define IDR_BMPFileTYPE                 132
+#define IDR_RAWFileTYPE                 133
 #define IDR_PASTE_MENU                  151
 #define IDR_WINDOWS_MENU                152
 #define IDR_THEME_MENU                  200

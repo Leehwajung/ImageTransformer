@@ -301,12 +301,12 @@ double CImageProcessorUtil::obtainMeanSquareError(IN BYTE srcPixelData[], IN BYT
 ------------*/
 void CImageProcessorUtil::dct8x8(int ix[][B_size])
 {
-	static float pi = 3.141592653589793238;
-	float x[B_size][B_size], z[B_size][B_size], y[B_size], c[40], s[40],
+	static double pi = 3.141592653589793238;
+	double x[B_size][B_size], z[B_size][B_size], y[B_size], c[40], s[40],
 		ft[4], fxy[4], yy[B_size], zz;
 	int i, ii, jj;
 	for (i = 0; i < 40; i++) {
-		zz = pi * (float)(i + 1) / 64.0;
+		zz = pi * (double)(i + 1) / 64.0;
 		c[i] = cos(zz);
 		s[i] = sin(zz);
 	}
@@ -393,18 +393,18 @@ void CImageProcessorUtil::dct8x8(int ix[][B_size])
 --------------------*/
 void CImageProcessorUtil::idct8x8(int ix[][B_size])
 {
-	static float pi = 3.141592653589793238;
-	float x[B_size][B_size], z[B_size][B_size], y[B_size], c[40], s[40],
+	static double pi = 3.141592653589793238;
+	double x[B_size][B_size], z[B_size][B_size], y[B_size], c[40], s[40],
 		ait[4], aixy[4], yy[B_size], zz;
 	int i, ii, jj;
 	for (i = 0; i < 40; i++) {
-		zz = pi * (float)(i + 1) / 64.0;
+		zz = pi * (double)(i + 1) / 64.0;
 		c[i] = cos(zz);
 		s[i] = sin(zz);
 	}
 	for (ii = 0; ii < B_size; ii++)
 		for (jj = 0; jj < B_size; jj++)
-			x[ii][jj] = (float)ix[ii][jj];
+			x[ii][jj] = (double)ix[ii][jj];
 	for (ii = 0; ii < B_size; ii++) {
 		for (jj = 0; jj < B_size; jj++)
 			y[jj] = x[jj][ii];

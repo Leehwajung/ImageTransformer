@@ -50,30 +50,30 @@ res\Toolbar.bmp
 
 자식 프레임 창:
 
-ChildFrm.h, ChildFrm.cpp
-    이 파일은 MDI 응용 프로그램에서 자식 창을 지원하는 CRAWFrame 클래스를 정의하고 구현합니다.
+SpectrumFrm.h, SpectrumFrm.cpp
+    이 파일은 MDI 응용 프로그램에서 자식 창을 지원하는 CSpectrumFrame 클래스를 정의하고 구현합니다.
 
 /////////////////////////////////////////////////////////////////////////////
 
 응용 프로그램 마법사에서 문서 형식과 뷰를 한 개씩 만듭니다.
 
-BMPDoc.h, BMPDoc.cpp - 문서
-    이 파일에는 CBMPDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CImageDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
+SpectrumDoc.h, SpectrumDoc.cpp - 문서
+    이 파일에는 CSpectrumDoc 클래스가 포함됩니다. 이 파일을 편집하여 특수 문서 데이터를 추가하고 CSpectrumDoc::Serialize를 통해 파일 저장 및 로드를 구현합니다.
     문서에는 다음과 같은 문자열이 있습니다.
-        파일 확장명:      bmp
-        파일 형식 ID:        com.microsoft.bmp.Document
-        주 프레임 캡션:  Bitmap
-        Doc 형식 이름:       BMP
-        필터 이름:         BMP Files (*.bmp)
-        파일의 새 약식 이름: bmp
-        파일 형식의 긴 이름: com.microsoft.bmp.Document
+        파일 확장명:      stm
+        파일 형식 ID:        ImageTransformer.Document
+        주 프레임 캡션:  FrequencySpectrum
+        Doc 형식 이름:       FrequencySpectrum
+        필터 이름:         Frequency Spectrum Files (*.stm)
+        파일의 새 약식 이름: FrequencySpectrum
+        파일 형식의 긴 이름: ImageTransformer.Document
 
-ImageView.h, ImageView.cpp - 문서 뷰
-    이 파일에는 CImageView 클래스가 포함됩니다.
-    CImageView 개체는 CImageDoc 개체를 보는 데 사용됩니다.
+SpectrumView.h, SpectrumView.cpp - 문서 뷰
+    이 파일에는 CSpectrumView 클래스가 포함됩니다.
+    CSpectrumView 개체는 CSpectrumDoc 개체를 보는 데 사용됩니다.
 
 res\ImageTransformerDoc.ico
-    아이콘 파일이며, CImageDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 ImageTransformer.rc에 의해 포함됩니다.
+    아이콘 파일이며, CSpectrumDoc 클래스 MDII 자식 창의 아이콘으로 사용됩니다. 이 아이콘은 기본 리소스 파일인 ImageTransformer.rc에 의해 포함됩니다.
 
 
 

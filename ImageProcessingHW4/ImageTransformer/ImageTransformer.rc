@@ -436,6 +436,7 @@ END
 STRINGTABLE
 BEGIN
     IDP_OLE_INIT_FAILED     "OLE를 초기화할 수 없습니다. OLE 라이브러리 버전이 올바른지 확인하십시오."
+    IDR_SpectrumFileTYPE    "\nFrequencySpectrum\nFrequencySpectrum\nFrequency Spectrum Files (*.stm)\n.htg\nImageTransformer.Document\nImageTransformer.Document"
 END
 
 STRINGTABLE
@@ -443,7 +444,7 @@ BEGIN
     IDR_MAINFRAME           "Image Transformer"
     IDR_HistogramFileTYPE   "\nHistogram\nHistogram\nHistogram Files (*.htg)\n.htg\nImageTransformer.Document\nImageTransformer.Document"
     IDR_BMPFileTYPE         "\nBitmap\nBMP\nBMP Files (*.bmp)\n.bmp\ncom.microsoft.bmp\ncom.microsoft.bmp.Document"
-    IDR_RAWFileTYPE         "\nRaw Image\nRAW\nRaw Image Files (*.raw)\n.raw\nImageTransformer.RawImage\nImageTransformer.RawImage"
+    IDR_RAWFileTYPE         "\nRawImage\nRawImage\nRaw Image Files (*.raw)\n.raw\nRawImage.Document\nRawImage.Document"
 END
 
 STRINGTABLE

@@ -484,16 +484,16 @@ void CImageDoc::forwardDiscreteCosineTransform(UINT maskWidth /*= 8*/)
 
 	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
 		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
-			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					subPixelArr[mr][mc] = pixelData[(n + mr) * maskWidth + (m + mc)];
 				}
 			}
 
 			CImageProcessorUtil::dct8x8(subPixelArr);
 
-			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
 				}
 			}
@@ -553,16 +553,16 @@ void CImageDoc::inverseDiscreteCosineTransform(UINT maskWidth /*= 8*/)
 
 	for (UINT n = 0; n < bitmapData.Height; n += maskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
 		for (UINT m = 0; m < bitmapData.Width; m += maskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
-			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					subPixelArr[mr][mc] = pixelData[(n + mr) * maskWidth + (m + mc)];
 				}
 			}
 
 			CImageProcessorUtil::idct8x8(subPixelArr);
 
-			for (int mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
-				for (int mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
+			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
+				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					g[(n + mr) * bitmapData.Width + (m + mc)] = subPixelArr[mr][mc];
 				}
 			}

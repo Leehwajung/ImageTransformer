@@ -25,6 +25,9 @@
 #include "HistogramFrm.h"
 #include "HistogramView.h"
 #include "HistogramDoc.h"
+#include "SpectrumFrm.h"
+#include "SpectrumView.h"
+#include "SpectrumDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -135,6 +138,14 @@ BOOL CImageTransformerApp::InitInstance()
 		RUNTIME_CLASS(CHistogramDoc),
 		RUNTIME_CLASS(CHistogramFrame), // 사용자 지정 MDI 자식 프레임입니다.
 		RUNTIME_CLASS(CHistogramView));
+	if (!pDocTemplate)
+		return FALSE;
+	AddDocTemplate(pDocTemplate);
+
+	pDocTemplate = new CMultiDocTemplate(IDR_SpectrumFileTYPE,
+		RUNTIME_CLASS(CSpectrumDoc),
+		RUNTIME_CLASS(CSpectrumFrame), // 사용자 지정 MDI 자식 프레임입니다.
+		RUNTIME_CLASS(CSpectrumView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);

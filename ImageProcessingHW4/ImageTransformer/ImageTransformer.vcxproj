@@ -190,8 +190,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImageProcessorUtil.h" />
-    <ClInclude Include="RAWOpenDlg.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Resource.h" />
@@ -204,10 +202,13 @@
     <ClInclude Include="HistogramFrm.h" />
     <ClInclude Include="HistogramView.h" />
     <ClInclude Include="HistogramDoc.h" />
+    <ClInclude Include="SpectrumFrm.h" />
+    <ClInclude Include="SpectrumView.h" />
+    <ClInclude Include="SpectrumDoc.h" />
+    <ClInclude Include="RAWOpenDlg.h" />
+    <ClInclude Include="ImageProcessorUtil.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImageProcessorUtil.cpp" />
-    <ClCompile Include="RAWOpenDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -223,29 +224,35 @@
     <ClCompile Include="HistogramFrm.cpp" />
     <ClCompile Include="HistogramView.cpp" />
     <ClCompile Include="HistogramDoc.cpp" />
+    <ClCompile Include="SpectrumFrm.cpp" />
+    <ClCompile Include="SpectrumView.cpp" />
+    <ClCompile Include="SpectrumDoc.cpp" />
+    <ClCompile Include="RAWOpenDlg.cpp" />
+    <ClCompile Include="ImageProcessorUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BOAT512.raw.raw" />
-    <None Include="ImageTransformer.reg" />
-    <None Include="lena_raw_512x512.raw" />
     <None Include="res\ImageTransformer.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
+    <None Include="ImageTransformer.reg" />
+    <None Include="lena_raw_512x512.raw" />
+    <None Include="BOAT512.raw.raw" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ImageTransformer.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\ImageTransformer.ico" />
+    <Image Include="res\main.bmp" />
     <Image Include="res\ImageDoc.ico" />
+    <Image Include="res\HistogramDoc.ico" />
+    <Image Include="res\SpectrumDoc.ico" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />
-    <Image Include="res\ImageTransformer.ico" />
-    <Image Include="res\HistogramDoc.ico" />
-    <Image Include="res\main.bmp" />
-    <Image Include="res\Toolbar.bmp" />
-    <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\writelarge.bmp" />
     <Image Include="res\writesmall.bmp" />
+    <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\Toolbar256.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

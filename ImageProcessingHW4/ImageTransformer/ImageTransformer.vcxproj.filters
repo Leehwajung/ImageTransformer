@@ -54,10 +54,19 @@
     <ClInclude Include="HistogramDoc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ImageProcessorUtil.h">
+    <ClInclude Include="SpectrumFrm.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpectrumView.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpectrumDoc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="RAWOpenDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageProcessorUtil.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,29 +101,53 @@
     <ClCompile Include="HistogramDoc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ImageProcessorUtil.cpp">
+    <ClCompile Include="SpectrumFrm.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SpectrumView.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SpectrumDoc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="RAWOpenDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ImageProcessorUtil.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\ImageTransformer.rc2">
+      <Filter>리소스 파일</Filter>
+    </None>
     <None Include="res\ribbon.mfcribbon-ms">
       <Filter>리소스 파일</Filter>
     </None>
     <None Include="ImageTransformer.reg" />
-    <None Include="res\ImageTransformer.rc2">
+    <None Include="lena_raw_512x512.raw">
       <Filter>리소스 파일</Filter>
     </None>
     <None Include="BOAT512.raw.raw">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="lena_raw_512x512.raw">
-      <Filter>리소스 파일</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\ImageTransformer.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\main.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ImageDoc.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\HistogramDoc.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\SpectrumDoc.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
     <Image Include="res\buttons.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -122,9 +155,6 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\filesmall.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\main.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\writelarge.bmp">
@@ -137,15 +167,6 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\Toolbar256.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\HistogramDoc.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ImageTransformer.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="res\ImageDoc.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
