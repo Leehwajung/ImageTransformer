@@ -26,9 +26,11 @@
 
 #include "ImageFrm.h"
 #include "ImageView.h"
-#include "ImageDoc.h"
+#include "ImageDocExt.h"
 
 #include "MainFrm.h"
+
+#define PFX_TRANSFORM		L"transformed_"
 
 
 // CSpectrumFrame
@@ -134,7 +136,7 @@ void CSpectrumFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 
 	Bitmap *pBitmap = pView->m_bitmap;
 	if (pBitmap) {
-		m_InitW = pBitmap->GetWidth() + winRect.Width() - cliRect.Width() + 4 - 20;
+		m_InitW = pBitmap->GetWidth() + winRect.Width() - cliRect.Width() + 4;
 		m_InitH = pBitmap->GetHeight() + winRect.Height() - cliRect.Height() + 4;
 		SetWindowPos(NULL, 0, 0, m_InitW, m_InitH, SWP_NOMOVE | SWP_SHOWWINDOW);
 	}
@@ -177,30 +179,53 @@ void CSpectrumFrame::OnItInverseDCT()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	//// 기존 CImageDoc을 가져옴
-	//CImageDoc *pSrcDoc = GetActiveDocument();
-	//ASSERT_VALID(pSrcDoc);
-	//if (!pSrcDoc)
-	//	return;
+	// 기존 CSpectrumView을 가져옴
+	CSpectrumView *pView = (CSpectrumView*)GetActiveView();
+	ASSERT_VALID(pView);
+	if (!pView)
+		return;
 
-	//// 신규 Image 문서 (CImageDoc) 생성 및 복제
-	//CImageFrame* pDstFrm;
-	//CImageView* pDstView;
-	//CImageDoc* pDstDoc;
-	//Duplicate(&pDstFrm, &pDstView, &pDstDoc);
+	// 기존 CSpectrumDoc을 가져옴
+	CSpectrumDoc *pDoc = (CSpectrumDoc*)GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
 
-	//// Masking and Edge Detection
-	//OnItMaskWidth();
-	//pDstDoc->inverseDiscreteCosineTransform(m_TransformMaskWidth);
+	OnItMaskWidth();
 
-	//// 제목 변경
-	//CString newTitle(PFX_TRANSFORM);
-	//newTitle.Append(pSrcDoc->GetTitle());
-	//pDstDoc->SetTitle(newTitle);
+	// 신규 BMP 문서 (CBMPDoc) 생성
+	CImageTransformerApp *app = (CImageTransformerApp*)AfxGetApp();
+	POSITION pos = app->GetFirstDocTemplatePosition();
+	CDocTemplate *pTml;
+	for (int i = 0; i < 1; i++) {
+		pTml = app->GetNextDocTemplate(pos);
+	}
+	pTml->OpenDocumentFile(NULL);
 
-	//// 영상에 맞게 다시 그리기
-	//pDstFrm->ActivateFrame();
-	//pDstView->Invalidate();
+	// Destination(Spectrum)을 가져옴
+	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());			// Main Frame
+	CImageFrame *pBMPFrm = (CImageFrame*)pMainFrm->MDIGetActive();	// BMP Frame
+	CImageView *pBMPView = (CImageView*)(pBMPFrm->GetActiveView());	// BMP View
+	CBMPDoc *pBMPDoc = (CBMPDoc*)pBMPView->GetDocument();			// BMP Document
+
+	// 영상의 pixel data를 가져옴
+	Bitmap *pBitmap = pView->m_bitmap;
+	pBMPDoc->m_bitmap = pBitmap->Clone(0, 0, pBitmap->GetWidth(), pBitmap->GetHeight(), PixelFormat8bppIndexed);	// TODO: FIX HARD CODING
+	BitmapData bitmapData;
+	BYTE *pixelData = pBMPDoc->getData(&bitmapData, ImageLockModeWrite);	//영상의 픽셀 데이터를 가져옴
+
+	// Inverse Discrete Cosine Transform
+	pDoc->inverseDiscreteCosineTransform(pixelData, pDoc->m_Height * pDoc->m_Width, m_TransformMaskWidth);
+	pBMPDoc->clearData(&bitmapData);
+
+	// 제목 변경
+	CString newTitle(PFX_TRANSFORM);
+	newTitle.Append(pDoc->GetTitle());
+	pBMPDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pBMPFrm->ActivateFrame();
+	pBMPView->Invalidate();
 }
 
 void CSpectrumFrame::OnItMaskWidth()

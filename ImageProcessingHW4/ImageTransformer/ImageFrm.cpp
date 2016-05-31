@@ -56,7 +56,6 @@ BEGIN_MESSAGE_MAP(CImageFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_ER_LP, &CImageFrame::OnErLowPass)
 	ON_COMMAND(ID_ER_MD, &CImageFrame::OnErMedian)
 	ON_COMMAND(ID_IT_FDCT, &CImageFrame::OnItForwardDCT)
-	ON_COMMAND(ID_IT_IDCT, &CImageFrame::OnItInverseDCT)
 	ON_COMMAND(ID_IT_MASK, &CImageFrame::OnItMaskWidth)
 END_MESSAGE_MAP()
 
@@ -649,10 +648,10 @@ void CImageFrame::OnItForwardDCT()
 	pTml->OpenDocumentFile(NULL);
 
 	// Destination(Spectrum)을 가져옴
-	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());		// Main Frame
-	CSpectrumFrame *pStmFrm = (CSpectrumFrame*)pMainFrm->MDIGetActive();	// Histogram Frame
-	CSpectrumView *pStmView = (CSpectrumView*)(pStmFrm->GetActiveView());	// Histogram View
-	CSpectrumDoc *pStmDoc = pStmView->GetDocument();						// Histogram Document
+	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());					// Main Frame
+	CSpectrumFrame *pStmFrm = (CSpectrumFrame*)pMainFrm->MDIGetActive();	// Spectrum Frame
+	CSpectrumView *pStmView = (CSpectrumView*)(pStmFrm->GetActiveView());	// Spectrum View
+	CSpectrumDoc *pStmDoc = pStmView->GetDocument();						// Spectrum Document
 
 	// 영상의 pixel data를 가져옴
 	BitmapData bitmapData;
@@ -670,37 +669,6 @@ void CImageFrame::OnItForwardDCT()
 	// 영상에 맞게 다시 그리기
 	pStmFrm->ActivateFrame();
 	pStmView->Invalidate();
-	Invalidate();
-}
-
-void CImageFrame::OnItInverseDCT()
-{
-	//// TODO: 여기에 명령 처리기 코드를 추가합니다.
-
-	//// 기존 CImageDoc을 가져옴
-	//CImageDoc *pSrcDoc = GetActiveDocument();
-	//ASSERT_VALID(pSrcDoc);
-	//if (!pSrcDoc)
-	//	return;
-
-	//// 신규 Image 문서 (CImageDoc) 생성 및 복제
-	//CImageFrame* pDstFrm;
-	//CImageView* pDstView;
-	//CImageDoc* pDstDoc;
-	//Duplicate(&pDstFrm, &pDstView, &pDstDoc);
-
-	//// Masking and Edge Detection
-	//OnItMaskWidth();
-	//pDstDoc->inverseDiscreteCosineTransform(m_TransformMaskWidth);
-
-	//// 제목 변경
-	//CString newTitle(PFX_TRANSFORM);
-	//newTitle.Append(pSrcDoc->GetTitle());
-	//pDstDoc->SetTitle(newTitle);
-
-	//// 영상에 맞게 다시 그리기
-	//pDstFrm->ActivateFrame();
-	//pDstView->Invalidate();
 }
 
 void CImageFrame::OnItMaskWidth()

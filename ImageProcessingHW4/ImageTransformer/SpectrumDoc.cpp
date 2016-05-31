@@ -236,7 +236,7 @@ void CSpectrumDoc::inverseDiscreteCosineTransform(BYTE outputPixelData[], UINT p
 		for (UINT m = 0; m < m_Width; m += maskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
 			for (UINT mr = 0; mr < maskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
 				for (UINT mc = 0; mc < maskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
-					subPixelArr[mr][mc] = m_DctData[(n + mr) * m_Width + (m + mc)];
+					subPixelArr[mr][mc] = (int)m_DctData[(n + mr) * m_Width + (m + mc)];
 				}
 			}
 

@@ -77,6 +77,5 @@ public:
 	afx_msg void OnErLowPass();
 	afx_msg void OnErMedian();
 	afx_msg void OnItForwardDCT();
-	afx_msg void OnItInverseDCT();
 	afx_msg void OnItMaskWidth();
 };
