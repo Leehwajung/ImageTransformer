@@ -441,7 +441,7 @@ END
 STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "Image Transformer"
-    IDR_SpectrumFileTYPE    "\nFrequencySpectrum\nFrequencySpectrum\nFrequency Spectrum Files (*.stm)\n.htg\nImageTransformer.Document\nImageTransformer.Document"
+    IDR_SpectrumFileTYPE    "\nFrequencySpectrum\nFrequencySpectrum\nFrequency Spectrum Files (*.stm)\n.stm\nImageTransformer.Document\nImageTransformer.Document"
     IDR_HistogramFileTYPE   "\nHistogram\nHistogram\nHistogram Files (*.htg)\n.htg\nImageTransformer.Document\nImageTransformer.Document"
     IDR_BMPFileTYPE         "\nBitmap\nBMP\nBMP Files (*.bmp)\n.bmp\ncom.microsoft.bmp\ncom.microsoft.bmp.Document"
     IDR_RAWFileTYPE         "\nRawImage\nRawImage\nRaw Image Files (*.raw)\n.raw\nRawImage.Document\nRawImage.Document"

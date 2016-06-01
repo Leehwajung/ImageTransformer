@@ -130,7 +130,7 @@ void CRAWDoc::Serialize(CArchive & ar)
 	if (ar.IsStoring())
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
-		ar.Write(m_RawPixelData, m_bitmap->GetWidth() * m_bitmap->GetHeight());	// 처리된 영상배열을 파일로 저장 
+		ar.Write(m_RawPixelData, m_bitmap->GetWidth() * m_bitmap->GetHeight());	// 처리된 영상배열을 파일로 저장
 	}
 	else
 	{

@@ -112,7 +112,8 @@ void CImageView::OnDraw(CDC* pDC)
 	Bitmap* pBitmap = pDoc->m_bitmap;
 
 	if (pBitmap) {
-		graphicsCanvas.DrawImage(pBitmap, 0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
+		//graphicsCanvas.DrawImage(pBitmap, 0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
+		graphicsCanvas.DrawImage(pBitmap, 0, 0, clientRect.Width(), clientRect.Height());
 	}
 
 	graphicsDC.DrawImage(&bmpCanvas, clientRect.left, clientRect.top, clientRect.right, clientRect.bottom);	// 캔버스 그리기

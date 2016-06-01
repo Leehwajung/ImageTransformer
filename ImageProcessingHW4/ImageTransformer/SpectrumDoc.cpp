@@ -101,10 +101,28 @@ void CSpectrumDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
+		ar << m_Height << m_Width;
+		ar.Write(m_DctData, m_Width * m_Height * sizeof(double));	// 처리된 영상배열을 파일로 저장
 	}
 	else
 	{
 		// TODO: 여기에 로딩 코드를 추가합니다.
+		CFile *infile = ar.GetFile();
+
+		UINT length = (UINT)infile->GetLength();
+		if (length == 0) {					// 파일 사이즈를 검사함.
+			AfxMessageBox(_T("파일 크기가 0 입니다."));
+			return;
+		}
+
+		ar >> m_Height >> m_Width;
+		if (m_DctData) {
+			delete[] m_DctData;
+		}
+
+		UINT pixelDataSize = m_Height * m_Width;
+		m_DctData = new double[pixelDataSize];
+		ar.Read(m_DctData, pixelDataSize * sizeof(double));	// 영상파일을 읽어 m_DctData 배열에 저장 
 	}
 }
 
