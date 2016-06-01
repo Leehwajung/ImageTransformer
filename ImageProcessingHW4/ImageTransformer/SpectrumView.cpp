@@ -57,7 +57,7 @@ CSpectrumView::CSpectrumView()
 
 CSpectrumView::~CSpectrumView()
 {
-	deletePixelData();
+	deleteScaledData();
 }
 
 BOOL CSpectrumView::PreCreateWindow(CREATESTRUCT& cs)
@@ -155,7 +155,7 @@ CSpectrumDoc* CSpectrumView::GetDocument() const // 디버그되지 않은 버전은 인라�
 
 // CSpectrumView 특성
 
-void CSpectrumView::allocPixelData(UINT length)
+void CSpectrumView::allocScaledData(UINT length)
 {
 	if (m_bCreatedDataFirsthand && m_ScaledData) {
 		delete[] m_ScaledData;
@@ -164,7 +164,7 @@ void CSpectrumView::allocPixelData(UINT length)
 	m_bCreatedDataFirsthand = TRUE;
 }
 
-void CSpectrumView::deletePixelData()
+void CSpectrumView::deleteScaledData()
 {
 	if (m_bCreatedDataFirsthand && m_ScaledData) {
 		delete[] m_ScaledData;
@@ -189,7 +189,8 @@ void CSpectrumView::scaleData()
 
 	// BMP 데이터 생성
 	BITMAPINFO* info = (BITMAPINFO*)new BYTE[sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD)];
-
+	
+	// Info Header (BITMAPINFOHEADER)
 	int rwsize = (((width)+31) / 32 * 4);	// 4바이트의 배수여야 함
 	info->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 	info->bmiHeader.biWidth = width;
@@ -197,24 +198,27 @@ void CSpectrumView::scaleData()
 	info->bmiHeader.biPlanes = 1;
 	info->bmiHeader.biBitCount = 8;
 	info->bmiHeader.biCompression = BI_RGB;
-	info->bmiHeader.biSizeImage = (DWORD)rwsize * (DWORD)height;
+	info->bmiHeader.biSizeImage = (DWORD)rwsize * (DWORD)height * sizeof(BYTE);
 	info->bmiHeader.biXPelsPerMeter = 0;
 	info->bmiHeader.biYPelsPerMeter = 0;
 	info->bmiHeader.biClrUsed = 256;
 	info->bmiHeader.biClrImportant = 256;
 
-	for (int i = 0; i < 256; i++) {		// Palette number is 256
+	// Palette (RGBQUAD[256])
+	for (int i = 0; i < 256; i++) {			// Palette number is 256
 		info->bmiColors[i].rgbRed = info->bmiColors[i].rgbGreen = info->bmiColors[i].rgbBlue = i;
 		info->bmiColors[i].rgbReserved = 0;
 	}
 
-	allocPixelData(pDoc->m_Height * pDoc->m_Width);
+	// Pixel Data + Scaling
+	allocScaledData(pixelDataSize);
 	CImageProcessorUtil::stretchContrast(pDoc->m_DctData, pixelDataSize, m_ScaledData);
 
+	// 비트맵 생성
 	m_bitmap = Bitmap::FromBITMAPINFO(info, m_ScaledData);
 	m_bitmap->RotateFlip(RotateFlipType::RotateNoneFlipY);
 
-	delete[](BYTE*)info;
+	delete[] (BYTE*)info;
 }
 
 

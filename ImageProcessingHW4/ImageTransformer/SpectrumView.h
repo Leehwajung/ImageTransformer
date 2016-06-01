@@ -25,8 +25,8 @@ protected:	// serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CSpectrumDoc* GetDocument() const;
-	void allocPixelData(UINT length);
-	void deletePixelData();
+	void allocScaledData(UINT length);
+	void deleteScaledData();
 
 	Bitmap* m_bitmap;
 	BYTE* m_ScaledData;

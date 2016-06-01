@@ -74,9 +74,13 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\ImageTransformer.ico"
 
+IDR_SpectrumFileTYPE    ICON                    "res\\SpectrumDoc.ico"
+
 IDR_HistogramFileTYPE   ICON                    "res\\HistogramDoc.ico"
 
 IDR_BMPFileTYPE         ICON                    "res\\ImageDoc.ico"
+
+IDR_RAWFileTYPE         ICON                    "res\\ImageDoc.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////

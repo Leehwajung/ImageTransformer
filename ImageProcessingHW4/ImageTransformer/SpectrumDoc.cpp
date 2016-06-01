@@ -202,10 +202,12 @@ void CSpectrumDoc::Dump(CDumpContext& dc) const
 
 // CSpectrumDoc 명령
 
-void CSpectrumDoc::forwardDiscreteCosineTransform(BYTE inputPixelData[], UINT height, UINT width, UINT maskWidth /*= 8*/)
+// Forward Discrete Cosine Transform
+void CSpectrumDoc::forwardDiscreteCosineTransform(BYTE inputPixelData[], 
+	UINT height, UINT width, UINT maskWidth /*= B_size*/)
 {
+	// 결과 배열 할당
 	UINT pixelDataSize = height * width;
-
 	if (!m_DctData) {
 		m_DctData = new double[pixelDataSize];
 	}
@@ -214,23 +216,30 @@ void CSpectrumDoc::forwardDiscreteCosineTransform(BYTE inputPixelData[], UINT he
 		m_DctData = new double[pixelDataSize];
 	}
 
+	// 정보 할당
 	m_Height = height;
 	m_Width = width;
 	m_MaskWidth = maskWidth;
 
+	// 마스킹된 영역
 	//int *subPixelArr = new int[maskWidth * maskWidth];
 	int subPixelArr[B_size][B_size];
 
+	// 마스크 영역 단위 이동
 	for (UINT n = 0; n < height; n += m_MaskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
-		for (UINT m = 0; m < width; m += m_MaskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
+		for (UINT m = 0; m < width; m += m_MaskWidth) {		// 영상 가로 방향 루프 (Image Ordinate)
+
+			// 마스크와 겹치는 영역 복사
 			for (UINT mr = 0; mr < m_MaskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
 				for (UINT mc = 0; mc < m_MaskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					subPixelArr[mr][mc] = inputPixelData[(n + mr) * width + (m + mc)];
 				}
 			}
 
+			// FDCT
 			CImageProcessorUtil::dct8x8(subPixelArr);
 
+			// 결과 배열에 FDCT 결과 저장
 			for (UINT mr = 0; mr < m_MaskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
 				for (UINT mc = 0; mc < m_MaskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					m_DctData[(n + mr) * width + (m + mc)] = subPixelArr[mr][mc];
@@ -240,25 +249,33 @@ void CSpectrumDoc::forwardDiscreteCosineTransform(BYTE inputPixelData[], UINT he
 	}
 }
 
+// Inverse Discrete Cosine Transform
 void CSpectrumDoc::inverseDiscreteCosineTransform(BYTE outputPixelData[], UINT pixelDataSize)
 {
+	// 결과 배열이 할당되어있지 않거나 크기가 일치하지 않으면 종료
 	if (!outputPixelData || pixelDataSize != m_Height * m_Width) {
 		return;
 	}
 
+	// 마스킹된 영역
 	//int *subPixelArr = new int[maskWidth * maskWidth];
 	int subPixelArr[B_size][B_size];
 
-	for (UINT n = 0; n < m_Height; n += m_MaskWidth) {	// 영상 세로 방향 루프 (Image Abscissa)
+	// 마스크 영역 단위 이동
+	for (UINT n = 0; n < m_Height; n += m_MaskWidth) {		// 영상 세로 방향 루프 (Image Abscissa)
 		for (UINT m = 0; m < m_Width; m += m_MaskWidth) {	// 영상 가로 방향 루프 (Image Ordinate)
+
+			// 마스크와 겹치는 영역 복사
 			for (UINT mr = 0; mr < m_MaskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
 				for (UINT mc = 0; mc < m_MaskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					subPixelArr[mr][mc] = (int)m_DctData[(n + mr) * m_Width + (m + mc)];
 				}
 			}
 
+			// IDCT
 			CImageProcessorUtil::idct8x8(subPixelArr);
 
+			// 결과 배열에 IDCT 결과 저장
 			for (UINT mr = 0; mr < m_MaskWidth; mr++) {		// 마스크 세로 방향 루프 (Mask Row)
 				for (UINT mc = 0; mc < m_MaskWidth; mc++) {	// 마스크 가로 방향 루프 (Mask Column)
 					outputPixelData[(n + mr) * m_Width + (m + mc)] = subPixelArr[mr][mc];

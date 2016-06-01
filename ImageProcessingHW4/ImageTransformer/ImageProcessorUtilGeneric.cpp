@@ -12,9 +12,10 @@
 
 // Basic Contrast Stretching
 template<class NUM1, class NUM2>
-void CImageProcessorUtil::stretchContrast(OUT NUM1 data[], IN const UINT dataSize, OUT NUM2* outputPixelData /*= NULL*/)
+void CImageProcessorUtil::stretchContrast(OUT NUM1 data[], IN const UINT dataSize, 
+	OUT NUM2* outputPixelData /*= NULL*/)
 {
-	// 가장 작거나 큰 밝기값을 구함
+	// 가장 작거나 큰 값을 구함
 	NUM1 low = data[0];
 	NUM1 high = data[0];
 	for (UINT i = 1; i < dataSize; i++) {
@@ -32,7 +33,8 @@ void CImageProcessorUtil::stretchContrast(OUT NUM1 data[], IN const UINT dataSiz
 
 // Ends-in Contrast Stretching
 template<class NUM1, class NUM2>
-void CImageProcessorUtil::stretchContrast(OUT NUM1 data[], IN const UINT dataSize, IN const NUM1 low, IN const NUM1 high, OUT NUM2* outputPixelData /*= NULL*/)
+void CImageProcessorUtil::stretchContrast(OUT NUM1 data[], IN const UINT dataSize, 
+	IN const NUM1 low, IN const NUM1 high, OUT NUM2* outputPixelData /*= NULL*/)
 {
 	if (outputPixelData == NULL) {
 		outputPixelData = (NUM2*)data;

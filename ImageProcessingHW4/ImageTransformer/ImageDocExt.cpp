@@ -40,6 +40,7 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		return FALSE;
 	}
 
+	// Raw Image 열기 설정 다이얼로그
 	CRAWOpenDlg dlg;
 
 	int result = dlg.DoModal();
@@ -51,7 +52,7 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	const UINT height = dlg.m_RawHeight;
 	const UINT depth = dlg.m_RawDepth;
 
-	// BMP 데이터 생성
+	// BMP 데이터 생성 및 Palette
 	BITMAPINFO* info;
 
 	if (depth == 8) {
@@ -60,6 +61,7 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		info->bmiHeader.biClrUsed = 256;
 		info->bmiHeader.biClrImportant = 256;
 
+		// Palette (RGBQUAD[256])
 		for (int i = 0; i < 256; i++) {		// Palette number is 256
 			info->bmiColors[i].rgbRed = info->bmiColors[i].rgbGreen = info->bmiColors[i].rgbBlue = i;
 			info->bmiColors[i].rgbReserved = 0;
@@ -74,6 +76,7 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 			= info->bmiColors->rgbBlue = info->bmiColors->rgbReserved = 0;
 	}
 
+	// Info Header (BITMAPINFOHEADER)
 	int rwsize = (((width) + 31) / 32 * 4);	// 4바이트의 배수여야 함
 	info->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 	info->bmiHeader.biWidth = width;
@@ -81,13 +84,15 @@ BOOL CRAWDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	info->bmiHeader.biPlanes = 1;
 	info->bmiHeader.biBitCount = depth;
 	info->bmiHeader.biCompression = BI_RGB;
-	info->bmiHeader.biSizeImage = (DWORD)rwsize * (DWORD)height;
+	info->bmiHeader.biSizeImage = (DWORD)rwsize * (DWORD)height * sizeof(BYTE);
 	info->bmiHeader.biXPelsPerMeter = 0;
 	info->bmiHeader.biYPelsPerMeter = 0;
 
+	// 비트맵 생성
 	m_bitmap = Bitmap::FromBITMAPINFO(info, m_RawPixelData);
 	m_bitmap->RotateFlip(RotateFlipType::RotateNoneFlipY);
 
+	// 메모리 해제
 	if (depth == 8) {
 		delete[] (BYTE*)info;
 	}
