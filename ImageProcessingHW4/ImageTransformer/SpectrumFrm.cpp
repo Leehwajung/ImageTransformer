@@ -27,9 +27,13 @@
 #include "ImageFrm.h"
 #include "ImageView.h"
 #include "ImageDocExt.h"
+#include "HistogramFrm.h"
+#include "HistogramView.h"
+#include "HistogramDoc.h"
 
 #include "MainFrm.h"
 
+#define PFX_HISTOGRAM		L"histogram_of_"
 #define PFX_TRANSFORM		L"transformed_"
 
 
@@ -45,8 +49,8 @@ BEGIN_MESSAGE_MAP(CSpectrumFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CSpectrumFrame::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CSpectrumFrame::OnFilePrintPreview)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CSpectrumFrame::OnUpdateFilePrintPreview)
+	ON_COMMAND(ID_HTG_PLOT, &CSpectrumFrame::OnHtgPlot)
 	ON_COMMAND(ID_IT_IDCT, &CSpectrumFrame::OnItInverseDCT)
-	ON_COMMAND(ID_IT_MASK, &CSpectrumFrame::OnItMaskWidth)
 END_MESSAGE_MAP()
 
 
@@ -56,7 +60,6 @@ CSpectrumFrame::CSpectrumFrame()
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
 
-	m_TransformMaskWidth = 8;
 }
 
 CSpectrumFrame::~CSpectrumFrame()
@@ -140,8 +143,6 @@ void CSpectrumFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 		m_InitH = pBitmap->GetHeight() + winRect.Height() - cliRect.Height() + 4;
 		SetWindowPos(NULL, 0, 0, m_InitW, m_InitH, SWP_NOMOVE | SWP_SHOWWINDOW);
 	}
-
-	OnItMaskWidth();
 }
 
 BOOL CSpectrumFrame::OnNcActivate(BOOL bActive)
@@ -151,11 +152,11 @@ BOOL CSpectrumFrame::OnNcActivate(BOOL bActive)
 	// Activate/Inactivate ribbon context category: 영상처리
 	CMFCRibbonBar *pRibbon = ((CMainFrame*)GetTopLevelFrame())->GetRibbonBar();
 	if (bActive) {
-		pRibbon->ShowContextCategories(ID_IMAGETRANSFORMING, TRUE);
-		pRibbon->ActivateContextCategory(ID_IMAGETRANSFORMING);
+		pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, TRUE);
+		pRibbon->ActivateContextCategory(ID_IMAGEPROCESSING);
 	}
 	else {
-		pRibbon->ShowContextCategories(ID_IMAGETRANSFORMING, FALSE);
+		pRibbon->ShowContextCategories(ID_IMAGEPROCESSING, FALSE);
 	}
 	pRibbon->RecalcLayout();
 	pRibbon->RedrawWindow();
@@ -175,6 +176,51 @@ void CSpectrumFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 	CMDIChildWndEx::OnGetMinMaxInfo(lpMMI);
 }
 
+void CSpectrumFrame::OnHtgPlot()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CSpectrumDoc을 가져옴
+	CSpectrumDoc *pDoc = (CSpectrumDoc*)GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// 기존 CSpectrumView을 가져옴
+	CSpectrumView *pView = (CSpectrumView*)GetActiveView();
+	ASSERT_VALID(pView);
+	if (!pView)
+		return;
+
+	// 신규 Historam 문서 (CHistogramDoc) 생성
+	CImageTransformerApp *app = (CImageTransformerApp*)AfxGetApp();
+	POSITION pos = app->GetFirstDocTemplatePosition();
+	CDocTemplate *pTml;
+	for (int i = 0; i < 3; i++) {
+		pTml = app->GetNextDocTemplate(pos);
+	}
+	pTml->OpenDocumentFile(NULL);
+
+	// Destination(Historam)을 가져옴
+	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());					// Main Frame
+	CHistogramFrame *pHtgFrm = (CHistogramFrame*)pMainFrm->MDIGetActive();	// Histogram Frame
+	CHistogramView *pHtgView = (CHistogramView*)(pHtgFrm->GetActiveView());	// Histogram View
+	CHistogramDoc *pHtgDoc = pHtgView->GetDocument();						// Histogram Document
+
+	// Destination에 Histogram 생성
+	pHtgDoc->plotHistogram(pView->m_ScaledData, pDoc->m_Width * pDoc->m_Height);
+	pHtgView->plotHistogramImage();
+
+	// 제목 변경
+	CString newTitle(PFX_HISTOGRAM);
+	newTitle.Append(pDoc->GetTitle());
+	pHtgDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pHtgFrm->ActivateFrame();
+	pHtgView->Invalidate();
+}
+
 void CSpectrumFrame::OnItInverseDCT()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -190,8 +236,6 @@ void CSpectrumFrame::OnItInverseDCT()
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
-	OnItMaskWidth();
 
 	// 신규 BMP 문서 (CBMPDoc) 생성
 	CImageTransformerApp *app = (CImageTransformerApp*)AfxGetApp();
@@ -215,8 +259,9 @@ void CSpectrumFrame::OnItInverseDCT()
 	BYTE *dstPixelData = pDstBMPDoc->getData(&dstBitmapData, ImageLockModeWrite | ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
 
 	// Inverse Discrete Cosine Transform
-	pDoc->inverseDiscreteCosineTransform(dstPixelData, pDoc->m_Height * pDoc->m_Width, m_TransformMaskWidth);
-	
+	pDoc->inverseDiscreteCosineTransform(dstPixelData, pDoc->m_Height * pDoc->m_Width);
+	pDstBMPDoc->clearData(&dstBitmapData);
+
 	// 제목 변경
 	CString newTitle(PFX_TRANSFORM);
 	newTitle.Append(pDoc->GetTitle());
@@ -239,20 +284,9 @@ void CSpectrumFrame::OnItInverseDCT()
 		msg.Format(_T("MSE: %f"), mse);
 		MessageBox(msg, _T("Mean Square Error"));
 	}
-	pDstBMPDoc->clearData(&dstBitmapData);
 
 	// 영상에 맞게 다시 그리기
 	pDstBMPFrm->ActivateFrame();
 	pDstBMPView->Invalidate();
 }
 
-void CSpectrumFrame::OnItMaskWidth()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-
-	CMFCRibbonEdit *pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit,
-		((CMainFrame*)GetTopLevelFrame())->GetRibbonBar()->FindByID(ID_IT_MASK));
-	if (pSpin != NULL) {
-		m_TransformMaskWidth = (UINT)_wtof(pSpin->GetEditText());
-	}
-}

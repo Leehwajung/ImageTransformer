@@ -25,13 +25,14 @@ public:
 	double *m_DctData;
 	UINT m_Height;
 	UINT m_Width;
+	UINT m_MaskWidth = 8;
 
 // 작업입니다.
 public:
 	// FDCT (Forward Discrete Cosine Transform)
 	void forwardDiscreteCosineTransform(BYTE inputPixelData[], UINT height, UINT width, UINT maskWidth = 8);
 	// IDCT (Inverse Discrete Cosine Transform)
-	void inverseDiscreteCosineTransform(BYTE outputPixelData[], UINT pixelDataSize, UINT maskWidth = 8);
+	void inverseDiscreteCosineTransform(BYTE outputPixelData[], UINT pixelDataSize);
 
 // 재정의입니다.
 public:

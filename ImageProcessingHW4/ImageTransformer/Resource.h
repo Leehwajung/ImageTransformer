@@ -71,7 +71,6 @@
 #define ID_IT_FDCT                      32795
 #define ID_IT_IDCT                      32797
 #define ID_IT_MASK                      32798
-#define ID_IMAGETRANSFORMING            32799
 
 // Next default values for new objects
 // 

@@ -56,6 +56,7 @@ protected:
 public:
 	afx_msg BOOL OnNcActivate(BOOL bActive);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+	afx_msg void OnHtgPlot();
 	afx_msg void OnPpHistogramEqualization();
 	afx_msg void OnPpBasicContrastStretching();
 	afx_msg void OnPpEndsinContrastStretching();

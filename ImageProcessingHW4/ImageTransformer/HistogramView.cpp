@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CHistogramView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CHistogramView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_VIEW_HTG_SIZE, &CHistogramView::OnViewHtgSize)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_HTG_SIZE, &CHistogramView::OnUpdateViewHtgSize)
 END_MESSAGE_MAP()
@@ -205,6 +206,13 @@ void CHistogramView::resetHeightRate()
 
 // CHistogramView 메시지 처리기
 
+BOOL CHistogramView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	//return CView::OnEraseBkgnd(pDC);
+	return FALSE;
+}
 
 
 // CHistogramView 명령

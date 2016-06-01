@@ -33,8 +33,6 @@
 #define new DEBUG_NEW
 #endif
 
-#define PFX_HISTOGRAM	L"histogram_of_"
-
 
 // CImageTransformerApp
 
@@ -45,7 +43,6 @@ BEGIN_MESSAGE_MAP(CImageTransformerApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
-	ON_COMMAND(ID_HTG_PLOT, &CImageTransformerApp::OnHtgPlot)
 END_MESSAGE_MAP()
 
 
@@ -265,43 +262,3 @@ void CImageTransformerApp::SaveCustomState()
 {
 }
 
-
-// CImageTransformerApp 메시지 처리기
-
-void CImageTransformerApp::OnHtgPlot()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-
-	// Source(image)를 가져옴
-	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());		// Main Frame
-	CImageDoc *pImageDoc = ((CImageFrame*)pMainFrm->MDIGetActive())->GetActiveDocument();
-
-	// 신규 Historam 문서 (CHistogramDoc) 생성
-	POSITION pos = GetFirstDocTemplatePosition();
-	CDocTemplate *pTml;
-	for (int i = 0; i < 3; i++) {
-		pTml = GetNextDocTemplate(pos);
-	}
-	pTml->OpenDocumentFile(NULL);
-
-	// Destination(histogram)을 가져옴
-	CHistogramFrame *pHtgFrm = (CHistogramFrame*)pMainFrm->MDIGetActive();	// Histogram Frame
-	CHistogramView *pHtgView = (CHistogramView*)(pHtgFrm->GetActiveView());	// Histogram View
-	CHistogramDoc *pHtgDoc = pHtgView->GetDocument();						// Histogram Document
-
-	// Source의 픽셀 데이터를 기반으로하여 Destination에 histogram 생성
-	BitmapData bitmapData;
-	BYTE* pixelData = pImageDoc->getData(&bitmapData, ImageLockModeRead);
-	pHtgDoc->plotHistogram(pixelData, bitmapData.Width * bitmapData.Height);
-	pHtgView->plotHistogramImage();
-	pImageDoc->clearData(&bitmapData);
-
-	// 제목 변경
-	CString newTitle(PFX_HISTOGRAM);
-	newTitle.Append(pImageDoc->GetTitle());
-	pHtgDoc->SetTitle(newTitle);
-
-	// Histogram에 맞게 다시 그리기
-	pHtgFrm->ActivateFrame();
-	pHtgView->Invalidate();
-}

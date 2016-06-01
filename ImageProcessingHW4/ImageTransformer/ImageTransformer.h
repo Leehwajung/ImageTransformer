@@ -48,7 +48,6 @@ public:
 	virtual void SaveCustomState();
 
 	afx_msg void OnAppAbout();
-	afx_msg void OnHtgPlot();
 	DECLARE_MESSAGE_MAP()
 };
 

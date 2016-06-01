@@ -43,12 +43,11 @@ protected:
 
 // 생성된 메시지 맵 함수
 protected:
+	afx_msg void OnUpdateViewHtgSize(CCmdUI *pCmdUI);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
-public:
-	afx_msg void OnUpdateViewHtgSize(CCmdUI *pCmdUI);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG	// ImageView.cpp의 디버그 버전

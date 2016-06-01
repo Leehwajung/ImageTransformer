@@ -12,12 +12,16 @@
 
 #include "ImageView.h"
 #include "ImageDoc.h"
+#include "HistogramFrm.h"
+#include "HistogramView.h"
+#include "HistogramDoc.h"
 #include "SpectrumFrm.h"
 #include "SpectrumView.h"
 #include "SpectrumDoc.h"
 
 #include "MainFrm.h"
 
+#define PFX_HISTOGRAM		L"histogram_of_"
 #define PFX_EQUALIZATION	L"equalized_"
 #define PFX_STRETCHING		L"stretched_"
 #define PFX_NOISE			L"noisy_"
@@ -35,6 +39,7 @@ IMPLEMENT_DYNCREATE(CImageFrame, CMDIChildWndEx)
 BEGIN_MESSAGE_MAP(CImageFrame, CMDIChildWndEx)
 	ON_WM_NCACTIVATE()
 	ON_WM_GETMINMAXINFO()
+	ON_COMMAND(ID_HTG_PLOT, &CImageFrame::OnHtgPlot)
 	ON_COMMAND(ID_PP_HE, &CImageFrame::OnPpHistogramEqualization)
 	ON_COMMAND(ID_PP_BCS, &CImageFrame::OnPpBasicContrastStretching)
 	ON_COMMAND(ID_PP_ECS, &CImageFrame::OnPpEndsinContrastStretching)
@@ -93,8 +98,8 @@ BOOL CImageFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if (!CMDIChildWndEx::PreCreateWindow(cs))
 		return FALSE;
 
-	cs.cx = 20;
-	cs.cy = 44;
+	cs.cx = 512 + 20;
+	cs.cy = 512 + 44;
 
 	return TRUE;
 }
@@ -247,6 +252,51 @@ void CImageFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 
 
 // CImageFrame 명령입니다.
+
+// Plot Histogram
+void CImageFrame::OnHtgPlot()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 기존 CImageDoc을 가져옴
+	CImageDoc *pDoc = GetActiveDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// 신규 Historam 문서 (CHistogramDoc) 생성
+	CImageTransformerApp *app = (CImageTransformerApp*)AfxGetApp();
+	POSITION pos = app->GetFirstDocTemplatePosition();
+	CDocTemplate *pTml;
+	for (int i = 0; i < 3; i++) {
+		pTml = app->GetNextDocTemplate(pos);
+	}
+	pTml->OpenDocumentFile(NULL);
+
+	// Destination(Historam)을 가져옴
+	CMainFrame *pMainFrm = (CMainFrame*)(AfxGetMainWnd());					// Main Frame
+	CHistogramFrame *pHtgFrm = (CHistogramFrame*)pMainFrm->MDIGetActive();	// Histogram Frame
+	CHistogramView *pHtgView = (CHistogramView*)(pHtgFrm->GetActiveView());	// Histogram View
+	CHistogramDoc *pHtgDoc = pHtgView->GetDocument();						// Histogram Document
+
+	// 영상의 pixel data를 가져옴
+	BitmapData bitmapData;
+	BYTE *pixelData = pDoc->getData(&bitmapData, ImageLockModeRead);	//영상의 픽셀 데이터를 가져옴
+
+	// Source의 픽셀 데이터를 기반으로하여 Destination에 Histogram 생성
+	pHtgDoc->plotHistogram(pixelData, bitmapData.Width * bitmapData.Height);
+	pHtgView->plotHistogramImage();
+	pDoc->clearData(&bitmapData);
+
+	// 제목 변경
+	CString newTitle(PFX_HISTOGRAM);
+	newTitle.Append(pDoc->GetTitle());
+	pHtgDoc->SetTitle(newTitle);
+
+	// 영상에 맞게 다시 그리기
+	pHtgFrm->ActivateFrame();
+	pHtgView->Invalidate();
+}
 
 // Histogram Equalization
 void CImageFrame::OnPpHistogramEqualization()
@@ -682,3 +732,4 @@ void CImageFrame::OnItMaskWidth()
 		m_TransformMaskWidth = (UINT)_wtof(pSpin->GetEditText());
 	}
 }
+
